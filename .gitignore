@@ -1,5 +1,9 @@
 *
+
 !.gitignore
 !*.css
 !*.js
 !*.html
+
+!package.json
+!package-lock.json
