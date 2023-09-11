@@ -10,5 +10,7 @@ ivonilsson    - Ivo
 
 OskarSundberg - Oskar 
 
+Lukasydkvist  - Lukas
+
 ### Stack MERN
 
