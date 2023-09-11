@@ -7,7 +7,12 @@
   <title>Web Development Project</title>
 </head>
 <body>
-  <h1>Hello, welcome to TimeFlow!</h1>
-  <script src="script.js"></script>
+    <h1>Hello, welcome to TimeFlow!</h1>
+    <form name="myForm" action="" onsubmit="return validateForm()" method="post">
+        Name: <input type="text" name="fname">
+        Email: <input type="text" name="email">
+        <input type="submit" value="Submit">
+    </form>
+    <script src="script.js"></script>
 </body>
 </html>
