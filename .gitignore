@@ -4,6 +4,7 @@
 !*.css
 !*.js
 !*.html
+!*.drawio
 
 !package.json
 !package-lock.json
