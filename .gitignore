@@ -11,3 +11,6 @@
 
 !package.json
 !package-lock.json
+
+!.eslintrc-browser.json
+!.eslintrc-node.json
