@@ -1,0 +1,30 @@
+name: ESLint
+
+# run linter on all pushes and all pull requests
+on:
+  push:
+    branches:
+      - '*' # This wildcard matches any branch
+  pull_request:
+    branches:
+      - '*' # This wildcard matches any branch
+
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x' # latest 18.x version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npm run lint-browser
