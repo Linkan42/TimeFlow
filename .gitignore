@@ -9,6 +9,7 @@
 !*.html
 !*.drawio
 !*.png
+!*IMAGES/
 
 !package.json
 !package-lock.json
