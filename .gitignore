@@ -8,6 +8,7 @@
 !*.js
 !*.html
 !*.drawio
+!*.png
 
 !package.json
 !package-lock.json
