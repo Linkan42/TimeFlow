@@ -4,11 +4,11 @@
 # except ... 
 !.gitignore
 
-!*.css
-!*.js
-!*.html
-!*.drawio
-!*.png
+!**/*.css
+!**/*.js
+!**/*.html
+!**/*.drawio
+!**/*.png
 
 !package.json
 !package-lock.json
