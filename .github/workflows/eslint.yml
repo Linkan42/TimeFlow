@@ -5,9 +5,9 @@ on:
   push:
     branches:
       - '*' # This wildcard matches any branch
-  pull_request:
-    branches:
-      - '*' # This wildcard matches any branch
+  #pull_request:
+  #  branches:
+  #    - '*' # This wildcard matches any branch
 
 
 jobs:
