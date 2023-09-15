@@ -1,14 +1,15 @@
 import React from 'react';
-import {Coworkers} from './View/Coworkers'
-import {BackGround} from './View/BackGround'
+import {CoworkerList} from './View/CoworkerList';
+//import {BackGround} from './View/BackGround';
 import './App.css';
+import { Container, backgroundColor } from '@mui/material';
 
 function App() {
   return (
-    <div className="container">
-      <Coworkers/>
-      <BackGround/>
-    </div>
+      <Container>
+          <CoworkerList sx={{ backgroundColor: 'ligthgray'}}>
+        </CoworkerList>
+      </Container>
   );
 }
 
