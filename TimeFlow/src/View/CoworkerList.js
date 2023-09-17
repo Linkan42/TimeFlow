@@ -22,7 +22,9 @@ export class CoworkerList extends Component {
             boxShadow: 1,
             borderRadius: 2,
             p: 2,
-            maxWidth: 300,
+            minWidth: 200,
+            width: '20%',
+            height: 'auto'
             }}>
                 {menuItems.map(item => (
                     <ListItemButton>

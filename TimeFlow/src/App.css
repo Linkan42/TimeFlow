@@ -1,22 +1,33 @@
 #root {
+  position: absolute;
+}
+#App{
+  position: absolute;
+  width: 100vmax;
   height: 100vh;
 }
-
-.header{
-  display: flex;
-  height: 10vh;
-  align-items: center;
-  background-color: beige;
+#Stack{
+  height: 88vh;
+  width: 100vmax;
 }
-.sidebar {
+#CoworkerList{
   display: flex;
   flex-direction: column;
-  width: 20%;
-  height: 80vh;
 }
-.schema{
+#NextMeeting {
   display: flex;
+  flex-direction: column;
 }
-.container {
+#Calandar{
   display: flex;
+  flex-direction: column;
 }
+.header{
+  display: flex;
+  align-items: left;
+  background-color: beige;
+  height: 6vh;
+  width: 100vmax;
+}
+
+
