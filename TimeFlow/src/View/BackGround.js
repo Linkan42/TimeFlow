@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React,{Component} from "react";
 export class BackGround extends Component {
 

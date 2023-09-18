@@ -1,15 +1,14 @@
 import React from 'react';
-import {CoworkerList} from './View/CoworkerList';
-//import {BackGround} from './View/BackGround';
+import { BrowserRouter } from 'react-router-dom';
+import Views from './Views';
 import './App.css';
-import { Container, backgroundColor } from '@mui/material';
+
 
 function App() {
   return (
-      <Container>
-          <CoworkerList sx={{ backgroundColor: 'ligthgray'}}>
-        </CoworkerList>
-      </Container>
+    <BrowserRouter>
+      <Views />
+    </BrowserRouter>
   );
 }
 
