@@ -11,24 +11,27 @@ const theme = createTheme({
         secondary: '#46505A',
     }
 }});
-export class NextMeeting extends Component {
-    render(){
-        return(
-            <ThemeProvider theme={theme}>
+export function NextMeeting(props) {
+    return (
+        <ThemeProvider theme={theme}>
             <Container sx={{
-            bgcolor: 'background.paper',
-            boxShadow: 1,
-            borderRadius: 2,
-            p: 2,
-            minWidth: 200,
-            width: '20%',
-            height: '88vh'
+                bgcolor: 'background.paper',
+                boxShadow: 1,
+                borderRadius: 2,
+                p: 2,
+                minWidth: 200,
+                width: '20%',
+                height: '88vh'
             }}>
-                Nästa möte här 
+                <h1> Next Meeting </h1>
+                <h3> Time: 11:00 </h3>
+                <h3> Place: JTH Towers </h3>
             </Container>
-            </ThemeProvider>
-        )
-    }
+        </ThemeProvider>
+    );
 }
+/* <p> Time: {props.time} </p>
+   <p> Place: {props.place}</p> */
+// Denna kod skall användas senare
 
 export default NextMeeting;
