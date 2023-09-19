@@ -21,7 +21,7 @@ export function NextMeeting(props) {
                 p: 2,
                 minWidth: 200,
                 width: '20%',
-                height: '60vh'
+                maxHeight: '60vh'   
             }}>
                 <h1> Next Meeting </h1>
                 <h3> Time: 11:00 </h3>
