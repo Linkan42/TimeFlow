@@ -2,6 +2,7 @@ import React,{Component} from "react";
 import {CoworkerList} from './CoworkerList';
 import {Calandar} from './Calendar';
 import {NextMeeting} from './NextMeeting';
+import {Messages} from './Messages';
 import '../App.css';
 import {Grid, Container, Stack} from "@mui/material";
 import HeadPanel from "./HeadPanel";
