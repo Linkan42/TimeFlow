@@ -24,7 +24,8 @@ export class CoworkerList extends Component {
             p: 2,
             minWidth: 200,
             width: '20%',
-            height: 'auto'
+            maxHeight: '60vh',
+            overflow: 'auto'
             }}>
                 {menuItems.map(item => (
                     <ListItemButton>
@@ -70,6 +71,16 @@ const menuItems = [
     {
         name: 'WowJoke',
         work: 'Är det något med klockan?',
+        availability : 'online'
+    },
+    {
+        name: 'Elon Musk',
+        work: 'X',
+        availability : 'online'
+    },
+    {
+        name: 'Kugen',
+        work: 'Nä....... de tro jag faktiskt inte nä',
         availability : 'online'
     },
 
