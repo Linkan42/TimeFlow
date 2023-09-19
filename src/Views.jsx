@@ -1,6 +1,6 @@
 import {Routes, Route } from 'react-router-dom';
-import { BackGround } from './View/BackGround.js';
-import {HomePage} from './View/HomePage.js';
+import { BackGround } from './View/BackGround/BackGround.js';
+import {HomePage} from './View/HomePage/HomePage.js';
 
 const Views = () => {
     return (

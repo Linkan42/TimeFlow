@@ -1,6 +1,7 @@
 
 import { List, ListItemButton, ListItemText, createTheme, ThemeProvider, Box } from "@mui/material";
 import React,{Component} from "react";
+import '../color.css';
 
 const theme = createTheme({
     palette: {
