@@ -37,7 +37,7 @@ function DateButton() {
 function DaySelector() {
     return (
         <>
-
+            
             <Button className="ButtonL" variant="filledTonal">
                 ←
             </Button>
@@ -60,11 +60,11 @@ export class HeadPanel extends Component {
     render () {
         return (
             <ThemeProvider theme={theme}>
-
+                
                 <TodayButton></TodayButton>
                 <DaySelector></DaySelector>
                 <DateButton></DateButton>
-
+            
             </ThemeProvider>
         )
 
