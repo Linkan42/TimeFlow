@@ -1,6 +1,10 @@
-import { ThemeProvider, createTheme, Button } from "@mui/material";
+import { ThemeProvider, createTheme, Button, Box } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateField } from '@mui/x-date-pickers/DateField';
+import dayjs from 'dayjs';
 
 
 const theme = createTheme({
@@ -15,23 +19,34 @@ const theme = createTheme({
     }
 });
 
-const date = new Date();
+
+function DateButton() {
+  const [buttonText, setButtonText] = useState("Click me");
+
+  const handleButtonClick = () => {
+    const currentDate = dayjs();
+    setButtonText(currentDate.format("YYYY-MM-DD"));
+  };
+
+  return (
+      <Button variant="contained" onClick={handleButtonClick}> {buttonText}</Button>
+  );
+}
 
 
 function DaySelector() {
     return (
         <>
-            <Button variant="filledTonal">
+            
+            <Button className="ButtonL" variant="filledTonal">
                 ←
             </Button>
-            <Button variant="filledTonal">
+            <Button className="ButtonR" variant="filledTonal" onClick="OnButtonClickRight()">
                 →
             </Button>
-            <DatePicker/>
         </>
     );
 }
-
 
 function TodayButton() {
     return (
@@ -45,9 +60,11 @@ export class HeadPanel extends Component {
     render () {
         return (
             <ThemeProvider theme={theme}>
+                
                 <TodayButton></TodayButton>
                 <DaySelector></DaySelector>
-                
+                <DateButton></DateButton>
+            
             </ThemeProvider>
         )
 
