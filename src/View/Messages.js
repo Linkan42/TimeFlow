@@ -34,7 +34,7 @@ export class Messages extends Component {
                     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                         <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="Images/furby.png"/>
+                            <Avatar alt="Remy Sharp" src="furby.png"/>
                         </ListItemAvatar>
                         <ListItemText
                             primary="Brunch this weekend?"
@@ -56,7 +56,7 @@ export class Messages extends Component {
                         <Divider variant="inset" component="li" />
                         <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                            <Avatar alt="Travis Howard" src="Images/legoman.png" />
+                            <Avatar alt="Travis Howard" src="legoman.png" />
                         </ListItemAvatar>
                         <ListItemText
                             primary="Summer BBQ"
@@ -78,7 +78,7 @@ export class Messages extends Component {
                         <Divider variant="inset" component="li" />
                         <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                            <Avatar alt="Cindy Baker" src="Images/snailcat.png" />
+                            <Avatar alt="Cindy Baker" src="snailcat.png" />
                         </ListItemAvatar>
                         <ListItemText
                             primary="Oui Oui"

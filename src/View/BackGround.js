@@ -7,7 +7,7 @@ export class BackGround extends Component {
     render(){
         return(
         <div>
-            <img src={require('./Images/001.png')} alt="logo" class="centered-image"/>
+            <img src={require('./001.png')} alt="logo" class="centered-image"/>
         </div>
         );
     }
