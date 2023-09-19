@@ -10,9 +10,9 @@ function App( {children} ) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {children}
-    <BrowserRouter>
-      <Views />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Views />
+      </BrowserRouter>
     </LocalizationProvider>
   );
 }
