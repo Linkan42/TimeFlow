@@ -26,8 +26,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
@@ -50,6 +48,7 @@ export default function SignIn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            backgroundImage: './legoman.png'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
