@@ -1,21 +1,25 @@
 .Panel{
-    width: 60vw;
+    /*width: 60vw;*/
     height: inherit;
-} 
+}
+
 .ListItemButton{
     width: auto;
     height: inherit;
     background-color: #1793d1 !important;
 }
+
 .InfoBox{
     box-shadow: 1;
     border-radius: 2;
     padding: 0.2;
 }
+
 .TextPlace{
     padding-left: 15px;
     padding-top: 10px;
 }
+
 .StackPanel{
     max-height: 60vh;
     overflow-y: auto;

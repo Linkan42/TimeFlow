@@ -8,15 +8,8 @@ export class Calandar extends Component {
     render(){
         return(
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar  sx={{
-            boxShadow: 1,
-            borderRadius: 2,
-            p: 2,
-            minWidth: 200,
-            width: 'auto',
-            Height: '60vh'
-            }}></DateCalendar>
-          </LocalizationProvider>
+                <DateCalendar className="calendar"/>
+            </LocalizationProvider>
         )
     }
 }
