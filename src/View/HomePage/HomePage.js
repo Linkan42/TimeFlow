@@ -9,9 +9,9 @@ import HeadPanel from "../HeadPanel/HeadPanel"
 export class HomePage extends Component {
     render(){
         return( 
-        <Grid>
+        <Grid container rowGap={1}>
             <Grid>
-                <HeadPanel xs={{Height:'10vh', width:'100%'}}/>
+                <HeadPanel></HeadPanel>
             </Grid>
             <Grid>
                 <Stack direction="row">
