@@ -20,7 +20,7 @@ export function NextMeeting(props) {
                     borderRadius: 2,
                     p: 2,
                     minWidth: 200,
-                    width: '20%',
+                    width: '20vw',
                     maxHeight: '60vh',
                     overflow: 'auto' 
             }}>
