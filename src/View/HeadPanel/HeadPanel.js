@@ -6,7 +6,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 
-
 const theme = createTheme({
     palette: {
         background: {
@@ -19,31 +18,40 @@ const theme = createTheme({
     }
 });
 
+let currentDate = dayjs();
 
 function DateButton() {
-  const [buttonText, setButtonText] = useState("Click me");
+    const [buttonText, setButtonText] = useState(`${dayjs().format("YYYY-MM-DD")}`);
 
-  const handleButtonClick = () => {
-    const currentDate = dayjs();
-    setButtonText(currentDate.format("YYYY-MM-DD"));
-  };
+    
+
+    const handleButtonClick = () => {
+        currentDate = dayjs();
+        if (buttonText === dayjs().format("YYYY-MM-DD"))
+            setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
+        else
+            setButtonText(currentDate.format("YYYY-MM-DD"));
+    };
+
+    const handleButtonClickLeft = () => {
+        currentDate = currentDate.add(-1, 'day');
+        setButtonText(currentDate.format("YYYY-MM-DD"));
+    }
+
+    const handleButtonClickRight = () => {
+        currentDate = currentDate.add(1, 'day');
+        setButtonText(currentDate.format("YYYY-MM-DD"));
+    }
 
   return (
-      <Button variant="contained" onClick={handleButtonClick}> {buttonText}</Button>
-  );
-}
-
-
-function DaySelector() {
-    return (
-        <>
-            
-            <Button className="ButtonL" variant="filledTonal">
+      <>
+            <Button className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft}>
                 ←
             </Button>
-            <Button className="ButtonR" variant="filledTonal" onClick="OnButtonClickRight()">
+            <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight}>
                 →
             </Button>
+            <Button className="dateButton" variant="primary" onClick={handleButtonClick}> {buttonText}</Button>
         </>
     );
 }
@@ -62,7 +70,6 @@ export class HeadPanel extends Component {
             <ThemeProvider theme={theme}>
                 
                 <TodayButton></TodayButton>
-                <DaySelector></DaySelector>
                 <DateButton></DateButton>
             
             </ThemeProvider>
