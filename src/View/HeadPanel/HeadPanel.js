@@ -6,63 +6,56 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 
-const theme = createTheme({
-    palette: {
-        background: {
-            paper: '#fff',
-        },
-        text: {
-            primary: '#173A5E',
-            secondary: '#46505A',
-        }
-    }
-});
 
 let currentDate = dayjs();
 let weekDay     = dayjs().format('dddd');
 
 function DateButton() {
-    const [buttonText, setButtonText] = useState(`${dayjs().format("YYYY-MM-DD")}`);
-
+    const [buttonText, setButtonText] = useState(`${dayjs().format("dddd, DD MMMM YYYY")}`);
+ 
     if (weekDay === dayjs().format('dddd') && currentDate.format("D") === dayjs().format("D"))
         weekDay = "Today";
 
     const handleButtonClick = () => {
         currentDate = dayjs();
-        if (buttonText === dayjs().format("YYYY-MM-DD"))
+        if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
+            setButtonText(currentDate.format("YYYY-MM-DD"));
+        else
+            setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
+        weekDay = currentDate.format('dddd');
+
+    };
+
+    const handleButtonClickLeft = () => { 
+        currentDate = currentDate.add(-1, 'day');
+        if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
             setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
         else
             setButtonText(currentDate.format("YYYY-MM-DD"));
-    };
-
-    const handleButtonClickLeft = () => {
-        currentDate = currentDate.add(-1, 'day');
-        setButtonText(currentDate.format("YYYY-MM-DD"));
         weekDay = currentDate.format('dddd');
     }
 
     const handleButtonClickRight = () => {
         currentDate = currentDate.add(1, 'day');
-        setButtonText(currentDate.format("YYYY-MM-DD"));
+        if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
+            setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
+        else
+            setButtonText(currentDate.format("YYYY-MM-DD"));
         weekDay = currentDate.format('dddd');
     }
 
   return (
-      <>
-            <Button sx={{width: '100px'}} variant="filledTonal">
+         <>
+            <Button sx={{width: '125px', boxShadow: 5, color: 'white', background: '#1793d1'}} variant="filledTonal">
             {weekDay}
             </Button>
-            <Button className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft}>
+            <Button  className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft}>
                 ←
             </Button>
             <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight}>
                 →
             </Button>
-            <Button className="dateButton" variant="primary" onClick={handleButtonClick} sx={{
-                color: 'white',
-                background: '#1793d1',
-                boxShadow: 2
-            }}> 
+            <Button className="dateButton" variant="primary" onClick={handleButtonClick}> 
             {buttonText}
             </Button>
         </>
@@ -73,7 +66,15 @@ export class HeadPanel extends Component {
     render () {
         return (
         <>
+        <Box sx={{
+            display: 'flow',
+            width: 'fill',
+            height: 50,
+            background: 'white',
+            alignContent: 'bottom'
+        }}>
             <DateButton></DateButton>
+        </Box>
         </>
         )
 
