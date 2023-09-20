@@ -32,6 +32,7 @@ export class HomePage extends Component {
                 </Grid>
                 <Grid item xs={12}>
                     <Messages/>
+                </Grid>
             </Grid>
         )
     }
