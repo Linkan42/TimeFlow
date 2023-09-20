@@ -1,19 +1,22 @@
-import { Grid, TextField, Stack } from "@mui/material";
-import React,{Component} from "react";
+import { Grid, TextField, Stack, Button} from "@mui/material";
+import {React, Component} from "react";
 
 
 export class TimeSelect extends Component {
-    render(){
+    render(){    
         return(
             <Grid className="InPutField">
                 <Stack>
-                <Grid>
-                <TextField id="StartTime" label="From:"/>
-                <TextField id="EndTime" label="To:"/>
-                </Grid>
-                <TextField id="Location" label="Location"/>
-                <TextField id="MeetingName" label="Meeting name"/>
+                    <Grid>
+                        <TextField label="From:"/>
+                        <TextField label="To:"/>
+                    </Grid>
+                    <TextField label="Location"/>
+                    <TextField label="Meeting name"/>
                 </Stack>
+                <Button id="AddButton" variant="contained">
+                    Add to MeetingScheduler
+                </Button>
             </Grid>
         )
     }
