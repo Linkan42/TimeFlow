@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import {CoworkerList} from '../CoworkerList/CoworkerList';
-import {Calandar} from '../Calendar/Calendar';
+import {WeekDisplay} from '../WeekDisplay/WeekDisplay';
 import {NextMeeting} from '../NextMeeting/NextMeeting';
 import {Messages} from '../Messages/Messages';
 import '../../App.css';
@@ -16,7 +16,7 @@ export class HomePage extends Component {
             <Grid>
                 <Stack direction="row">
                     <CoworkerList></CoworkerList>
-                    <Calandar></Calandar>
+                    <WeekDisplay></WeekDisplay>
                     <NextMeeting></NextMeeting>
                 </Stack>
             </Grid>
