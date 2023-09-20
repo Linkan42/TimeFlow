@@ -1,6 +1,6 @@
 import { Button, Container } from "@mui/material";
 import React,{Component} from "react";
-import "./background.css"; // Import the CSS file
+import "./background.css";
 
 export class BackGround extends Component {
 

@@ -19,8 +19,8 @@ export function NextMeeting(props) {
                     boxShadow: 1,
                     borderRadius: 2,
                     p: 2,
-                    minWidth: 200,
-                    width: '20vw',
+                    //minWidth: 200,
+                    //width: '20vw',
                     maxHeight: '60vh',
                     overflow: 'auto' 
             }}>

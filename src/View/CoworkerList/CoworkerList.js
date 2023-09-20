@@ -23,8 +23,6 @@ export class CoworkerList extends Component {
             boxShadow: 1,
             borderRadius: 2,
             p: 2,
-            minWidth: 200,
-            width: '20vw',
             maxHeight: '60vh',
             overflow: 'auto'
             }}>

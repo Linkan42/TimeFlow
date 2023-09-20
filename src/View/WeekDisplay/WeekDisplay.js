@@ -10,17 +10,21 @@ export class WeekDisplay extends Component {
                 <Stack className="StackPanel" spacing={1}>
                     {Meetings.map(Meeting => (
                         <ListItemButton className="ListItemButton">
-                            <Grid container spacing={2}>
-                                <Grid InfoBox xs={10}>
+                            <Grid container
+                                  spacing={2}
+                                  direction={"row"}
+                                  justifyContent={"space-around"}
+                                  alignItems={"center"}>
+                                <Grid InfoBox xs={9}>
                                     <ListItemText className="TextPlace" primary={Meeting.location} />
                                 </Grid>
-                                <Grid item xs={2}>
-                                <ListItemText className="Text" primary={ <React.Fragment> {Meeting.start} to {Meeting.end} </React.Fragment>}/>
+                                <Grid item xs={3}>
+                                    <ListItemText className="Text" primary={ <React.Fragment> {Meeting.start} to {Meeting.end} </React.Fragment>}/>
                                 </Grid>
-                                <Grid item xs={10}>
+                                <Grid item xs={9}>
                                     <ListItemText className="Text" primary={Meeting.msg}/>
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <ListItemText className="Text" primary={ <React.Fragment> Invited by {Meeting.creator}</React.Fragment>}/>
                                 </Grid>
                             </Grid>
