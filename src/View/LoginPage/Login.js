@@ -12,6 +12,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 function Copyright(props) {
   return (
@@ -24,6 +30,89 @@ function Copyright(props) {
       {'.'}
     </Typography>
   );
+}
+
+function FormDialog() {
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const handleCreateAccount = () => {
+        
+    }
+
+    const [passwordsMatch, setPasswordsMatch] = React.useState(true);
+    const [password1, setPassword1] = React.useState('');
+    const [password2, setPassword2] = React.useState('');
+
+    const handlePassword1Change = (e) => {
+        setPassword1(e.target.value);
+        setPasswordsMatch(e.target.value === password2);
+      };
+
+    const handlePassword2Change = (e) => {
+        setPassword2(e.target.value);
+        setPasswordsMatch(e.target.value === password1);
+    }
+  
+    return (
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          create account
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Create an account</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To create an account please enter your email address and set a password for your account.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="emailtf"
+              label="Email Address"
+              type="email"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              value={password1}
+              onChange={handlePassword1Change}
+              type="password"
+              margin="dense"
+              id="pwtf1"
+              label="Password"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              value={password2}
+              onChange={handlePassword2Change}
+              error={!passwordsMatch}
+              helperText={!passwordsMatch ? 'Passwords do not match!' : ''}
+              margin="dense"
+              id="pwtf2"
+              label="Re-type password"
+              type="password"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleCreateAccount}>Create account</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
 }
 
 const defaultTheme = createTheme();
@@ -97,9 +186,9 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                <FormDialog>
+
+                </FormDialog>
               </Grid>
             </Grid>
           </Box>
