@@ -17,6 +17,3 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Transpile JSX to JS with Babel
-        run: npm run build

@@ -28,3 +28,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint-browser
+
+      - name: Transpile JSX to JS with Babel
+        run: npm run build
