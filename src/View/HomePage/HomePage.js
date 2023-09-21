@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import {Container, Grid, Stack} from "@mui/material";
+import {Grid} from "@mui/material";
 
 import {CoworkerList} from '../CoworkerList/CoworkerList';
 import {WeekDisplay} from '../WeekDisplay/WeekDisplay';
