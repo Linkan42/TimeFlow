@@ -1,5 +1,5 @@
 import { Container, createTheme, ThemeProvider } from "@mui/material";
-import React,{Component} from "react";
+import React from "react";
 
 const theme = createTheme({
     palette: {
