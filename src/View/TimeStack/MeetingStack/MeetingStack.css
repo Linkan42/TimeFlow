@@ -1,0 +1,12 @@
+.MeetingList{
+    box-shadow: 1;
+    border-radius: 4;
+    width: 20vw!important;
+    height: 27.5vh!important;
+    overflow: auto!important;
+    background-color: white!important;
+
+}
+.istItemButton{
+    background-color: white!important;
+}

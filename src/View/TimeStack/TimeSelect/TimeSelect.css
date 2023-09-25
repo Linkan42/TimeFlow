@@ -1,3 +1,14 @@
-.InPutField{
-    padding: 10px!important; 
+.input{
+    padding: 2px; 
+    width: 20vw!important;
+    background-color: white;
 }
+.inputButton{
+    padding: 2px; 
+    width: 20vw!important;
+}
+.InPutField{
+    height: auto;
+    background-color: white!important;
+}
+
