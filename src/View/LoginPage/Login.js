@@ -17,6 +17,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
+import './Login.css';
 
 
 function Copyright(props) {
@@ -126,8 +128,18 @@ export default function SignIn() {
       password: data.get('password'),
     });
   };
+  
+  const [userName, setUserName] = React.useState('');
+  const [userpw, setUserpw]     = React.useState('');
+
+  const handleSignIn = () => {
+    if (userName == 'admin' && userpw == 'admin')
+        return window.location.href = '/home';
+  }
 
   return (
+    <Container className='loginContainer'>
+    <Paper className='loginWindow' elevation={3}>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -151,6 +163,8 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              onChange={(e) => setUserName(e.target.value)}
+              value={userName}
               id="email"
               label="Email Address"
               name="email"
@@ -161,6 +175,8 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              onChange={(e) => setUserpw(e.target.value)}
+              value={userpw}
               name="password"
               label="Password"
               type="password"
@@ -175,6 +191,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
+              onClick={handleSignIn}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
@@ -196,5 +213,7 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </Paper>
+    </Container>
   );
 }

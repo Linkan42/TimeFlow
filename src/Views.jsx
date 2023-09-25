@@ -9,7 +9,7 @@ const Views = () => {
         <Route path="/home" element={<HomePage />}/>
         <Route path="/login" element={<SignIn />}/>
         <Route path="/meetingScheduler"  element={<MeetingScheduler />}/>
-        <Route index element={<BackGround />}/>
+        <Route index element={<SignIn/>}/>
         <Route path='*' element={<div> 404 LOL</div>} />
     </Routes>
     );
