@@ -36,36 +36,31 @@ function DateButton() {
         if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
             setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
         else
-            setButtonText(currentDate.format("YYYY-MM-DD"));
+            setButtonText(currentDate.format("YYYY-MM-D D"));
         weekDay = currentDate.format('dddd');
     }
 
   return (
          <>
-         <Grid>
-            <Grid>
-            <Button sx={{width: '125px', boxShadow: 5, color: 'white', background: '#1793d1', top: 10}} variant="filledTonal" >
+
+            <Button sx={{width: '125px', boxShadow: 5, color: 'white', background: 'darkorange', top: 5}} variant="filledTonal" >
             {weekDay}
             </Button>
-            <Button  className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft} sx={{top: 10}}>
+            <Button  className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft} sx={{top: 5, color: 'white'}}>
                 ←
             </Button>
-            <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight} sx={{top: 10}}>
+            <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight} sx={{top: 5,color: 'white'}}>
                 →
             </Button>
-            <Button className="dateButton" variant="primary" onClick={handleButtonClick} sx={{top: 10}}> 
+            <Button className="dateButton" variant="primary" onClick={handleButtonClick} sx={{top: 5, color: 'white'}}> 
             {buttonText}
             </Button>
-            </Grid>
-            <Grid>
-            <Button sx={{position: 'absolute', right: 30, top: 10}}>
+            <Button sx={{position: 'absolute', right: 30, top: 5, color: 'white'}}>
                 LOGOUT
             </Button>
-            <Button variant='contained' sx={{position: 'absolute', right: 115, top: 10, background: '#1793d1'}}>
+            <Button variant='contained' sx={{position: 'absolute', right: 115, top: 5, background: '#1793d1', background: 'darkorange'}}>
                 + book meeting
             </Button>
-            </Grid>
-        </Grid>
         </>
     );
 }
@@ -78,8 +73,7 @@ export class HeadPanel extends Component {
             display: 'flow',
             width: 'fill',
             height: 50,
-            background: 'white',
-            alignContent: 'bottom'
+            background: 'steelblue'
         }}>
             <DateButton></DateButton>
         </Box>
