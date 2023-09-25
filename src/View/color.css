@@ -17,3 +17,11 @@
 #secondaryColor{
     background-color: (150,220,255,0.7);
 }
+
+.PrimaryColor {
+    background-color: steelblue;
+}
+
+.SecondaryColor {
+    background-color: darkorange;
+}
