@@ -1,14 +1,17 @@
-.loginContainer {
-    background-image: url('001.png');
-    width: 100vw;
-    height: 100vh;
+html {
+    min-height: 100%;
+    background-image: url(001.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-size: cover; 
-    background-position: center;
-}
+    align-items: top;
+    position: sticky;
+ }
 
-.loginWindow {
-    
+.loginContainer {
+    position: relative;
+    right: 50%;
+    opacity: 95%;
 }
