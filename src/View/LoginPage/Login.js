@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -11,12 +10,13 @@ import Box from '@mui/material/Box';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
+import './Login.css';
 
 
 function Copyright(props) {
@@ -115,8 +115,6 @@ function FormDialog() {
     );
 }
 
-const defaultTheme = createTheme();
-
 export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -126,18 +124,25 @@ export default function SignIn() {
       password: data.get('password'),
     });
   };
+  
+  const [userName, setUserName] = React.useState('');
+  const [userpw, setUserpw]     = React.useState('');
+
+  const handleSignIn = () => {
+    if (userName === 'admin' && userpw === 'admin')
+        return window.location.href = '/home';
+  }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <div className='loginContainer'>
+    <Paper className='loginWindow' elevation={3}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            backgroundImage: './legoman.png'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -151,6 +156,8 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              onChange={(e) => setUserName(e.target.value)}
+              value={userName}
               id="email"
               label="Email Address"
               name="email"
@@ -161,6 +168,8 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              onChange={(e) => setUserpw(e.target.value)}
+              value={userpw}
               name="password"
               label="Password"
               type="password"
@@ -175,6 +184,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
+              onClick={handleSignIn}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
@@ -195,6 +205,7 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
+    </Paper>
+    </div>
   );
 }
