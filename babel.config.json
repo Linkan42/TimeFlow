@@ -2,7 +2,6 @@
   "presets": [
     [
             "@babel/preset-env",
-            "@babel/preset-react"
       {
         "targets": {
           "edge": "17",
@@ -13,6 +12,13 @@
         "useBuiltIns": "usage",
         "corejs": "3.6.5"
       }
-    ]
+    ],
+    "@babel/preset-react"
   ]
 }
+
+// In this configuration, @babel/preset-env is configured with the
+// target browsers and polyfill settings, and @babel/preset-react is
+// used to handle React-specific features like JSX. This setup should
+// work correctly for a React application while ensuring compatibility
+// with the specified browsers.
