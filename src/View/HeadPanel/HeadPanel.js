@@ -58,7 +58,7 @@ function DateButton() {
             <Button sx={{position: 'absolute', right: 30, top: 5, color: 'white'}}>
                 LOGOUT
             </Button>
-            <Button variant='contained' sx={{position: 'absolute', right: 115, top: 5, background: '#1793d1', background: 'darkorange'}}>
+            <Button variant='contained' sx={{position: 'absolute', right: 115, top: 5, background: 'darkorange'}}>
                 + book meeting
             </Button>
         </>
