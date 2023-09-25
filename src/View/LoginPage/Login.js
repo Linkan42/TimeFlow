@@ -133,7 +133,7 @@ export default function SignIn() {
   const [userpw, setUserpw]     = React.useState('');
 
   const handleSignIn = () => {
-    if (userName == 'admin' && userpw == 'admin')
+    if (userName === 'admin' && userpw === 'admin')
         return window.location.href = '/home';
   }
 
