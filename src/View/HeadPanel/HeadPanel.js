@@ -1,5 +1,6 @@
 import { Button, Box} from "@mui/material";
 import React, { Component, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 
 
@@ -40,6 +41,11 @@ function DateButton() {
         weekDay = currentDate.format('dddd');
     }
 
+    const navigate = useNavigate();
+    const handleButtonNewMeeting = () => {
+        navigate("/meetingScheduler");
+    }
+
   return (
          <>
 
@@ -58,7 +64,8 @@ function DateButton() {
             <Button sx={{position: 'absolute', right: 30, top: 5, color: 'white'}}>
                 LOGOUT
             </Button>
-            <Button variant='contained' sx={{position: 'absolute', right: 115, top: 5, background: 'darkorange'}}>
+            <Button variant='contained' onClick={handleButtonNewMeeting}
+                    sx={{position: 'absolute', right: 115, top: 10, background: 'darkorange'}}>
                 + book meeting
             </Button>
         </>
