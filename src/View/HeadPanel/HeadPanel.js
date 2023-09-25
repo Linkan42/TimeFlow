@@ -1,4 +1,4 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Grid } from "@mui/material";
 import React, { Component, useState } from "react";
 import dayjs from 'dayjs';
 
@@ -42,18 +42,30 @@ function DateButton() {
 
   return (
          <>
-            <Button sx={{width: '125px', boxShadow: 5, color: 'white', background: '#1793d1'}} variant="filledTonal">
+         <Grid>
+            <Grid>
+            <Button sx={{width: '125px', boxShadow: 5, color: 'white', background: '#1793d1', top: 10}} variant="filledTonal" >
             {weekDay}
             </Button>
-            <Button  className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft}>
+            <Button  className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft} sx={{top: 10}}>
                 ←
             </Button>
-            <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight}>
+            <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight} sx={{top: 10}}>
                 →
             </Button>
-            <Button className="dateButton" variant="primary" onClick={handleButtonClick}> 
+            <Button className="dateButton" variant="primary" onClick={handleButtonClick} sx={{top: 10}}> 
             {buttonText}
             </Button>
+            </Grid>
+            <Grid>
+            <Button sx={{position: 'absolute', right: 30, top: 10}}>
+                LOGOUT
+            </Button>
+            <Button variant='contained' sx={{position: 'absolute', right: 115, top: 10, background: '#1793d1'}}>
+                + book meeting
+            </Button>
+            </Grid>
+        </Grid>
         </>
     );
 }
