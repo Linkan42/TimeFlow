@@ -31,24 +31,23 @@ export class TimeStack extends Component {
             <Container className="BackGround">
                 <img src={require('./00035-1031831487.png')} alt="logo" class="centered-image"/>
                 <Stack>
-                <Grid className="block" container item xs={8}>
-                    <Grid item xs={4}>
-                        <MeetingCoworkerList className="CoworkerList"/>
+                    <Grid className="block" container item xs={8}>
+                        <Grid item xs={4}>
+                            <MeetingCoworkerList className="CoworkerList"/>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Grid>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker className="date"/>
+                                </LocalizationProvider>
+                                <TimeSelect className="std"/>  
+                                <MeetingStack className="std"/>
+                            </Grid>                     
+                        </Grid>      
                     </Grid>
-                    <Grid item xs={4}>
-                        <Grid>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker className="date"/>
-                            </LocalizationProvider>
-                            <TimeSelect className="std"/>  
-                            <MeetingStack className="std"/>
-                        </Grid>                     
-                    </Grid>      
-                    </Grid>
-                </Grid>
-                <HomeButton/>
+                    <HomeButton/>
                 </Stack>
-                </Container>
+            </Container>
         )
     }
 }
