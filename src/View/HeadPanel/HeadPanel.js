@@ -1,5 +1,6 @@
 import { Button, Box} from "@mui/material";
 import React, { Component, useState } from "react";
+import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 
@@ -81,8 +82,10 @@ export class HeadPanel extends Component {
             width: 'fill',
             height: 50,
             background: 'steelblue'
-        }}>
-            <DateButton></DateButton>
+                }}>
+                    <Link to="/login">
+                        <DateButton></DateButton>
+                    </Link>
         </Box>
         </>
         )
