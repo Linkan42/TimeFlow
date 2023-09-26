@@ -1,0 +1,17 @@
+.grid{
+    padding: 1%!important;
+}
+.coWorkerList{
+color: black !important;
+box-shadow: 1;
+border-radius: 2!important;
+max-height: 60vh!important;
+overflow: auto!important;
+background-color: #1793d1 !important;
+max-height: 60vh!important;
+}
+
+.coWorkerInfo{
+    padding: 1vw!important;
+    border-radius: 2!important;
+}

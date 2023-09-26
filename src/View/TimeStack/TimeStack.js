@@ -1,7 +1,7 @@
 
 import { Grid, Container} from "@mui/material";
 import React,{Component} from "react";
-import {CoworkerList} from '../CoworkerList/CoworkerList';
+import {MeetingCoworkerList} from './MeetingCoworkerList/MeetingCoworkerList';
 import {TimeSelect} from './TimeSelect/TimeSelect';
 import {MeetingStack} from './MeetingStack/MeetingStack'
 import './TimeStack.css'
@@ -17,7 +17,7 @@ export class TimeStack extends Component {
                 <img src={require('./00035-1031831487.png')} alt="logo" class="centered-image"/>
                 <Grid className="block" container item xs={8}>
                             <Grid item xs={4}>
-                                <CoworkerList className="CoworkerList"/>
+                                <MeetingCoworkerList className="CoworkerList"/>
                             </Grid>
                             <Grid item xs={4}>
                           
