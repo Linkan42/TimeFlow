@@ -1,8 +1,6 @@
 .Panel{
-    /*width: 60vw;*/
-    height: inherit;
+    padding: 1%!important;
 }
-
 .ListItemButton{
     width: auto;
     height: inherit;
@@ -21,6 +19,7 @@
 }
 
 .StackPanel{
-    max-height: 60vh;
+    height: auto !important;
     overflow-y: auto;
+    max-height: 60vh!important;
 }

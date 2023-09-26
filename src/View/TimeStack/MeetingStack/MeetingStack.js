@@ -10,8 +10,7 @@ export class MeetingStack extends Component {
                     <ListItemButton>
                         <Grid background xs={12}>
                             <Grid xs={3}> From: {meeting.from} to {meeting.to}</Grid>
-                            <Grid xs={6}>At {meeting.location}</Grid>
-                            <Grid xs={3}>{meeting.msg}</Grid>
+                            <Grid xs={8}>At {meeting.location}: {meeting.msg}</Grid>
                         </Grid>
                     </ListItemButton>
                 ))} 
