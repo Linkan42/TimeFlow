@@ -1,8 +1,10 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();
 
+const uri = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retryWrites=true&w=majority";
 const my_path = '../../build/';
 
 // Serve static files from the build folder
@@ -17,3 +19,14 @@ app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
 
 // Start the server
 app.listen(3001, () => console.log('Example app is listening on port 3001.'));
+
+async function connect(){
+    try{
+        await mongoose.connect(uri);
+        console.log("Connected");
+    }
+    catch(error) {
+        console.error(error);
+    }
+}
+connect();
