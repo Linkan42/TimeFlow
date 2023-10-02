@@ -34,7 +34,7 @@ async function connect(){
 }
 connect();
 
-const user = new User({
+let user = new User({
     name: 'oskar',
     password: '12345',
     userId: 1
@@ -48,7 +48,17 @@ user.save()
     console.error('Error saving user:', err);
 });
 
-app.get('/', async (req, res) => {
-    const result = await user.find();
-    res.send({"users": result});
-});
+
+async function getUser(){
+    try{
+       const user1 = await User.findOne({ name: 'oskar' });
+       console.log(user1);
+    }
+    catch(error) {
+        console.error(error);
+    }
+}
+getUser();
+
+
+
