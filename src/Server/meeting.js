@@ -5,7 +5,10 @@ const meetingProposalSchema = new mongoose.Schema({
     location: String,               //example {'oskar': 2} and {'ivo' : 2} 
     startTime: String,
     endTime: String,
-    createrUserId: Number 
+    createrUserId: Number,
+    agenda: String,
+    vote: Number,
+    maxVote: Number
 });
 module.exports = mongoose.model("MeetingProp", meetingProposalSchema);
 
