@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const User = require('./user.js');
 const MeetingProp = require('./meeting.js');
-const MeetingPropID = require('./meetingID.js');
+//const MeetingPropID = require('./meetingID.js');
 const app = express();
 
 const my_path = '../../build/';
