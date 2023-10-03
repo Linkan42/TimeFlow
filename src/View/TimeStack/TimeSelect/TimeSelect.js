@@ -4,21 +4,21 @@ import './TimeSelect.css';
 import useUpdateTimeSelect from './useTimeSelect';
 
 function AddButton() {
-    const {UpdateTimeSelect, loading, error } = useUpdateTimeSelect();
-    if(loading === true && error === null) //crude fix i am sorry XD 
-    {
-        //do nothing, to fix linter
-    }
-    const handelButton = async () =>
-    { 
-        try{
-        await UpdateTimeSelect();
-        console.log("Meeting added");
+    const {UpdateTimeSelect, err} = useUpdateTimeSelect();
+        const handelButton = async () =>
+        { 
+            if(err !== true)
+            {
+                try{
+                    await UpdateTimeSelect();
+                    console.log("Meeting added");
+                }
+                catch(error) {
+                    console.error(error);
+                }
+            }
         }
-        catch(error) {
-            console.error(error);
-        }
-    }
+    
   return (
          <>
             <Button id="AddButton" className="inputButton" variant="contained" onClick={handelButton}>

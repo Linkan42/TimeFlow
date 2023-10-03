@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
 const useUpdateTimeSelect = () => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const UpdateTimeSelect = async () => {
-    setLoading(true);
     setError(null);
 
     try {
@@ -24,17 +22,13 @@ const useUpdateTimeSelect = () => {
       if (response.ok !== true) {
         throw new Error('Failed to add it the the database');
       }
-        //set loding false both in error and in main funk
-      setLoading(false);
     } 
     catch (error) {
       setError(error.message);
-      setLoading(false);
-      //set loding false both in error and in main funk
     }
   };
 
-  return { UpdateTimeSelect, loading, error };
+  return { UpdateTimeSelect, error };
 };
 
 export default useUpdateTimeSelect;
