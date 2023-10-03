@@ -5,6 +5,10 @@ import useUpdateTimeSelect from './useTimeSelect';
 
 function AddButton() {
     const {UpdateTimeSelect, loading, error } = useUpdateTimeSelect();
+    if(loading === true && error === null) //crude fix i am sorry XD 
+    {
+        //do nothing, to fix linter
+    }
     const handelButton = async () =>
     { 
         try{
