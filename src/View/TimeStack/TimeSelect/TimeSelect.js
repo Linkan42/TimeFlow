@@ -1,6 +1,32 @@
 import { Grid, TextField, Stack, Button} from "@mui/material";
 import {React, Component} from "react";
 import './TimeSelect.css';
+import useUpdateTimeSelect from './useTimeSelect';
+
+function AddButton() {
+    const {UpdateTimeSelect, err} = useUpdateTimeSelect();
+        const handelButton = async () =>
+        { 
+            if(err !== true)
+            {
+                try{
+                    await UpdateTimeSelect();
+                    console.log("Meeting added");
+                }
+                catch(error) {
+                    console.error(error);
+                }
+            }
+        }
+    
+  return (
+         <>
+            <Button id="AddButton" className="inputButton" variant="contained" onClick={handelButton}>
+                        Add to MeetingScheduler
+            </Button>
+        </>
+    );
+}
 export class TimeSelect extends Component {
     render(){    
         return(
@@ -13,9 +39,7 @@ export class TimeSelect extends Component {
                         </Grid>
                             <TextField className="input" label="Location"/>
                             <TextField className="input" label="Meeting name"/>
-                        <Button id="AddButton" className="inputButton" variant="contained">
-                        Add to MeetingScheduler
-                        </Button>
+                        <AddButton/>
                     </Stack>
                 </Grid>
             </Grid>

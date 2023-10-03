@@ -1,11 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const User = require('./user.js');
-
+const MeetingProp = require('./meeting.js');
+//const MeetingPropID = require('./meetingID.js');
 const app = express();
 
 const my_path = '../../build/';
+
+app.use(bodyParser.json());
 
 // Serve static files from the build folder
 app.use(express.static(path.join(__dirname, my_path)));
@@ -20,12 +24,35 @@ app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
 app.listen(3001, () => console.log('Example app is listening on port 3001.'));
 
 //database stuff 
+app.post('/api/meeting', async (req, res) => {
+    const {meetingProposalId, location, startTime, endTime, createrUserId} = req.body;
 
-const uri = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retryWrites=true&w=majority";
+    try{
+        let check = await MeetingProp.findOne({meetingProposalId: 1});
+       if(check == null)
+       {
+        const meetingProposal = new MeetingProp({meetingProposalId: meetingProposalId,
+                                                location: location, 
+                                                startTime:startTime, 
+                                                endTime:endTime,
+                                                createrUserId:createrUserId});
+        meetingProposal.save();
+        return res.status(200);
+       }
+       return res.status(400).json({ error: 'Id allredy in use'});
+    }
+    catch{
+        return res.status(400).json({ error: 'Faill to insert to database'});
+    }
+});
 
+//url to DB
+const url = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retryWrites=true&w=majority"; 
+
+//connect to db
 async function connect(){
     try{
-        await mongoose.connect(uri);
+        await mongoose.connect(url);
         console.log("Connected");
     }
     catch(error) {
@@ -34,21 +61,34 @@ async function connect(){
 }
 connect();
 
+//create new User
 let user = new User({
     name: 'oskar',
     password: '12345',
     userId: 1
 });
+//adds new user
+async function saveUser(user){
+    let check = await MeetingProp.findOne({meetingProposalId: 1});
+    if(check == null)
+    {
+        user.save()
+        .then(() => {
+            console.log('User saved successfully');
+        })
+        .catch((err) => {
+            console.error('Error saving user:', err);
+        });
+    }
+    else
+    {
+        console.log('Id allredy in use');
+    }
+}
+saveUser(user);
 
-user.save()
-.then(() => {
-    console.log('User saved successfully');
-})
-.catch((err) => {
-    console.error('Error saving user:', err);
-});
 
-
+//gets a recuested user from DB
 async function getUser(){
     try{
        const user1 = await User.findOne({ name: 'oskar' });
@@ -58,7 +98,10 @@ async function getUser(){
         console.error(error);
     }
 }
+
 getUser();
+
+
 
 
 
