@@ -21,7 +21,7 @@ const useUpdateTimeSelect = () => {
         createrUserId: 1}), 
       });
 
-      if (response.ok != true) {
+      if (response.ok !== true) {
         throw new Error('Failed to add it the the database');
       }
         //set loding false both in error and in main funk
