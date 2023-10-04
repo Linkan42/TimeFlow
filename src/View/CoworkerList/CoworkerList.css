@@ -5,10 +5,10 @@
 color: black !important;
 box-shadow: 1;
 border-radius: 2!important;
-max-height: 60vh!important;
 overflow: auto!important;
 background-color: #1793d1 !important;
-max-height: 60vh!important;
+max-height: 100vh!important;
+min-height: 100vh;
 }
 
 .coWorkerInfo{
