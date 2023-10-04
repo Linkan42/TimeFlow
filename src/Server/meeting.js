@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
 const meetingProposalSchema = new mongoose.Schema({
-    meetingProposalId: Number,      //when a new meeting i propsed then we add this id and the name on the peple inited  
-    location: String,               //example {'oskar': 2} and {'ivo' : 2} 
+    meetingId: Number,      
+    location: String,              
     startTime: String,
     endTime: String,
     createrUserId: Number,
-    agenda: String,
-    vote: Number,
-    maxVote: Number
+    agenda: String
 });
 module.exports = mongoose.model("MeetingProp", meetingProposalSchema);
 
