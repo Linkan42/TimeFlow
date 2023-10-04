@@ -48,6 +48,16 @@ app.post('/api/meeting', async (req, res) => {
         return res.status(400).json({ error: 'Faill to insert to database'});
     }
 });
+app.get('/api/userList', async (res) => {
+    try{
+        const list = await User.find();
+        console.log(list);
+        return list;
+        }
+        catch{
+            return res.status(400).json({ error: 'Faill to insert to database'});
+        }
+    });
 
 //url to DB
 const url = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retryWrites=true&w=majority"; 
