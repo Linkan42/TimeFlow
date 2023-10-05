@@ -17,23 +17,20 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import './Login.css';
-
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import useValidateEmail from './useValidateEmail';
+import useValidateName from './useValidateName';
+import useCreateUser from './useCreateUser';
 
 function FormDialog() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen]                     = React.useState(false);
+    const [validEmail, setValidEmail]         = React.useState(true);
+    const [validUserName, setValidUserName]   = React.useState(true);
+    const [passwordsMatch, setPasswordsMatch] = React.useState(true);
+
+    const [email, setEmail]                   = React.useState('');
+    const [userName, setUserName]             = React.useState('');
+    const [password1, setPassword1]           = React.useState('');
+    const [password2, setPassword2]           = React.useState('');
   
     const handleClickOpen = () => {
       setOpen(true);
@@ -43,24 +40,43 @@ function FormDialog() {
       setOpen(false);
     };
 
-    const handleCreateAccount = () => {
-        
-    }
+    const HandleCreateAccount = async () => {
+        //if email exists in database, display error
+        const {ValidateEmail} = useValidateEmail();
+        const {ValidateName}  = useValidateName();
 
-    const [passwordsMatch, setPasswordsMatch] = React.useState(true);
-    const [password1, setPassword1] = React.useState('');
-    const [password2, setPassword2] = React.useState('');
+        const EmailExists = await ValidateEmail(email);
+        const NameExists  = await ValidateName(userName);
 
-    const handlePassword1Change = (e) => {
-        setPassword1(e.target.value);
-        setPasswordsMatch(e.target.value === password2);
-      };
+        console.log(EmailExists);
+        console.log(NameExists);
 
-    const handlePassword2Change = (e) => {
-        setPassword2(e.target.value);
-        setPasswordsMatch(e.target.value === password1);
+        let userid = 0;
+
+        const {CreateUser} = useCreateUser(email, userName, password2, userid);
+
+        if(EmailExists)
+          setValidEmail(false);
+        else
+          setValidEmail(true);
+        if(NameExists)
+          setValidUserName(false);
+        else
+          setValidUserName(true);
+        if(!passwordsMatch){
+          //cant create account
+        }
+        if(!EmailExists && !NameExists && passwordsMatch){
+          //create account
+          await CreateUser(email, userName, password2);
+        }
     }
   
+    const handlePasswordsMatch = (e) => {
+      setPassword2(e.target.value);
+      setPasswordsMatch(e.target.value === password1);
+    }
+
     return (
       <div>
         <Button variant="outlined" onClick={handleClickOpen}>
@@ -74,6 +90,10 @@ function FormDialog() {
             </DialogContentText>
             <TextField
               autoFocus
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              error={!validEmail}
+              helperText={!validEmail ? 'Email already exists' : ''}
               margin="dense"
               id="emailtf"
               label="Email Address"
@@ -83,8 +103,21 @@ function FormDialog() {
             />
             <TextField
               autoFocus
+              onChange={(e) => setUserName(e.target.value)}
+              value={userName}
+              error={!validUserName}
+              helperText={!validUserName ? 'Name already exists' : ''}
+              margin="dense"
+              id="usernametf"
+              label="Account Name"
+              type="name"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
               value={password1}
-              onChange={handlePassword1Change}
+              onChange={(e) => setPassword1(e.target.value)}
               type="password"
               margin="dense"
               id="pwtf1"
@@ -95,12 +128,12 @@ function FormDialog() {
             <TextField
               autoFocus
               value={password2}
-              onChange={handlePassword2Change}
+              onChange={handlePasswordsMatch}
               error={!passwordsMatch}
               helperText={!passwordsMatch ? 'Passwords do not match!' : ''}
               margin="dense"
               id="pwtf2"
-              label="Re-type password"
+              label="Confirm password"
               type="password"
               fullWidth
               variant="standard"
@@ -108,7 +141,7 @@ function FormDialog() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleCreateAccount}>Create account</Button>
+            <Button onClick={HandleCreateAccount}>Create account</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -203,7 +236,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </Paper>
     </div>
