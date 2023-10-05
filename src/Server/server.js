@@ -18,9 +18,10 @@ app.use(express.static(path.join(__dirname, my_path)));
 app.post('/api/meeting/save', async (req, res) => {
     try{
         const {meetingId, location, startTime, endTime, agenda} = req.body;
-        let check = await MeetingProp.findOne({meetingProposalId: 1});
+        
+        let check = await MeetingProp.findOne({meetingId: 1});
 
-       if(check == null)
+       if(check === null)
        {
         const meetingProposal = new MeetingProp({meetingId: meetingId,
                                                 location:location, 
@@ -48,10 +49,7 @@ app.post('/api/userList', async (req, res) => {
         }
     });
 
-app.get('/api/meeting', async(req, res) => {
-
-    console.log('get this function was used');
-    
+app.get('/api/meeting', async(req, res) => {    
     try{
     const nextMeeting = await MeetingProp.find({}).sort('startTime').limit(1);
     if(nextMeeting)
@@ -74,7 +72,7 @@ app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
 });
 
 // Start the server
-app.listen(3002, () => console.log('Example app is listening on port 3001.'));
+app.listen(3001, () => console.log('Example app is listening on port 3001.'));
 
 app.post('/api/ValidateEmail', async (req, res) => {
     const Email = req.body.Email;
