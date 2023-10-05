@@ -1,13 +1,13 @@
-import { Grid, Stack, ListItemButton, ListItemText } from "@mui/material";
+import { Grid, Stack, ListItemButton, ListItemText, Container } from "@mui/material";
 import React,{Component} from "react";
-import '../color.css';
+
 import './WeekDisplay.css';
 
 export class WeekDisplay extends Component {
     render(){
         return(
-            <Grid className="Panel">
-                <Stack className="StackPanel" spacing={1}>
+            <Container className="Panel">
+                <Stack spacing={1}>
                     {Meetings.map(Meeting => (
                         <ListItemButton className="ListItemButton">
                             <Grid container
@@ -31,7 +31,7 @@ export class WeekDisplay extends Component {
                         </ListItemButton>
                     ))} 
                 </Stack>
-            </Grid>
+            </Container>
         )
     }
 }
@@ -71,6 +71,76 @@ const Meetings = [
         end: '09:00',
         msg: 'Advanced Failure Analysis',
         creator: 'Oskar',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
+    },
+    {
+        location: 'E1219',
+        start: '07:15',
+        end: '12:00',
+        msg: 'How to fish, a comprehensive guide!',
+        creator: 'Linus',
     },
     {
         location: 'E1219',

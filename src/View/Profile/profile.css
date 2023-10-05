@@ -1,0 +1,22 @@
+.container {
+    max-height: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    min-width: 100%;
+
+    overflow-y: visible;
+}
+
+.save_button {    
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 100%); /* Center horizontally and vertically */
+
+    /*
+    position: absolute;                 is often used to position the element relative to its nearest positioned ancestor,
+                                        usually the parent container.
+    top: 50% and left: 50%;             position the top-left corner of the element at the center of its parent container.
+    transform: translate(-50%, -50%);   then moves the element back up and to the left by 50% of its own height and width, 
+                                        effectively centering the entire element within the container
+    */
+}

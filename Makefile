@@ -1,4 +1,7 @@
 # CLI:	Run `make` inside the root directory to automatically
+#		compile and run the application.
+#
+#		Run `make install` inside the root directory to automatically
 #		install dependencies, compile and run the application.
 
 # If you're having trouble running the `make` command on Windows 10,
@@ -14,6 +17,10 @@
 # Please note that this possible solution is may only applicable if you have Git installed.
 
 default:
+	npm run build
+	node src/Server/server.js
+
+install:
 	npm install
 	npm run build
 	node src/Server/server.js

@@ -1,0 +1,15 @@
+.day {
+    background-color: darkorange !important;
+    color: white !important;
+    width: 20% !important;
+}
+
+.button {
+    color: white !important;
+}
+
+.newMeeting {
+    background-color: darkorange !important;
+    color: white !important;
+    width: 25% !important;
+}
