@@ -5,9 +5,6 @@ import {MeetingCoworkerList} from './MeetingCoworkerList/MeetingCoworkerList';
 import {TimeSelect} from './TimeSelect/TimeSelect';
 import {MeetingStack} from './MeetingStack/MeetingStack'
 import './TimeStack.css'
-import { DatePicker } from "@mui/x-date-pickers";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useNavigate } from "react-router-dom";
 
 function HomeButton() {
@@ -37,9 +34,6 @@ export class TimeStack extends Component {
                         </Grid>
                         <Grid item xs={4}>
                             <Grid>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker className="date"/>
-                                </LocalizationProvider>
                                 <TimeSelect className="std"/>  
                                 <MeetingStack className="std"/>
                             </Grid>                     

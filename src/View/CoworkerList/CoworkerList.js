@@ -12,8 +12,8 @@ export class CoworkerList extends Component {
                     {menuItems.map(item => (
                         <ListItemButton className="coWorkerInfo">
                         <Grid item xs={12}>
-                                <Grid xs={6}>{item.name}</Grid>
-                                <Grid xs={6}>{item.work}</Grid>
+                            <Grid xs={6}>{item.name}</Grid>
+                            <Grid xs={6}>{item.work}</Grid>
                         </Grid>
                         </ListItemButton>
                     ))} 

@@ -25,17 +25,20 @@ app.listen(3001, () => console.log('Example app is listening on port 3001.'));
 
 //database stuff 
 app.post('/api/meeting', async (req, res) => {
-    const {meetingProposalId, location, startTime, endTime, createrUserId} = req.body;
+    const {meetingId, location, startTime, endTime, agenda} = req.body;
 
     try{
-        let check = await MeetingProp.findOne({meetingProposalId: 1});
+        let check = await MeetingProp.findOne({meetingId: 1});
        if(check == null)
        {
-        const meetingProposal = new MeetingProp({meetingProposalId: meetingProposalId,
-                                                location: location, 
+        console.log('server');
+        const meetingProposal = new MeetingProp({meetingId: meetingId,
+                                                location:location, 
                                                 startTime:startTime, 
                                                 endTime:endTime,
-                                                createrUserId:createrUserId});
+                                                createrUserId:1,
+                                                agenda:agenda});
+        console.log(meetingProposal);
         meetingProposal.save();
         return res.status(200);
        }
