@@ -1,5 +1,5 @@
 import { Container, createTheme, ThemeProvider } from "@mui/material";
-import React from "react";
+import React, {useState, useEffect} from 'react';
 
 const theme = createTheme({
     palette: {
@@ -12,6 +12,25 @@ const theme = createTheme({
     }
 }});
 export function NextMeeting(props) {
+    const [nextMeetingData, setNextMeetingData] = useState({
+        location: '',
+        startTime: ''
+      });
+      useEffect(() => {
+        fetch('/api/meeting', { method: "GET" })
+          .then(response => response.json())
+          .then(data => {
+            // Update the state with the received data
+            setNextMeetingData({
+              location: data.location,
+              startTime: data.startTime
+            });
+            console.log(data);
+          })
+          .catch(error => {
+            console.error('Error fetching next meeting:', error);
+          });
+      }, []);
     return (
         <ThemeProvider theme={theme}>
             <Container sx={{
@@ -25,8 +44,14 @@ export function NextMeeting(props) {
                     overflow: 'auto' 
             }}>
                 <h1> Next Meeting </h1>
-                <h3> Time: 11:00 </h3>
-                <h3> Place: JTH Towers </h3>
+                {nextMeetingData ? (
+                <>
+                <h3> Time: {nextMeetingData.startTime} </h3>
+                <h3> Place: {nextMeetingData.location} </h3>
+                </>
+                ) : (
+                    <p>loading..</p>
+                )}
             </Container>
         </ThemeProvider>
     );

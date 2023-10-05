@@ -14,21 +14,13 @@ app.use(bodyParser.json());
 // Serve static files from the build folder
 app.use(express.static(path.join(__dirname, my_path)));
 
-// Handle requests to the root URL
-app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
-    // Send the index.html file from the build folder as the response
-    res.sendFile(path.join(__dirname, my_path, 'index.html'));
-});
-
-// Start the server
-app.listen(3001, () => console.log('Example app is listening on port 3001.'));
-
 //database stuff 
 app.post('/api/meeting', async (req, res) => {
-    const {meetingId, location, startTime, endTime, agenda} = req.body;
-
+    console.log('Post this function was used');
     try{
-        let check = await MeetingProp.findOne({meetingId: 1});
+        const {meetingId, location, startTime, endTime, agenda} = req.body;
+        let check = await MeetingProp.findOne({meetingProposalId: 1});
+
        if(check == null)
        {
         console.log('server');
@@ -48,6 +40,34 @@ app.post('/api/meeting', async (req, res) => {
         return res.status(400).json({ error: 'Faill to insert to database'});
     }
 });
+
+app.get('/api/meeting', async(req, res) => {
+
+    console.log('get this function was used');
+    
+    try{
+    const nextMeeting = await MeetingProp.find({}).sort('startTime').limit(1);
+    if(nextMeeting)
+    {
+        res.json(nextMeeting);
+    } else {
+        res.status(404).json({ message: 'No upcoming meetings found' });
+    }
+} catch {
+    res.status(500).json({ message: 'Error retrieving next meeting' });
+}
+});
+
+
+
+// Handle requests to the root URL
+app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
+    // Send the index.html file from the build folder as the response
+    res.sendFile(path.join(__dirname, my_path, 'index.html'));
+});
+
+// Start the server
+app.listen(3001, () => console.log('Example app is listening on port 3001.'));
 
 app.post('/api/ValidateEmail', async (req, res) => {
     const Email = req.body.Email;
@@ -113,6 +133,7 @@ async function connect(){
 }
 connect();
 
+
 //create new User
 let user = new User({
     Email: 'oskar@gmail.com',
@@ -120,6 +141,8 @@ let user = new User({
     Password: '12345',
     UserId: 1
 });
+
+
 //adds new user
 async function saveUser(user){
     let check = await User.findOne({UserId: 1});
