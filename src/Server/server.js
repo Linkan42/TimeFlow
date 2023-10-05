@@ -60,6 +60,7 @@ app.get('/api/meeting', async(req, res) => {
 });
 
 
+
 // Handle requests to the root URL
 app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
     // Send the index.html file from the build folder as the response
