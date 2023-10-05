@@ -14,20 +14,11 @@ app.use(bodyParser.json());
 // Serve static files from the build folder
 app.use(express.static(path.join(__dirname, my_path)));
 
-// Handle requests to the root URL
-app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
-    // Send the index.html file from the build folder as the response
-    res.sendFile(path.join(__dirname, my_path, 'index.html'));
-});
-
-// Start the server
-app.listen(3001, () => console.log('Example app is listening on port 3001.'));
-
 //database stuff 
 app.post('/api/meeting', async (req, res) => {
-    const {meetingProposalId, location, startTime, endTime, agenda, maxVote} = req.body;
-
+    console.log('Post this function was used');
     try{
+        const {meetingProposalId, location, startTime, endTime, agenda, maxVote} = req.body;
         let check = await MeetingProp.findOne({meetingProposalId: 1});
        if(check == null)
        {
@@ -51,6 +42,33 @@ app.post('/api/meeting', async (req, res) => {
     }
 });
 
+app.get('/api/meeting', async(req, res) => {
+
+    console.log('get this function was used');
+    
+    try{
+    const nextMeeting = await MeetingProp.find({}).sort('startTime').limit(1);
+    if(nextMeeting)
+    {
+        res.json(nextMeeting);
+    } else {
+        res.status(404).json({ message: 'No upcoming meetings found' });
+    }
+} catch {
+    res.status(500).json({ message: 'Error retrieving next meeting' });
+}
+});
+
+
+// Handle requests to the root URL
+app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
+    // Send the index.html file from the build folder as the response
+    res.sendFile(path.join(__dirname, my_path, 'index.html'));
+});
+
+// Start the server
+app.listen(3001, () => console.log('Example app is listening on port 3001.'));
+
 //url to DB
 const url = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retryWrites=true&w=majority"; 
 
@@ -66,12 +84,15 @@ async function connect(){
 }
 connect();
 
+
 //create new User
 let user = new User({
     name: 'oskar',
     password: '12345',
     userId: 1
 });
+
+
 //adds new user
 async function saveUser(user){
     let check = await MeetingProp.findOne({meetingProposalId: 1});
