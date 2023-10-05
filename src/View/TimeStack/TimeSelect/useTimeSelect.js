@@ -5,21 +5,17 @@ const useUpdateTimeSelect = () => {
   
   const UpdateTimeSelect = async (inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo) => {
     setError(null);
-    console.log('use');
-    console.log(inputValueLocation);
-    console.log('hello');
     try {
       const response = await fetch('/api/meeting', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ meetingProposalId: 1,
+        body: JSON.stringify({ meetingId: 1,
           location: inputValueLocation,
           startTime: inputValueFrom,
           endTime: inputValueTo,
           agenda: inputValueAgenda,
-          maxVote: 5
           }), 
       });
       if (response.ok !== true) {

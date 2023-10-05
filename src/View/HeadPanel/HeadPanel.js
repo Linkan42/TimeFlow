@@ -1,27 +1,15 @@
-import { Button, Box} from "@mui/material";
+import { Button, Box, Grid, Stack} from "@mui/material";
 import React, { Component, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 
+import "../HeadPanel/HeadPanel.css"
 
 let currentDate = dayjs();
 let weekDay     = dayjs().format('dddd');
 
 function DateButton() {
-    const [buttonText, setButtonText] = useState(`${dayjs().format("dddd, DD MMMM YYYY")}`);
- 
-    if (weekDay === dayjs().format('dddd') && currentDate.format("D") === dayjs().format("D"))
-        weekDay = "Today";
-
-    const handleButtonClick = () => {
-        currentDate = dayjs();
-        if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
-            setButtonText(currentDate.format("YYYY-MM-DD"));
-        else
-            setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
-        weekDay = currentDate.format('dddd');
-
-    };
+    const [buttonText, setButtonText] = useState(`${dayjs().format("YYYY-MM-DD")}`);
 
     const handleButtonClickLeft = () => { 
         currentDate = currentDate.add(-1, 'day');
@@ -52,27 +40,34 @@ function DateButton() {
 
   return (
          <>
-
-            <Button sx={{width: '125px', boxShadow: 5, color: 'white', background: 'darkorange', top: 5}} variant="filledTonal" >
-                {weekDay}
-            </Button>
-            <Button  className="ButtonL" variant="filledTonal" onClick={handleButtonClickLeft} sx={{top: 5, color: 'white'}}>
-                ←
-            </Button>
-            <Button className="ButtonR" variant="filledTonal" onClick={handleButtonClickRight} sx={{top: 5,color: 'white'}}>
-                →
-            </Button>
-            <Button className="dateButton" variant="primary" onClick={handleButtonClick} sx={{top: 5, color: 'white'}}> 
-                {buttonText}
-            </Button>
-            <Button onClick={handleButtonLogout}
-                    sx={{position: 'absolute', right: 30, top: 5, color: 'white'}}>
-                LOGOUT
-            </Button>
-            <Button variant='contained' onClick={handleButtonNewMeeting}
-                    sx={{position: 'absolute', right: 115, top: 5, background: 'darkorange'}}>
-                + book meeting
-            </Button>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Stack direction="row">
+                        <Button className="day" variant="filledTonal">
+                            {weekDay}
+                        </Button>
+                        <Button className="button" variant="filledTonal" onClick={handleButtonClickLeft}>
+                            ←
+                        </Button>
+                        <Button className="button" variant="filledTonal" onClick={handleButtonClickRight}>
+                            →
+                        </Button>
+                        <Button className="button" variant="filledTonal"> 
+                            {buttonText}
+                        </Button>
+                    </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                    <Stack direction="row-reverse">
+                        <Button className="button" onClick={handleButtonLogout}>
+                            LOGOUT
+                        </Button>
+                        <Button className="newMeeting" variant='contained' onClick={handleButtonNewMeeting}>
+                            + book meeting
+                        </Button>
+                    </Stack>
+                </Grid>
+            </Grid>
         </>
     );
 }
@@ -84,8 +79,9 @@ export class HeadPanel extends Component {
             <Box sx={{
                 display: 'flow',
                 width: 'fill',
-                height: 50,
-                background: 'steelblue'
+                background: 'steelblue',
+                maxHeight: '100%',
+                minHeight: '100%'
                     }}>
                 <DateButton/>
             </Box>
