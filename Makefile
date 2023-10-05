@@ -17,10 +17,12 @@
 # Please note that this possible solution is may only applicable if you have Git installed.
 
 default:
+	npm run lint-browser
 	npm run build
 	node src/Server/server.js
 
 install:
+	npm run lint-browser
 	npm install
 	npm run build
 	node src/Server/server.js
