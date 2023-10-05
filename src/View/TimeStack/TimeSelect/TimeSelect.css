@@ -19,6 +19,7 @@
     border-radius: 2;
     padding: 2;
     height: 32vh!important;
+    width: 20vh!;
     overflow: auto!important;
 }
 .coWorkerList{

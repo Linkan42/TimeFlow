@@ -1,8 +1,7 @@
 import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox} from "@mui/material";
-import {React, Component, useState, useE} from "react";
+import {React, Component, useState} from "react";
 import './TimeSelect.css';
 import useUpdateTimeSelect from './useTimeSelect';
-import useGetUserList from './useGetUserList';
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,8 +11,11 @@ function AddMeeting() {
     const [inputValueTo, setInputValueTo] = useState('');
     const [inputValueLocation, setInputValueLocation] = useState('');
     const [inputValueAgenda, setInputValueAgenda] = useState('');
+
+    let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
+
     const {UpdateTimeSelect, err} = useUpdateTimeSelect();
-    const {GetUserList} = useGetUserList();
+
         const handelButton = async () =>
         { 
             if(err !== true)
@@ -25,23 +27,23 @@ function AddMeeting() {
                     console.error(error);
                 }
             }
-            
+            getUserList();            
         };
         const getUserList = async () =>
         {
-            try{
-                menuItems = await GetUserList();
-            }
-            catch(error) {
-                console.error(error);
-            }
+            fetch('/api/userList',{ method: 'POST'})
+            .then((response) => response.json())
+            .then((data) => {
+                setMenuItems(data);
+                console.log(menuItems);
+            })
         }
-        getUserList();
   return (
          <>
             <Stack direction={"row"}>
              <List className="coWorkerList">
-                {menuItems.map(item => (
+
+             {menuItems.map((item) => (
                     <ListItemButton className="coWorkerInfo">
                       <Grid container xs={12}>
                             <Grid xs={8}>{item.Name}</Grid>
@@ -53,10 +55,10 @@ function AddMeeting() {
                                                 },
                                                 }}></Checkbox>
                             </Grid>
-                            <Grid xs={6}>{item.work}</Grid>
                       </Grid>
                     </ListItemButton>
-                ))} 
+                    ))}
+                    
              </List>
             <Grid>
                 <Stack>
@@ -81,14 +83,12 @@ export class TimeSelect extends Component {
         return(
             <Grid>
                 <Grid>
-                    <AddMeeting/>
+                  <AddMeeting/>
                 </Grid>
             </Grid>
         )
     }
 }
-let menuItems = [];
-
 
 
 export default TimeSelect;
