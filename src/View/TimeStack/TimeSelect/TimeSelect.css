@@ -6,9 +6,23 @@
 .inputButton{
     padding: 2px; 
     width: 20vw!important;
+    height: 5vh!important;
 }
 .InPutField{
     height: auto;
     background-color: white!important;
 }
 
+.coWorkerList{
+    background: paper;
+    box-shadow: 1;
+    border-radius: 2;
+    padding: 2;
+    height: 32vh!important;
+    width: 20vh!;
+    overflow: auto!important;
+}
+.coWorkerList{
+    color:white;
+    background-color: steelblue;
+}

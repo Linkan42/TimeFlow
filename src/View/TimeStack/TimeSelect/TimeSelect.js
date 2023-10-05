@@ -1,4 +1,4 @@
-import { Grid, TextField, Stack, Button} from "@mui/material";
+import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox} from "@mui/material";
 import {React, Component, useState} from "react";
 import './TimeSelect.css';
 import useUpdateTimeSelect from './useTimeSelect';
@@ -11,14 +11,15 @@ function AddMeeting() {
     const [inputValueTo, setInputValueTo] = useState('');
     const [inputValueLocation, setInputValueLocation] = useState('');
     const [inputValueAgenda, setInputValueAgenda] = useState('');
+
+    let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
+
     const {UpdateTimeSelect, err} = useUpdateTimeSelect();
+
         const handelButton = async () =>
         { 
             if(err !== true)
             {
-                console.log('button pressed');
-                console.log(inputValueFrom);
-                console.log('hello');
                 try{
                     await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo);
                 }
@@ -26,24 +27,54 @@ function AddMeeting() {
                     console.error(error);
                 }
             }
-            
+            getUserList();            
         };
+        const getUserList = async () =>
+        {
+            fetch('/api/userList',{ method: 'POST'})
+            .then((response) => response.json())
+            .then((data) => {
+                setMenuItems(data);
+                console.log(menuItems);
+            })
+        }
   return (
          <>
-             <Stack>
+            <Stack direction={"row"}>
+             <List className="coWorkerList">
+
+             {menuItems.map((item) => (
+                    <ListItemButton className="coWorkerInfo">
+                      <Grid container xs={12}>
+                            <Grid xs={8}>{item.Name}</Grid>
+                            <Grid xs={4}>
+                                <Checkbox sx={{
+                                                color: "Black",
+                                                '&.Mui-checked': {
+                                                color: "darkorange",
+                                                },
+                                                }}></Checkbox>
+                            </Grid>
+                      </Grid>
+                    </ListItemButton>
+                    ))}
+                    
+             </List>
+            <Grid>
+                <Stack>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker className="date"/>
                 </LocalizationProvider>
-                <Grid>
                     <TextField className="input" label="From:" value={inputValueFrom} onChange={(e) => setInputValueFrom(e.target.value)}/>
                     <TextField className="input" label="To:"   value={inputValueTo} onChange={(e) => setInputValueTo(e.target.value)}/>
-                </Grid>
                     <TextField className="input" label="Location" value={inputValueLocation} onChange={(e) => setInputValueLocation(e.target.value)}/>
                     <TextField className="input" label="Meeting name" value={inputValueAgenda} onChange={(e) => setInputValueAgenda(e.target.value)}/>
                 <Button id="AddButton" className="inputButton" variant="contained" onClick={handelButton}>
                         Add to MeetingScheduler
                 </Button>
-            </Stack>
+                </Stack>
+            </Grid>
+        </Stack>
         </>
     );
 }
@@ -52,7 +83,7 @@ export class TimeSelect extends Component {
         return(
             <Grid>
                 <Grid>
-                    <AddMeeting/>
+                  <AddMeeting/>
                 </Grid>
             </Grid>
         )

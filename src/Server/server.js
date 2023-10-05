@@ -23,7 +23,6 @@ app.post('/api/meeting', async (req, res) => {
 
        if(check == null)
        {
-        console.log('server');
         const meetingProposal = new MeetingProp({meetingId: meetingId,
                                                 location:location, 
                                                 startTime:startTime, 
@@ -40,6 +39,16 @@ app.post('/api/meeting', async (req, res) => {
         return res.status(400).json({ error: 'Faill to insert to database'});
     }
 });
+app.post('/api/userList', async (req, res) => {
+    try{
+        const list = await User.find().select("Name");
+            console.log(list + 'Server');
+            res.json(list);
+        }
+        catch{
+            return res.status(400).json({ error: 'userlist'});
+        }
+    });
 
 app.get('/api/meeting', async(req, res) => {
 
@@ -161,7 +170,6 @@ async function saveUser(user){
         console.log('Id allredy in use');
     }
 }
-saveUser(user);
 
 
 //gets a recuested user from DB
@@ -175,7 +183,6 @@ async function getUser(){
     }
 }
 
-getUser();
 
 
 

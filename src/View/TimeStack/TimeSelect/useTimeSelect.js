@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const useUpdateTimeSelect = () => {
   const [error, setError] = useState(null);
-  
+
   const UpdateTimeSelect = async (inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo) => {
     setError(null);
     try {

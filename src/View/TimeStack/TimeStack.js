@@ -1,9 +1,7 @@
 
 import { Grid, Container, Stack, Button} from "@mui/material";
 import React,{Component} from "react";
-import {MeetingCoworkerList} from './MeetingCoworkerList/MeetingCoworkerList';
 import {TimeSelect} from './TimeSelect/TimeSelect';
-import {MeetingStack} from './MeetingStack/MeetingStack'
 import './TimeStack.css'
 import { useNavigate } from "react-router-dom";
 
@@ -28,17 +26,9 @@ export class TimeStack extends Component {
             <Container className="BackGround">
                 <img src={require('./00035-1031831487.png')} alt="logo" class="centered-image"/>
                 <Stack>
-                    <Grid className="block" container item xs={8}>
-                        <Grid item xs={4}>
-                            <MeetingCoworkerList className="CoworkerList"/>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Grid>
-                                <TimeSelect className="std"/>  
-                                <MeetingStack className="std"/>
-                            </Grid>                     
-                        </Grid>      
-                    </Grid>
+                    <Grid className="block" container item xs={8}> 
+                        <TimeSelect className="std"/> 
+                    </Grid>      
                     <HomeButton/>
                 </Stack>
             </Container>
