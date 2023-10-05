@@ -11,21 +11,21 @@ let weekDay     = dayjs().format('dddd');
 function DateButton() {
     const [buttonText, setButtonText] = useState(`${dayjs().format("YYYY-MM-DD")}`);
 
+    const handleButtonCurrentDate = () => {
+        currentDate = dayjs();
+        setButtonText(currentDate.format("YYYY-MM-DD"));
+        weekDay = currentDate.format('dddd');
+    }
+
     const handleButtonClickLeft = () => { 
         currentDate = currentDate.add(-1, 'day');
-        if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
-            setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
-        else
-            setButtonText(currentDate.format("YYYY-MM-DD"));
+        setButtonText(currentDate.format("YYYY-MM-DD"));
         weekDay = currentDate.format('dddd');
     }
 
     const handleButtonClickRight = () => {
         currentDate = currentDate.add(1, 'day');
-        if (buttonText === dayjs().format("dddd, DD MMMM YYYY"))
-            setButtonText(currentDate.format("dddd, DD MMMM YYYY"));
-        else
-            setButtonText(currentDate.format("YYYY-MM-DD"));
+        setButtonText(currentDate.format("YYYY-MM-DD"));
         weekDay = currentDate.format('dddd');
     }
 
@@ -52,7 +52,7 @@ function DateButton() {
                         <Button className="button" variant="filledTonal" onClick={handleButtonClickRight}>
                             →
                         </Button>
-                        <Button className="button" variant="filledTonal"> 
+                        <Button className="button" variant="filledTonal" onClick={handleButtonCurrentDate}> 
                             {buttonText}
                         </Button>
                     </Stack>
