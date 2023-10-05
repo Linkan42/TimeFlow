@@ -15,13 +15,13 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, my_path)));
 
 //database stuff 
-app.post('/api/meeting', async (req, res) => {
-    console.log('Post this function was used');
+app.post('/api/meeting/save', async (req, res) => {
     try{
         const {meetingId, location, startTime, endTime, agenda} = req.body;
-        let check = await MeetingProp.findOne({meetingProposalId: 1});
+        
+        let check = await MeetingProp.findOne({meetingId: 1});
 
-       if(check == null)
+       if(check === null)
        {
         const meetingProposal = new MeetingProp({meetingId: meetingId,
                                                 location:location, 
@@ -42,18 +42,14 @@ app.post('/api/meeting', async (req, res) => {
 app.post('/api/userList', async (req, res) => {
     try{
         const list = await User.find().select("Name");
-            console.log(list + 'Server');
-            res.json(list);
+        res.json(list);
         }
         catch{
             return res.status(400).json({ error: 'userlist'});
         }
     });
 
-app.get('/api/meeting', async(req, res) => {
-
-    console.log('get this function was used');
-    
+app.get('/api/meeting', async(req, res) => {    
     try{
     const nextMeeting = await MeetingProp.find({}).sort('startTime').limit(1);
     if(nextMeeting)

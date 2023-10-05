@@ -1,12 +1,8 @@
-import { useState } from 'react';
 
 const useUpdateTimeSelect = () => {
-  const [error, setError] = useState(null);
 
   const UpdateTimeSelect = async (inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo) => {
-    setError(null);
-    try {
-      const response = await fetch('/api/meeting', {
+      const response = await fetch('/api/meeting/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,13 +17,9 @@ const useUpdateTimeSelect = () => {
       if (response.ok !== true) {
         throw new Error('Failed to add it the the database');
       }
-    } 
-    catch (error) {
-      setError(error.message);
-    }
   };
 
-  return { UpdateTimeSelect, error };
+  return { UpdateTimeSelect};
 };
 
 export default useUpdateTimeSelect;

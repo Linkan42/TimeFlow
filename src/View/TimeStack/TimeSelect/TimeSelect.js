@@ -13,24 +13,16 @@ function AddMeeting() {
     const [inputValueAgenda, setInputValueAgenda] = useState('');
 
     let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
-
-    const {UpdateTimeSelect, err} = useUpdateTimeSelect();
+    const {UpdateTimeSelect} = useUpdateTimeSelect();
 
         const handelButton = async () =>
         { 
-            if(err !== true)
-            {
-                try{
-                    await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo);
-                }
-                catch(error) {
-                    console.error(error);
-                }
-            }
-            getUserList();            
+            getUserList();  
+            await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo);    
         };
-        const getUserList = async () =>
+        const getUserList = () =>
         {
+            console.log("use was reached");
             fetch('/api/userList',{ method: 'POST'})
             .then((response) => response.json())
             .then((data) => {

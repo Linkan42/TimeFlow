@@ -29,7 +29,7 @@ export class TimeStack extends Component {
                     <Grid className="block" container item xs={8}> 
                         <TimeSelect className="std"/> 
                     </Grid>      
-                    <HomeButton/>
+2                    <HomeButton/>
                 </Stack>
             </Container>
         )
