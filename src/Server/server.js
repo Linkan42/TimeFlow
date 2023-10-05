@@ -15,8 +15,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, my_path)));
 
 //database stuff 
-app.post('/api/meeting', async (req, res) => {
-    console.log('Post this function was used');
+app.post('/api/meeting/save', async (req, res) => {
     try{
         const {meetingId, location, startTime, endTime, agenda} = req.body;
         let check = await MeetingProp.findOne({meetingProposalId: 1});
@@ -42,8 +41,7 @@ app.post('/api/meeting', async (req, res) => {
 app.post('/api/userList', async (req, res) => {
     try{
         const list = await User.find().select("Name");
-            console.log(list + 'Server');
-            res.json(list);
+        res.json(list);
         }
         catch{
             return res.status(400).json({ error: 'userlist'});
@@ -76,7 +74,7 @@ app.get(['/', '/home', '/login', '/meetingScheduler', '/*'], (req, res) => {
 });
 
 // Start the server
-app.listen(3001, () => console.log('Example app is listening on port 3001.'));
+app.listen(3002, () => console.log('Example app is listening on port 3001.'));
 
 app.post('/api/ValidateEmail', async (req, res) => {
     const Email = req.body.Email;
