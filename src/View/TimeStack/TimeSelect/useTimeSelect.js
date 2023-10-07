@@ -16,6 +16,7 @@ const useUpdateTimeSelect = () => {
       if (response.ok !== true) {
         throw new Error('Failed to add it the the database');
       }
+      return response;
   };
 
   return { UpdateTimeSelect};

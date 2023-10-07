@@ -11,15 +11,19 @@ function AddMeeting() {
     const [inputValueTo, setInputValueTo] = useState('');
     const [inputValueLocation, setInputValueLocation] = useState('');
     const [inputValueAgenda, setInputValueAgenda] = useState('');
-
+    const [currentMeetingId, setCurrentMeetingId] = useState('');
+    //const [participants, setParticipants] = useState([]);
+    let array = [];
     let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
     const {UpdateTimeSelect} = useUpdateTimeSelect();
 
         const handelButton = async () =>
         { 
-            
-            await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo);
-            getUserList();  
+            getUserList();//ska inte ligga här sen 
+
+            const res = await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo); 
+            setCurrentMeetingId(res.json());
+            console.log(currentMeetingId);
         };
         const getUserList = () =>
         {
@@ -31,6 +35,27 @@ function AddMeeting() {
                 console.log(menuItems);
             })
         }
+        const addParticipants = (id) =>
+        {
+            console.log(id);
+            console.log("addParticipants");
+            // if(participants.indexOf(id) == -1)
+            // {
+            //     setParticipants(participants.push(id));
+            // }
+            // else{
+            //     setParticipants(participants.filter(item => item !== id));
+            // }
+            // console.log(participants);
+            if(array.indexOf(id) == -1)
+            {
+                array.push(id);
+            }
+            else{
+                array = array.filter(item => item !== id);
+            }
+            console.log(array);
+        }
   return (
          <>
             <Stack direction={"row"}>
@@ -41,12 +66,12 @@ function AddMeeting() {
                       <Grid container xs={12}>
                             <Grid xs={8}>{item.Name}</Grid>
                             <Grid xs={4}>
-                                <Checkbox sx={{
+                                <Checkbox value={item.UserId} sx={{
                                                 color: "Black",
                                                 '&.Mui-checked': {
                                                 color: "darkorange",
                                                 },
-                                                }}></Checkbox>
+                                                }} onChange={(e) => addParticipants(e.target.value)}></Checkbox>
                             </Grid>
                       </Grid>
                     </ListItemButton>

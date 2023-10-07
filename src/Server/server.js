@@ -27,15 +27,17 @@ app.post('/api/meeting/save', async (req, res) => {
                                                 createrUserId:1,
                                                 agenda:agenda});
         meetingProposal.save();
-        return res.status(200).status(ok);
+        
+        return res.json(meetingId);
     }
     catch{
         return res.status(400).json({ error: 'Faill to insert to database'});
     }
 });
+
 app.post('/api/userList', async (req, res) => {
     try{
-        const list = await User.find().select("Name");
+        const list = await User.find().select("Name UserId");
         res.json(list);
         }
         catch{
@@ -112,7 +114,7 @@ app.post('/api/ValidateName', async (req, res) => {
 });
 
 app.post('/api/CreateUser', async (req, res) => {
-    const {Email, Name, Password, UserId} = req.body;
+    const {Email, Name, Password} = req.body;
 
     try{
         let id = await User.count() + 1;
@@ -144,45 +146,6 @@ async function connect(){
 connect();
 
 
-//create new User
-let user = new User({
-    Email: 'oskar@gmail.com',
-    Name: 'oskar',
-    Password: '12345',
-    UserId: 1
-});
-
-
-//adds new user
-async function saveUser(user){
-    let check = await User.findOne({UserId: 1});
-    if(check == null)
-    {
-        user.save()
-        .then(() => {
-            console.log('User saved successfully');
-        })
-        .catch((err) => {
-            console.error('Error saving user:', err);
-        });
-    }
-    else
-    {
-        console.log('Id allredy in use');
-    }
-}
-
-
-//gets a recuested user from DB
-async function getUser(){
-    try{
-       const user1 = await User.findOne({ Name: 'oskar' });
-       console.log(user1);
-    }
-    catch(error) {
-        console.error(error);
-    }
-}
 
 
 
