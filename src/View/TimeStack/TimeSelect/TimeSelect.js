@@ -17,8 +17,9 @@ function AddMeeting() {
 
         const handelButton = async () =>
         { 
+            
+            await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo);
             getUserList();  
-            await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo);    
         };
         const getUserList = () =>
         {

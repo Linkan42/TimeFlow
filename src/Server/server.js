@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 const User = require('./user.js');
 const MeetingProp = require('./meeting.js');
-//const MeetingPropID = require('./meetingID.js');
+const MeetingParticipan = require('./meetingParticipan.js');
+const { ok } = require('assert');
 const app = express();
 
 const my_path = '../../build/';
@@ -17,23 +18,16 @@ app.use(express.static(path.join(__dirname, my_path)));
 //database stuff 
 app.post('/api/meeting/save', async (req, res) => {
     try{
-        const {meetingId, location, startTime, endTime, agenda} = req.body;
-        
-        let check = await MeetingProp.findOne({meetingId: 1});
-
-       if(check === null)
-       {
+        const {location, startTime, endTime, agenda} = req.body;
+        let meetingId = ~~(Math.random() * 1000000);
         const meetingProposal = new MeetingProp({meetingId: meetingId,
                                                 location:location, 
                                                 startTime:startTime, 
                                                 endTime:endTime,
                                                 createrUserId:1,
                                                 agenda:agenda});
-        console.log(meetingProposal);
         meetingProposal.save();
-        return res.status(200);
-       }
-       return res.status(400).json({ error: 'Id allredy in use'});
+        return res.status(200).status(ok);
     }
     catch{
         return res.status(400).json({ error: 'Faill to insert to database'});
@@ -46,6 +40,17 @@ app.post('/api/userList', async (req, res) => {
         }
         catch{
             return res.status(400).json({ error: 'userlist'});
+        }
+    });
+
+app.post('/api/meetingList', async (req, res) => {
+    try{
+        const {UserId} = req.body;
+        const list = await MeetingParticipan.find({UserId: UserId});
+        res.json(list);
+        }
+        catch{
+            return res.status(400).json({ error: 'meetingList'});
         }
     });
 

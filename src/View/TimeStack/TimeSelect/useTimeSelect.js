@@ -7,8 +7,7 @@ const useUpdateTimeSelect = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ meetingId: 1,
-          location: inputValueLocation,
+        body: JSON.stringify({ location: inputValueLocation,
           startTime: inputValueFrom,
           endTime: inputValueTo,
           agenda: inputValueAgenda,
