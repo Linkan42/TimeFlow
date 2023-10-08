@@ -18,17 +18,18 @@ app.use(express.static(path.join(__dirname, my_path)));
 //database stuff 
 app.post("/api/meeting/save", async (req, res) => {
 	try{
-		const {location, startTime, endTime, agenda} = req.body;
+		const {location, startTime, endTime, agenda, date} = req.body;
 		let meetingId = ~~(Math.random() * 1000000);
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
 			endTime:endTime,
 			createrUserId:1,
-			agenda:agenda});
-		meetingProposal.save();
+			agenda:agenda,
+			date:date});
+		await meetingProposal.save();
         
-		return res.json(meetingId);
+		return res.json({meetingId:meetingId});
 	}
 	catch{
 		return res.status(400).json({ error: "Faill to insert to database"});
@@ -43,6 +44,16 @@ app.post("/api/userList", async (req, res) => {
 	catch{
 		return res.status(400).json({ error: "userlist"});
 	}
+});
+
+app.post("/api/addParticipantsToMeetings", async (req, res) => {
+	const {users, meetingId} = req.body;
+	const mId = parseInt(meetingId);
+	users.forEach(async userId =>	{
+		let uId = parseInt(userId);
+		let newMeetingParticipan = new MeetingParticipan({meetingId:mId, UserId:uId});
+		await newMeetingParticipan.save();
+	});
 });
 
 app.post("/api/meetingList", async (req, res) => {
