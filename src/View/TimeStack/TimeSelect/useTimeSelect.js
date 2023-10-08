@@ -7,8 +7,7 @@ const useUpdateTimeSelect = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ meetingId: 1,
-          location: inputValueLocation,
+        body: JSON.stringify({ location: inputValueLocation,
           startTime: inputValueFrom,
           endTime: inputValueTo,
           agenda: inputValueAgenda,
@@ -17,6 +16,7 @@ const useUpdateTimeSelect = () => {
       if (response.ok !== true) {
         throw new Error('Failed to add it the the database');
       }
+      return response;
   };
 
   return { UpdateTimeSelect};

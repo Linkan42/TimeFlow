@@ -51,9 +51,7 @@ function FormDialog() {
         console.log(EmailExists);
         console.log(NameExists);
 
-        let userid = 0;
-
-        const {CreateUser} = useCreateUser(email, userName, password2, userid);
+        const {CreateUser} = useCreateUser(email, userName, password2);
 
         if(EmailExists)
           setValidEmail(false);
