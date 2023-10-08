@@ -30,10 +30,8 @@ function AddMeeting() {
 				date: inputDate
 			})}).then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				const {meetingId} = data;
-				console.log(meetingId);
-				addParticipantsToMeetings(meetingId2);
+				addParticipantsToMeetings(meetingId);
 			});
 	};
 	const getUserList = () =>
