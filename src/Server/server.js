@@ -18,14 +18,15 @@ app.use(express.static(path.join(__dirname, my_path)));
 //database stuff 
 app.post("/api/meeting/save", async (req, res) => {
 	try{
-		const {location, startTime, endTime, agenda} = req.body;
+		const {location, startTime, endTime, agenda, date} = req.body;
 		let meetingId = ~~(Math.random() * 1000000);
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
 			endTime:endTime,
 			createrUserId:1,
-			agenda:agenda});
+			agenda:agenda,
+			date:date});
 		meetingProposal.save();
         
 		return res.json(meetingId);

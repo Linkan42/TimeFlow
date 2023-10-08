@@ -6,7 +6,8 @@ const meetingProposalSchema = new mongoose.Schema({
 	startTime: String,
 	endTime: String,
 	createrUserId: Number,
-	agenda: String
+	agenda: String,
+	date: Date
 });
 module.exports = mongoose.model("MeetingProp", meetingProposalSchema);
 

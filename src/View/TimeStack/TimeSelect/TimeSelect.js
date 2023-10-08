@@ -1,5 +1,5 @@
 import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox} from "@mui/material";
-import {React, Component, useState} from "react";
+import React, {Component, useState} from "react"; //linter magic
 import "./TimeSelect.css";
 import useUpdateTimeSelect from "./useTimeSelect";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -12,7 +12,7 @@ function AddMeeting() {
 	const [inputValueLocation, setInputValueLocation] = useState("");
 	const [inputValueAgenda, setInputValueAgenda] = useState("");
 	const [currentMeetingId, setCurrentMeetingId] = useState("");
-	//const [participants, setParticipants] = useState([]);
+	const [inputDate, setInputDate] = React.useState(null);
 	let array = [];
 	let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
 	const {UpdateTimeSelect} = useUpdateTimeSelect();
@@ -21,9 +21,10 @@ function AddMeeting() {
 	{ 
 		getUserList();//ska inte ligga här sen 
 
-		const res = await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo); 
+		const res = await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo, inputDate); 
 		setCurrentMeetingId(res.json());
 		console.log(currentMeetingId);
+		console.log(inputDate);
 	};
 	const getUserList = () =>
 	{
@@ -52,7 +53,7 @@ function AddMeeting() {
 				<List className="coWorkerList">
 
 					{menuItems.map((item) => (
-						<ListItemButton className="coWorkerInfo" key={item.name}>
+						<ListItemButton className="coWorkerInfo" key={item.Name}>
 							<Grid container xs={12}>
 								<Grid xs={8}>{item.Name}</Grid>
 								<Grid xs={4}>
@@ -71,7 +72,7 @@ function AddMeeting() {
 				<Grid>
 					<Stack>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<DatePicker className="date"/>
+							<DatePicker className="date" value={inputDate} onChange={(newValue) => setInputDate(newValue)}/>
 						</LocalizationProvider>
 						<TextField className="input" label="From:" value={inputValueFrom} onChange={(e) => setInputValueFrom(e.target.value)}/>
 						<TextField className="input" label="To:"   value={inputValueTo} onChange={(e) => setInputValueTo(e.target.value)}/>

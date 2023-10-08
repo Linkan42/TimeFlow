@@ -1,7 +1,7 @@
 
 const useUpdateTimeSelect = () => {
 
-	const UpdateTimeSelect = async (inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo) => {
+	const UpdateTimeSelect = async (inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo, inputDate) => {
 		const response = await fetch("/api/meeting/save", {
 			method: "POST",
 			headers: {
@@ -11,6 +11,7 @@ const useUpdateTimeSelect = () => {
 				startTime: inputValueFrom,
 				endTime: inputValueTo,
 				agenda: inputValueAgenda,
+				date: inputDate
 			}), 
 		});
 		if (response.ok !== true) {
