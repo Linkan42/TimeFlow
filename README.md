@@ -40,7 +40,7 @@ Node.js is a JavaScript runtime environment that allows us to run JavaScript on 
 
 ## How to run TimeFlow
 
-First make sure you have [NodeJS](https://nodejs.org/en/download) downloaded. Then simply run `make`  in root with CLI. You should see that the server is running on port 3001. Open up [http://localhost:3001/](http://localhost:3001/) in your favorite web browser and enjoy!
+First make sure you have [NodeJS](https://nodejs.org/en/download) installed. Then simply run `make`  in root with CLI. You should see that the server is running on port 3001. Open up [http://localhost:3001/](http://localhost:3001/) in your favorite web browser and enjoy!
 
 In case you can't run `make`, see [Issues](#issues)
 
