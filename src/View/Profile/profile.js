@@ -21,14 +21,14 @@ if (storedToken) {
 */
 
 const UserForm = () => {
-	const [newName, setNewName] = useState("");
+	const [name, setName] = useState("");
 	const handleNameChange = (event) => {
-		setNewName(event.target.value);
+		setName(event.target.value);
 	};
 
-	const [newEmail, setNewEmail] = useState("");
+	const [email, setEmail] = useState("");
 	const handleEmailChange = (event) => {
-		setNewEmail(event.target.value);
+		setEmail(event.target.value);
 	};
 
 	const [password, setPassword] = useState("");
@@ -55,19 +55,26 @@ const UserForm = () => {
 			// Send the user's unique token to the server, to know which
 			// user to update
 			
-			const responseName = await axios.post("/updateName", { newName } , {
+			const responseName = await axios.post("/api/updateName", { name } , {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}}
 			);
 			console.log("Name updated:", responseName.data.user);
 
-			const responseEmail = await axios.post("/updateEmail", { newEmail } , {
+			const responseEmail = await axios.post("/api/updateEmail", { email } , {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}}
 			);
 			console.log("Email updated:", responseEmail.data.user);
+
+			const responsePassword = await axios.post("/api/updatePassword", { password } , {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}}
+			);
+			console.log("Password updated:", responsePassword.data.user);
 		} catch (error) {
 			// Handle error, show an error message to the user
 			console.error("Error updating user:", error);

@@ -134,7 +134,7 @@ app.post("/api/CreateUser", async (req, res) => {
 	}
 });
 
-app.post("/updateName", async (req, res) => {
+app.post("/api/updateName", async (req, res) => {
 	const { newName } = req.body;
 
 	try {
@@ -146,7 +146,59 @@ app.post("/updateName", async (req, res) => {
 		const userId = decoded.id;
 		
 		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { username: newName }, { new: true });
+		const user = await User.findByIdAndUpdate(userId, { Name: newName }, { new: true });
+
+		if (user) {
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/updateEmail", async (req, res) => {
+	const { newEmail } = req.body;
+
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+		const decoded = jwt.verify(token, secretKey);
+		
+		// token is valid from this point
+		const userId = decoded.id;
+		
+		// find the user by userId and update the name
+		const user = await User.findByIdAndUpdate(userId, { Email: newEmail }, { new: true });
+
+		if (user) {
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/updatePassword", async (req, res) => {
+	const { newPassword } = req.body;
+
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+		const decoded = jwt.verify(token, secretKey);
+		
+		// token is valid from this point
+		const userId = decoded.id;
+		
+		// find the user by userId and update the name
+		const user = await User.findByIdAndUpdate(userId, { Password: newPassword }, { new: true });
 
 		if (user) {
 			res.json({ success: true, user });
