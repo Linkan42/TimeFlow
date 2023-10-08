@@ -28,20 +28,23 @@ jobs:
         with:
           node-version: '18.x' # latest 18.x version
 
-      - name: Generate New Secret Key
-        run: node generate-secret-key.js
-        id: secretKey
-
-      - name: Update GitHub Secret
-        run: echo "SECRET_KEY=${{ steps.secretKey.outputs.stdout }}" >> $GITHUB_ENV
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Commit and Push Changes
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          git commit -am "Update secret key"
-          git push
-
+          - name: Generate New Secret Key
+          run: node generate-secret-key.js
+          id: secretKey
+  
+        - name: Update GitHub Secret
+          run: echo "SECRET_KEY=${{ steps.secretKey.outputs.stdout }}" >> $GITHUB_ENV
+          shell: bash
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+        - name: Update .env File Locally
+          run: echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+  
+        - name: Commit and Push Changes
+          run: |
+            git config user.email "actions@github.com"
+            git config user.name "GitHub Actions"
+            git add .env
+            git commit -m "Update SECRET_KEY in .env file"
+            git push
