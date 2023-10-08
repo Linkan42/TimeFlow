@@ -1,3 +1,9 @@
+# In a nutshell, this workflow allows Github Action to
+# automatically, based on a schedule, update the 
+# SECRET_KEY in .env, based on the 
+# generate-secret-key.js script. It then also
+# pushes the new key to main.
+
 name: Rotate Secret Key
 
 on:
