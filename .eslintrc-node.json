@@ -19,10 +19,6 @@
             "error",
             "tab"
         ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
         "quotes": [
             "error",
             "double"
@@ -31,5 +27,13 @@
             "error",
             "always"
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["src/View/TimeStack/MeetingCoworkerList/MeetingCoworkerList.js"],
+            "rules": {
+                "react/jsx-key": "off"
+            }
+        }
+    ]
 }
