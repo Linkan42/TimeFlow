@@ -37,17 +37,7 @@ function AddMeeting() {
         }
         const addParticipants = (id) =>
         {
-            console.log(id);
-            console.log("addParticipants");
-            // if(participants.indexOf(id) == -1)
-            // {
-            //     setParticipants(participants.push(id));
-            // }
-            // else{
-            //     setParticipants(participants.filter(item => item !== id));
-            // }
-            // console.log(participants);
-            if(array.indexOf(id) == -1)
+            if(array.indexOf(id) === -1)
             {
                 array.push(id);
             }
