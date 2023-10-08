@@ -27,9 +27,9 @@ app.post("/api/meeting/save", async (req, res) => {
 			createrUserId:1,
 			agenda:agenda,
 			date:date});
-		meetingProposal.save();
+		await meetingProposal.save();
         
-		return res.json(meetingId);
+		return res.json({meetingId:meetingId});
 	}
 	catch{
 		return res.status(400).json({ error: "Faill to insert to database"});
@@ -44,6 +44,16 @@ app.post("/api/userList", async (req, res) => {
 	catch{
 		return res.status(400).json({ error: "userlist"});
 	}
+});
+
+app.post("/api/addParticipantsToMeetings", async (req, res) => {
+	const {users, meetingId} = req.body;
+	const mId = parseInt(meetingId);
+	users.forEach(async userId =>	{
+		let uId = parseInt(userId);
+		let newMeetingParticipan = new MeetingParticipan({meetingId:mId, UserId:uId});
+		await newMeetingParticipan.save();
+	});
 });
 
 app.post("/api/meetingList", async (req, res) => {

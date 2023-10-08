@@ -1,7 +1,6 @@
 import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox} from "@mui/material";
 import React, {Component, useState} from "react"; //linter magic
 import "./TimeSelect.css";
-import useUpdateTimeSelect from "./useTimeSelect";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,20 +10,31 @@ function AddMeeting() {
 	const [inputValueTo, setInputValueTo] = useState("");
 	const [inputValueLocation, setInputValueLocation] = useState("");
 	const [inputValueAgenda, setInputValueAgenda] = useState("");
-	const [currentMeetingId, setCurrentMeetingId] = useState("");
 	const [inputDate, setInputDate] = React.useState(null);
-	let array = [];
+	const [participants, setParticipants] = useState([]);
 	let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
-	const {UpdateTimeSelect} = useUpdateTimeSelect();
 
 	const handelButton = async () =>
 	{ 
 		getUserList();//ska inte ligga här sen 
-
-		const res = await UpdateTimeSelect(inputValueLocation, inputValueAgenda, inputValueFrom, inputValueTo, inputDate); 
-		setCurrentMeetingId(res.json());
-		console.log(currentMeetingId);
-		console.log(inputDate);
+		
+		fetch("/api/meeting/save", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ location: inputValueLocation,
+				startTime: inputValueFrom,
+				endTime: inputValueTo,
+				agenda: inputValueAgenda,
+				date: inputDate
+			})}).then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				const {meetingId} = data;
+				console.log(meetingId);
+				addParticipantsToMeetings(meetingId2);
+			});
 	};
 	const getUserList = () =>
 	{
@@ -33,19 +43,30 @@ function AddMeeting() {
 			.then((response) => response.json())
 			.then((data) => {
 				setMenuItems(data);
-				console.log(menuItems);
 			});
 	};
 	const addParticipants = (id) =>
 	{
-		if(array.indexOf(id) === -1)
+		if(participants.indexOf(id) === -1)
 		{
-			array.push(id);
+			participants.push(id);
 		}
 		else{
-			array = array.filter(item => item !== id);
+			setParticipants(participants.filter(item => item !== id));
 		}
-		console.log(array);
+	};
+	const addParticipantsToMeetings = async (currentMeetingId) =>
+	{
+		console.log("addParticipantsToMeetings was reached");
+		fetch("/api/addParticipantsToMeetings",{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ users: participants,
+				meetingId: parseInt(currentMeetingId)
+			}), 
+		});
 	};
 	return (
 		<>
