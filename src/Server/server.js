@@ -1,12 +1,16 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const app = express();
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const path = require("path");
+const jwt = require("jsonwebtoken");
+
+require("dotenv").config();
+const secretKey = process.env.SECRET_KEY;
+
 const User = require("./user.js");
 const MeetingProp = require("./meeting.js");
 const MeetingParticipan = require("./meetingParticipan.js");
-//const { ok } = require("assert");
-const app = express();
 
 const my_path = "../../build/";
 
@@ -127,6 +131,32 @@ app.post("/api/CreateUser", async (req, res) => {
 	}
 	catch{
 		return res.status(400).json({ error: "Failed to insert into database"});
+	}
+});
+
+app.post("/updateName", async (req, res) => {
+	const { newName } = req.body;
+
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+		const decoded = jwt.verify(token, secretKey);
+		
+		// token is valid from this point
+		const userId = decoded.id;
+		
+		// find the user by userId and update the name
+		const user = await User.findByIdAndUpdate(userId, { username: newName }, { new: true });
+
+		if (user) {
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
 	}
 });
 
