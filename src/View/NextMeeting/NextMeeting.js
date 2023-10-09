@@ -12,21 +12,12 @@ const theme = createTheme({
 		}
 	}});
 export function NextMeeting(props) {
-	const [nextMeetingData, setNextMeetingData] = useState({
-		location: "",
-		startTime: ""
-	});
+	const [nextMeetingData, setNextMeetingData] = useState([]);
+
 	useEffect(() => {
 		fetch("/api/meeting", { method: "GET" })
 			.then(response => response.json())
-			.then(data => {
-				// Update the state with the received data
-				setNextMeetingData({
-					location: data.location,
-					startTime: data.startTime
-				});
-				console.log(data);
-			})
+			.then(data => {setNextMeetingData(data); console.log(data);})
 			.catch(error => {
 				console.error("Error fetching next meeting:", error);
 			});
@@ -44,20 +35,15 @@ export function NextMeeting(props) {
 				overflow: "auto" 
 			}}>
 				<h1> Next Meeting </h1>
-				{nextMeetingData ? (
-					<>
-						<h3> Time: {nextMeetingData.startTime} </h3>
-						<h3> Place: {nextMeetingData.location} </h3>
-					</>
-				) : (
-					<p>loading..</p>
-				)}
+				<h3>
+                Location: {nextMeetingData.length > 0 ? nextMeetingData[0].location : "Loading..."}
+				</h3>
+				<h3>
+                Start Time: {nextMeetingData.length > 0 ? nextMeetingData[0].startTime : "Loading..."}
+				</h3>
 			</Container>
 		</ThemeProvider>
 	);
 }
-/* <p> Time: {props.time} </p>
-   <p> Place: {props.place}</p> */
-// Denna kod skall användas senare
 
 export default NextMeeting;

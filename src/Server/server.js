@@ -1,12 +1,21 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const app = express();
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const path = require("path");
+const jwt = require("jsonwebtoken");
+
+require("dotenv").config();
+const secretKey = process.env.SECRET_KEY;
+
 const User = require("./user.js");
 const MeetingProp = require("./meeting.js");
 const MeetingParticipan = require("./meetingParticipan.js");
-//const { ok } = require("assert");
-const app = express();
+
+const schedule = require("../rotate_key.js");
+schedule.startCronJob();
+
+
 
 const my_path = "../../build/";
 
@@ -90,7 +99,7 @@ app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 });
 
 // Start the server
-app.listen(3001, () => console.log("Example app is listening on port 3001."));
+app.listen(3001, () => console.log("Server is listening on port 3001."));
 
 app.post("/api/ValidateEmail", async (req, res) => {
 	const Email = req.body.Email;
@@ -169,8 +178,86 @@ app.post("/api/ValidateLogin", async (req, res) => {
 		}
 
 	}
-	catch{
+	catch {
 		return res.status(400).json({ error: "error, failed to authenitcate"});
+  }
+}
+         
+app.post("/api/updateName", async (req, res) => {
+	const { newName } = req.body;
+
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+		const decoded = jwt.verify(token, secretKey);
+		
+		// token is valid from this point
+		const userId = decoded.id;
+		
+		// find the user by userId and update the name
+		const user = await User.findByIdAndUpdate(userId, { Name: newName }, { new: true });
+
+		if (user) {
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/updateEmail", async (req, res) => {
+	const { newEmail } = req.body;
+
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+		const decoded = jwt.verify(token, secretKey);
+		
+		// token is valid from this point
+		const userId = decoded.id;
+		
+		// find the user by userId and update the name
+		const user = await User.findByIdAndUpdate(userId, { Email: newEmail }, { new: true });
+
+		if (user) {
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/updatePassword", async (req, res) => {
+	const { newPassword } = req.body;
+
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+		const decoded = jwt.verify(token, secretKey);
+		
+		// token is valid from this point
+		const userId = decoded.id;
+		
+		// find the user by userId and update the name
+		const user = await User.findByIdAndUpdate(userId, { Password: newPassword }, { new: true });
+
+		if (user) {
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
 	}
 });
 
@@ -181,7 +268,7 @@ const url = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retr
 async function connect(){
 	try{
 		await mongoose.connect(url);
-		console.log("Connected");
+		console.log("Connected to database.");
 	}
 	catch(error) {
 		console.error(error);
