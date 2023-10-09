@@ -20,6 +20,7 @@ import './Login.css';
 import useValidateEmail from './useValidateEmail';
 import useValidateName from './useValidateName';
 import useCreateUser from './useCreateUser';
+import useValidateLogin from './useValidateLogin';
 
 function FormDialog() {
     const [open, setOpen]                     = React.useState(false);
@@ -69,6 +70,7 @@ function FormDialog() {
         if(!EmailExists && !NameExists && passwordsMatch){
           //create account
           await CreateUser(email, userName, password2);
+          setOpen(false);
         }
     }
   
@@ -149,20 +151,42 @@ function FormDialog() {
 }
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
   
-  const [userName, setUserName] = React.useState('');
-  const [userpw, setUserpw]     = React.useState('');
+  const [email, setEmail]       = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const handleSignIn = () => {
-    if (userName === 'admin' && userpw === 'admin')
+
+  /*const [EmailExists, setEmailExists]       = React.useState(true);*/
+  let auth = true;
+
+  const HandleSignIn =  async () => {
+    console.log(email);
+    console.log(password);
+    //const {ValidateLogin} = useValidateLogin();
+
+    auth = false;
+
+    const response = await fetch('/api/ValidateLogin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        Email: email,
+        Password: password
+      })
+    });
+    if (response.ok) {
+      console.log('good response authentication successful');
+      auth = true;
+    }
+    else {
+      console.log(response);
+      console.log('bad response authentication failed');
+      auth = false;
+    }
+
+    console.log(auth);
+    
+    if (auth)
         return window.location.href = '/home';
   }
 
@@ -184,13 +208,14 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              onChange={(e) => setUserName(e.target.value)}
-              value={userName}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              error={!auth}
               id="email"
               label="Email Address"
               name="email"
@@ -201,8 +226,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              onChange={(e) => setUserpw(e.target.value)}
-              value={userpw}
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              error={!auth}
+              helperText={!auth ? 'Wrong password or username' : ''}
               name="password"
               label="Password"
               type="password"
@@ -214,10 +241,10 @@ export default function SignIn() {
               label="Remember me"
             />
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
-              onClick={handleSignIn}
+              onClick={HandleSignIn}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
