@@ -25,18 +25,18 @@ const UserForm = () => {
 		setName(event.target.value);
 	};
 
-	const [/*email, */setEmail] = useState("");
+	const [newEmail, setEmail] = useState("");
 	const handleEmailChange = (event) => {
 		setEmail(event.target.value);
 	};
 
-	const [password, setPassword] = useState("");
+	const [newPassword, setPassword] = useState("");
 	const [passwordsMatch, setPasswordsMatch] = useState(true);
 	const handlePasswordChange = (event) => {
 		setPassword(event.target.value);
 	};
 	const handleConfirmPasswordChange = (event) => {
-		setPasswordsMatch(event.target.value === password);
+		setPasswordsMatch(event.target.value === newPassword);
 	};
 
 	const [showCurrPassword, setShowCurrPassword] = useState(false);
@@ -61,21 +61,19 @@ const UserForm = () => {
 			);
 			console.log("Name updated:", responseName.data.user);
 
-			/*
-			const responseEmail = await axios.post("/api/updateEmail", { email } , {
+			const responseEmail = await axios.post("/api/updateEmail", { newEmail } , {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}}
 			);
 			console.log("Email updated:", responseEmail.data.user);
-
-			const responsePassword = await axios.post("/api/updatePassword", { password } , {
+				
+			const responsePassword = await axios.post("/api/updatePassword", { newPassword } , {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}}
 			);
 			console.log("Password updated:", responsePassword.data.user);
-			*/
 		} catch (error) {
 			// Handle error, show an error message to the user
 			console.error("Error updating user:", error);
