@@ -127,7 +127,7 @@ const UserForm = () => {
 						margin="normal"
 						id="new_password"
 						label="Enter new password"
-						type={showNewPassword ? "text" : "password"}
+						type = {showNewPassword ? "text" : "password"}
 						fullWidth
 						onChange={handlePasswordChange}
 						InputProps={{
@@ -148,8 +148,8 @@ const UserForm = () => {
 						label="Re-type password"
 						type={showNewPassword ? "text" : "password"}
 						fullWidth
-						error={!passwordsMatch}
-						helperText={!passwordsMatch ? "Passwords do not match!" : ""}
+						error = {!passwordsMatch}
+						helperText = {!passwordsMatch ? "Passwords do not match!" : ""}
 						onChange={handleConfirmPasswordChange}
 						InputProps={{
 							endAdornment: (
