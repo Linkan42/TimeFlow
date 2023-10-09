@@ -181,7 +181,7 @@ app.post("/api/ValidateLogin", async (req, res) => {
 	catch {
 		return res.status(400).json({ error: "error, failed to authenitcate"});
   }
-}
+});
          
 app.post("/api/updateName", async (req, res) => {
 	const { newName } = req.body;
