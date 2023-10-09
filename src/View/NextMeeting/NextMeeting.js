@@ -1,17 +1,17 @@
 import { Container, createTheme, ThemeProvider } from "@mui/material";
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 
 const theme = createTheme({
-    palette: {
-      background: {
-        paper: '#fff',
-      },
-      text: {
-        primary: '#173A5E',
-        secondary: '#46505A',
-    }
-}});
-export function NextMeeting(props) {
+	palette: {
+		background: {
+			paper: "#fff",
+		},
+		text: {
+			primary: "#173A5E",
+			secondary: "#46505A",
+		}
+	}});
+export function NextMeeting(props) {§
     const [nextMeetingData, setNextMeetingData] = useState([])
 
       useEffect(() => {
