@@ -167,39 +167,73 @@ app.post("/api/ValidateLogin", async (req, res) => {
 		let person  = await User.findOne({Email: Email, Password: Password});
 
 		if(person.Email === Email && person.Password === Password){
-			console.log(person.Email);
-			console.log(person.Password);
-			return res.status(200).send("authentication successful");
+			// authenticaton was successfull, generate a time-limited token
+			// and return it with the response
+			const tokenPayload = {
+				userId: person.UserId//,
+				//email: person.Email,
+				//name: person.Name
+			};
+
+			let token = null;
+			try {
+				token = jwt.sign(tokenPayload, secretKey, {
+					expiresIn: "8h" // token expires in 8 hours
+				});
+				console.log("Generated token: ", token);
+				console.log("With key: ", secretKey);
+			} catch (error) {
+				return res.status(400).send({error: "Failed to generate JWT token."});
+			}
+
+			return res.status(200).send({token, message: "authentication successful"});
 		}
 		else{
-			console.log(person.Email);
-			console.log(person.Password);
 			return res.status(400).json({ error: "authentication failed"});
 		}
 
 	}
 	catch {
 		return res.status(400).json({ error: "error, failed to authenitcate"});
-  }
+	}
 });
          
 app.post("/api/updateName", async (req, res) => {
 	const { newName } = req.body;
+	console.log(req.body);
+	console.log(newName);
 
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decoded = jwt.verify(token, secretKey);
+		console.log("Decoded token: ", token);
+		console.log("With secret key: ", secretKey);
+
+		let decoded = null;
+		try {
+			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			decoded = jwt.verify(token, secretKey);
+			console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+			console.log("Decoded data: ", decoded);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
 		
 		// token is valid from this point
-		const userId = decoded.id;
-		
-		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { Name: newName }, { new: true });
+		const userId = decoded.userId;
+		console.log("userId: ", userId);
 
-		if (user) {
+		//const userIdObject = mongoose.Types.ObjectId(userId.UserId);
+
+		// find the user by userId and update the name
+		const user = await User.findOneAndUpdate({UserId: userId}, { Name: newName }, { new: true });
+
+		console.log(user);
+		if (user) {			
+			console.log("SUCCESS");
 			res.json({ success: true, user });
 		} else {
+			console.log("FAIL");
 			res.status(404).json({ success: false, message: "User not found" });
 		}
 	} catch (error) {
