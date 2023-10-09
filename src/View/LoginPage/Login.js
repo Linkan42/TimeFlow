@@ -51,27 +51,25 @@ function FormDialog() {
 		console.log(EmailExists);
 		console.log(NameExists);
 
-        const {CreateUser} = useCreateUser();
-
-	let userid = 0;
+		const {CreateUser} = useCreateUser();
 		
-        if(EmailExists)
-          setValidEmail(false);
-        else
-          setValidEmail(true);
-        if(NameExists)
-          setValidUserName(false);
-        else
-          setValidUserName(true);
-        if(!passwordsMatch){
-          //cant create account
-        }
-        if(!EmailExists && !NameExists && passwordsMatch){
-          //create account
-          await CreateUser(email, userName, password2, userid);
-          setOpen(false);
-        }
-    }
+		if(EmailExists)
+			setValidEmail(false);
+		else
+			setValidEmail(true);
+		if(NameExists)
+			setValidUserName(false);
+		else
+			setValidUserName(true);
+		if(!passwordsMatch){
+			//cant create account
+		}
+		if(!EmailExists && !NameExists && passwordsMatch){
+			//create account
+			await CreateUser(email, userName, password2);
+			setOpen(false);
+		}
+	};
   
 	const handlePasswordsMatch = (e) => {
 		setPassword2(e.target.value);
@@ -150,43 +148,43 @@ function FormDialog() {
 }
 
 export default function SignIn() {  
-  const [email, setEmail]       = React.useState('');
-  const [password, setPassword] = React.useState('');
+	const [email, setEmail]       = React.useState("");
+	const [password, setPassword] = React.useState("");
 
 
-  /*const [EmailExists, setEmailExists]       = React.useState(true);*/
-  let auth = true;
+	/*const [EmailExists, setEmailExists]       = React.useState(true);*/
+	let auth = true;
 
-  const HandleSignIn =  async () => {
-    console.log(email);
-    console.log(password);
-    //const {ValidateLogin} = useValidateLogin();
+	const HandleSignIn =  async () => {
+		console.log(email);
+		console.log(password);
+		//const {ValidateLogin} = useValidateLogin();
 
-    auth = false;
+		auth = false;
 
-    const response = await fetch('/api/ValidateLogin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        Email: email,
-        Password: password
-      })
-    });
-    if (response.ok) {
-      console.log('good response authentication successful');
-      auth = true;
-    }
-    else {
-      console.log(response);
-      console.log('bad response authentication failed');
-      auth = false;
-    }
+		const response = await fetch("/api/ValidateLogin", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				Email: email,
+				Password: password
+			})
+		});
+		if (response.ok) {
+			console.log("good response authentication successful");
+			auth = true;
+		}
+		else {
+			console.log(response);
+			console.log("bad response authentication failed");
+			auth = false;
+		}
 
-    console.log(auth);
+		console.log(auth);
     
-    if (auth)
-        return window.location.href = '/home';
-  }
+		if (auth)
+			return window.location.href = "/home";
+	};
 
 	return (
 		<div className='loginContainer'>
@@ -205,46 +203,46 @@ export default function SignIn() {
 							}</Avatar>
 						<Typography component="h1" variant="h5">
             Sign in
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              error={!auth}
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              error={!auth}
-              helperText={!auth ? 'Wrong password or username' : ''}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              onClick={HandleSignIn}
-              sx={{ mt: 3, mb: 2 }}
-            >
+						</Typography>
+						<Box component="form" noValidate sx={{ mt: 1 }}>
+							<TextField
+								margin="normal"
+								required
+								fullWidth
+								onChange={(e) => setEmail(e.target.value)}
+								value={email}
+								error={!auth}
+								id="email"
+								label="Email Address"
+								name="email"
+								autoComplete="email"
+								autoFocus
+							/>
+							<TextField
+								margin="normal"
+								required
+								fullWidth
+								onChange={(e) => setPassword(e.target.value)}
+								value={password}
+								error={!auth}
+								helperText={!auth ? "Wrong password or username" : ""}
+								name="password"
+								label="Password"
+								type="password"
+								id="password"
+								autoComplete="current-password"
+							/>
+							<FormControlLabel
+								control={<Checkbox value="remember" color="primary" />}
+								label="Remember me"
+							/>
+							<Button
+								type="button"
+								fullWidth
+								variant="contained"
+								onClick={HandleSignIn}
+								sx={{ mt: 3, mb: 2 }}
+							>
               Sign In
 							</Button>
 							<Grid container>

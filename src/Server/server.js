@@ -124,12 +124,12 @@ app.post("/api/ValidateName", async (req, res) => {
 	}
 });
 
-app.post('/api/CreateUser', async (req, res) => {
-    const {Email, Name, Password, UserId} = req.body;
+app.post("/api/CreateUser", async (req, res) => {
+	const {Email, Name, Password} = req.body;
 
-    try{
-        let id = await User.count() + 1;
-        /*
+	try{
+		let id = await User.count() + 1;
+		/*
         db.createUser(
         {
             user: "guest",
@@ -138,40 +138,40 @@ app.post('/api/CreateUser', async (req, res) => {
         }
         )
         */
-        const user = new User({Email: Email,
-                               Name: Name,
-                               Password: Password,
-                               UserId: id});
-        user.save();
-        return res.status(200);
-    }
-    catch{
-        return res.status(400).json({ error: 'Failed to insert into database'});
-    }
+		const user = new User({Email: Email,
+			Name: Name,
+			Password: Password,
+			UserId: id});
+		user.save();
+		return res.status(200);
+	}
+	catch{
+		return res.status(400).json({ error: "Failed to insert into database"});
+	}
 });
 
-app.post('/api/ValidateLogin', async (req, res) => {
-    const Email  = req.body.Email;
-    const Password = req.body.Password;
+app.post("/api/ValidateLogin", async (req, res) => {
+	const Email  = req.body.Email;
+	const Password = req.body.Password;
 
-    try{
-        let person  = await User.findOne({Email: Email, Password: Password});
+	try{
+		let person  = await User.findOne({Email: Email, Password: Password});
 
-        if(person.Email == Email && person.Password == Password){
-            console.log(person.Email);
-            console.log(person.Password);
-            return res.status(200).send('authentication successful');
-        }
-        else{
-            console.log(person.Email);
-            console.log(person.Password);
-            return res.status(400).json({ error: 'authentication failed'});
-        }
+		if(person.Email === Email && person.Password === Password){
+			console.log(person.Email);
+			console.log(person.Password);
+			return res.status(200).send("authentication successful");
+		}
+		else{
+			console.log(person.Email);
+			console.log(person.Password);
+			return res.status(400).json({ error: "authentication failed"});
+		}
 
-    }
-    catch{
-        return res.status(400).json({ error: 'error, failed to authenitcate'});
-    }
+	}
+	catch{
+		return res.status(400).json({ error: "error, failed to authenitcate"});
+	}
 });
 
 //url to DB
