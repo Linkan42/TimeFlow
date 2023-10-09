@@ -63,18 +63,12 @@ app.post("/api/meetingList", async (req, res) => {
 	list.forEach(invite => {
 		console.log(invite.meetingId);
 		temp.forEach(meeting => {
-			console.log(meeting.meetingId);
-			console.log(invite.meetingId);
-			console.log("===============");
 			if(meeting.meetingId === invite.meetingId)
 			{
 				returnMeeting = returnMeeting.concat(meeting);
-				console.log(returnMeeting);
-				console.log("===============");
 			}	
 		});
 	});
-	console.log(returnMeeting);
 	res.json(returnMeeting);
 });
 
