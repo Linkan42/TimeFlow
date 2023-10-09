@@ -11,7 +11,7 @@ const theme = createTheme({
 			secondary: "#46505A",
 		}
 	}});
-export function NextMeeting(props) {§
+export function NextMeeting(props) {
     const [nextMeetingData, setNextMeetingData] = useState([])
 
       useEffect(() => {
