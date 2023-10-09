@@ -185,8 +185,6 @@ app.post("/api/ValidateLogin", async (req, res) => {
 				token = jwt.sign(tokenPayload, secretKey, {
 					expiresIn: "8h" // token expires in 8 hours
 				});
-				console.log("Generated token: ", token);
-				console.log("With key: ", secretKey);
 			} catch (error) {
 				return res.status(400).send({error: "Failed to generate JWT token."});
 			}
@@ -286,6 +284,36 @@ app.post("/api/updatePassword", async (req, res) => {
 
 		// find the user by userId and update the email
 		const user = await User.findOneAndUpdate({UserId: userId}, { Password: newPassword }, { new: true });
+
+		if (user) {			
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/getPassword", async (req, res) => {
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
+		
+		// token is valid from this point
+		const userId = decoded.userId;
+
+		// find the user by userId and update the email
+		const user = await User.findOne({UserId: userId}).select("Password");
 
 		if (user) {			
 			res.json({ success: true, user });
