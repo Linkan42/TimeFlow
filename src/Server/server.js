@@ -138,6 +138,15 @@ app.post("/api/CreateUser", async (req, res) => {
 
 	try{
 		let id = await User.count() + 1;
+		/*
+        db.createUser(
+        {
+            user: "guest",
+            pwd: "passwordForGuest",
+            roles: [ { role: "read", db: "mydb" } ]
+        }
+        )
+        */
 		const user = new User({Email: Email,
 			Name: Name,
 			Password: Password,
@@ -150,6 +159,30 @@ app.post("/api/CreateUser", async (req, res) => {
 	}
 });
 
+app.post("/api/ValidateLogin", async (req, res) => {
+	const Email  = req.body.Email;
+	const Password = req.body.Password;
+
+	try{
+		let person  = await User.findOne({Email: Email, Password: Password});
+
+		if(person.Email === Email && person.Password === Password){
+			console.log(person.Email);
+			console.log(person.Password);
+			return res.status(200).send("authentication successful");
+		}
+		else{
+			console.log(person.Email);
+			console.log(person.Password);
+			return res.status(400).json({ error: "authentication failed"});
+		}
+
+	}
+	catch {
+		return res.status(400).json({ error: "error, failed to authenitcate"});
+  }
+});
+         
 app.post("/api/updateName", async (req, res) => {
 	const { newName } = req.body;
 
