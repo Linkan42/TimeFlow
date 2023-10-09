@@ -99,7 +99,7 @@ app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 });
 
 // Start the server
-app.listen(3001, () => console.log("Example app is listening on port 3001."));
+app.listen(3001, () => console.log("Server is listening on port 3001."));
 
 app.post("/api/ValidateEmail", async (req, res) => {
 	const Email = req.body.Email;
@@ -235,7 +235,7 @@ const url = "mongodb+srv://Filmdados:TimeFlow@timeflow.bba95oe.mongodb.net/?retr
 async function connect(){
 	try{
 		await mongoose.connect(url);
-		console.log("Connected");
+		console.log("Connected to database.");
 	}
 	catch(error) {
 		console.error(error);
