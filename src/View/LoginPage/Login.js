@@ -20,7 +20,6 @@ import './Login.css';
 import useValidateEmail from './useValidateEmail';
 import useValidateName from './useValidateName';
 import useCreateUser from './useCreateUser';
-import useValidateLogin from './useValidateLogin';
 
 function FormDialog() {
     const [open, setOpen]                     = React.useState(false);
