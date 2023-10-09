@@ -66,14 +66,19 @@ app.post("/api/addParticipantsToMeetings", async (req, res) => {
 });
 
 app.post("/api/meetingList", async (req, res) => {
-	try{
-		const {UserId} = req.body;
-		const list = await MeetingParticipan.find({UserId: UserId});
-		res.json(list);
-	}
-	catch{
-		return res.status(400).json({ error: "meetingList"});
-	}
+	const list = await MeetingParticipan.find({UserId: 2});
+	const temp = await MeetingProp.find();
+	let returnMeeting = [];
+	list.forEach(invite => {
+		console.log(invite.meetingId);
+		temp.forEach(meeting => {
+			if(meeting.meetingId === invite.meetingId)
+			{
+				returnMeeting = returnMeeting.concat(meeting);
+			}	
+		});
+	});
+	res.json(returnMeeting);
 });
 
 app.get("/api/meeting", async(req, res) => {    
@@ -91,7 +96,6 @@ app.get("/api/meeting", async(req, res) => {
 });
 
 
-
 // Handle requests to the root URL
 app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 	// Send the index.html file from the build folder as the response
@@ -100,6 +104,7 @@ app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 
 // Start the server
 app.listen(3001, () => console.log("Server is listening on port 3001."));
+
 
 app.post("/api/ValidateEmail", async (req, res) => {
 	const Email = req.body.Email;
