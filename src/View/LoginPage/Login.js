@@ -51,10 +51,10 @@ function FormDialog() {
 		console.log(EmailExists);
 		console.log(NameExists);
 
-		const {CreateUser} = useCreateUser(email, userName, password2);
+        const {CreateUser} = useCreateUser();
 
-        const {CreateUser} = useCreateUser(email, userName, password2, userid);
-
+	let userid = 0;
+		
         if(EmailExists)
           setValidEmail(false);
         else
@@ -68,7 +68,7 @@ function FormDialog() {
         }
         if(!EmailExists && !NameExists && passwordsMatch){
           //create account
-          await CreateUser(email, userName, password2);
+          await CreateUser(email, userName, password2, userid);
           setOpen(false);
         }
     }
