@@ -24,7 +24,7 @@ function DispMeeting() {
 		<>
 			<Container className="Panel">
 				<Stack spacing={1}>
-					{Meetings.map(Meeting => (
+					{menuItems.map(Meeting => (
 						<Paper elevation={5} className="paperContainer" key={Meeting}>
 							<ListItemButton className="ListItemButton" key={Meeting.id}>
 								<Grid container
@@ -48,7 +48,7 @@ function DispMeeting() {
 							</ListItemButton>
 						</Paper>
 					))} 
-          <Button className="RouteButton" onClick={getMeetingList}/>
+					<Button className="RouteButton" onClick={getMeetingList}/>
 				</Stack>
 			</Container>
 		</>
@@ -58,7 +58,7 @@ function DispMeeting() {
 export class WeekDisplay extends Component {
 	render(){
 		return(
-				<DispMeeting/>
+			<DispMeeting/>
 		);
 	}
 }
