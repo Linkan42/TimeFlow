@@ -29,6 +29,21 @@ app.post("/api/meeting/save", async (req, res) => {
 	try{
 		const {location, startTime, endTime, agenda, date} = req.body;
 		let meetingId = ~~(Math.random() * 1000000);
+		let check = 0;
+		let meetingReturn;
+		console.log("meeting/save");
+		while(!check)
+		{	
+			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
+			console.log("while");
+			console.log(meetingReturn);
+			if(meetingReturn === null)
+			{
+				check = 1;
+			}
+		}
+
+
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
