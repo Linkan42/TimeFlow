@@ -170,13 +170,18 @@ export default function SignIn() {
 				Password: password
 			})
 		});
+
 		if (response.ok) {
-			console.log("good response authentication successful");
+			const data = await response.json();
+			const receivedToken = data.token;
+
+			// store token locally
+			localStorage.setItem("token", receivedToken);
+			
 			auth = true;
 		}
 		else {
 			console.log(response);
-			console.log("bad response authentication failed");
 			auth = false;
 		}
 

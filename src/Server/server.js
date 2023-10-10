@@ -29,11 +29,31 @@ app.post("/api/meeting/save", async (req, res) => {
 	try{
 		const {location, startTime, endTime, agenda, date} = req.body;
 		let meetingId = ~~(Math.random() * 1000000);
+		let check = 0;
+		let meetingReturn;
+		console.log("meeting/save");
+		while(!check)
+		{	
+			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
+			if(meetingReturn === null)
+			{
+				check = 1;
+			}
+		}
+		const token = req.header("Authorization").replace("Bearer ", "");
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
+		const userId = decoded.userId;
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
 			endTime:endTime,
-			createrUserId:1,
+			createrUserId:userId,
 			agenda:agenda,
 			date:date});
 		await meetingProposal.save();
@@ -66,14 +86,19 @@ app.post("/api/addParticipantsToMeetings", async (req, res) => {
 });
 
 app.post("/api/meetingList", async (req, res) => {
-	try{
-		const {UserId} = req.body;
-		const list = await MeetingParticipan.find({UserId: UserId});
-		res.json(list);
-	}
-	catch{
-		return res.status(400).json({ error: "meetingList"});
-	}
+	const list = await MeetingParticipan.find({UserId: 2});
+	const temp = await MeetingProp.find();
+	let returnMeeting = [];
+	list.forEach(invite => {
+		console.log(invite.meetingId);
+		temp.forEach(meeting => {
+			if(meeting.meetingId === invite.meetingId)
+			{
+				returnMeeting = returnMeeting.concat(meeting);
+			}	
+		});
+	});
+	res.json(returnMeeting);
 });
 
 app.get("/api/meeting", async(req, res) => {    
@@ -91,7 +116,6 @@ app.get("/api/meeting", async(req, res) => {
 });
 
 
-
 // Handle requests to the root URL
 app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 	// Send the index.html file from the build folder as the response
@@ -100,6 +124,7 @@ app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 
 // Start the server
 app.listen(3001, () => console.log("Server is listening on port 3001."));
+
 
 app.post("/api/ValidateEmail", async (req, res) => {
 	const Email = req.body.Email;
@@ -138,15 +163,6 @@ app.post("/api/CreateUser", async (req, res) => {
 
 	try{
 		let id = await User.count() + 1;
-		/*
-        db.createUser(
-        {
-            user: "guest",
-            pwd: "passwordForGuest",
-            roles: [ { role: "read", db: "mydb" } ]
-        }
-        )
-        */
 		const user = new User({Email: Email,
 			Name: Name,
 			Password: Password,
@@ -167,20 +183,33 @@ app.post("/api/ValidateLogin", async (req, res) => {
 		let person  = await User.findOne({Email: Email, Password: Password});
 
 		if(person.Email === Email && person.Password === Password){
-			console.log(person.Email);
-			console.log(person.Password);
-			return res.status(200).send("authentication successful");
+			// authenticaton was successfull, generate a time-limited token
+			// and return it with the response
+			const tokenPayload = {
+				userId: person.UserId//,
+				//email: person.Email,
+				//name: person.Name
+			};
+
+			let token = null;
+			try {
+				token = jwt.sign(tokenPayload, secretKey, {
+					expiresIn: "8h" // token expires in 8 hours
+				});
+			} catch (error) {
+				return res.status(400).send({error: "Failed to generate JWT token."});
+			}
+
+			return res.status(200).send({token, message: "authentication successful"});
 		}
 		else{
-			console.log(person.Email);
-			console.log(person.Password);
 			return res.status(400).json({ error: "authentication failed"});
 		}
 
 	}
 	catch {
 		return res.status(400).json({ error: "error, failed to authenitcate"});
-  }
+	}
 });
          
 app.post("/api/updateName", async (req, res) => {
@@ -189,15 +218,21 @@ app.post("/api/updateName", async (req, res) => {
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decoded = jwt.verify(token, secretKey);
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
 		
 		// token is valid from this point
-		const userId = decoded.id;
-		
-		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { Name: newName }, { new: true });
+		const userId = decoded.userId;
 
-		if (user) {
+		// find the user by userId and update the name
+		const user = await User.findOneAndUpdate({UserId: userId}, { Name: newName }, { new: true });
+
+		if (user) {			
 			res.json({ success: true, user });
 		} else {
 			res.status(404).json({ success: false, message: "User not found" });
@@ -215,15 +250,21 @@ app.post("/api/updateEmail", async (req, res) => {
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decoded = jwt.verify(token, secretKey);
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
 		
 		// token is valid from this point
-		const userId = decoded.id;
-		
-		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { Email: newEmail }, { new: true });
+		const userId = decoded.userId;
 
-		if (user) {
+		// find the user by userId and update the email
+		const user = await User.findOneAndUpdate({UserId: userId}, { Email: newEmail }, { new: true });
+
+		if (user) {			
 			res.json({ success: true, user });
 		} else {
 			res.status(404).json({ success: false, message: "User not found" });
@@ -241,15 +282,51 @@ app.post("/api/updatePassword", async (req, res) => {
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decoded = jwt.verify(token, secretKey);
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
 		
 		// token is valid from this point
-		const userId = decoded.id;
-		
-		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { Password: newPassword }, { new: true });
+		const userId = decoded.userId;
 
-		if (user) {
+		// find the user by userId and update the email
+		const user = await User.findOneAndUpdate({UserId: userId}, { Password: newPassword }, { new: true });
+
+		if (user) {			
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/getPassword", async (req, res) => {
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
+		
+		// token is valid from this point
+		const userId = decoded.userId;
+
+		// find the user by userId and update the email
+		const user = await User.findOne({UserId: userId}).select("Password");
+
+		if (user) {			
 			res.json({ success: true, user });
 		} else {
 			res.status(404).json({ success: false, message: "User not found" });

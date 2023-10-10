@@ -1,5 +1,6 @@
 const cron = require("node-cron");
 const gen = require("../src/generate-secret-key");
+const gen_sync = require("../src/generate-secret-key-sync");
 const fs = require("fs");
 const dotenv = require("dotenv");
 
@@ -16,10 +17,31 @@ const dotenv = require("dotenv");
 // # scheduling cron jobs, as they run based on the system's local time zone.
 
 function startCronJob() {
+
+	// Initial check to see if .env exists, SECRET_KEY exists and has a value
+	// If not, create and give an initial random hexadecimal string
+	if (!fs.existsSync(".env") || !process.env.SECRET_KEY || process.env.SECRET_KEY.length < 512) {
+		fs.writeFileSync(".env", "");
+
+		// Sets an initial random hexadecimal string
+		const newKey = gen_sync.generateSecretKey();
+
+		// Write the newKey to the .env file
+		dotenv.config(); // Load existing .env file into process.env
+		process.env.SECRET_KEY = newKey; // Update SECRET_KEY in process.env
+		fs.writeFileSync(".env", `SECRET_KEY=${newKey}`); // Update .env file
+	}
+
+	// run every midnight
 	cron.schedule("0 0 * * *", async () => {
 		try {
 			// Generate a new random hexadecimal string
 			const newKey = await gen.generateSecretKey();
+
+			// Check if the .env file exists, create one if it doesn't
+			if (!fs.existsSync(".env")) {
+				fs.writeFileSync(".env", "");
+			}
 
 			// Write the newKey to the .env file
 			dotenv.config(); // Load existing .env file into process.env

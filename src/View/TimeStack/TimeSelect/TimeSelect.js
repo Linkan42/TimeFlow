@@ -13,7 +13,7 @@ function AddMeeting() {
 	const [inputDate, setInputDate] = React.useState(null);
 	const [participants, setParticipants] = useState([]);
 	let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
-
+	const [token] = useState(localStorage.getItem("token"));
 	const handelButton = async () =>
 	{ 
 		getUserList();//ska inte ligga här sen 
@@ -22,6 +22,7 @@ function AddMeeting() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`
 			},
 			body: JSON.stringify({ location: inputValueLocation,
 				startTime: inputValueFrom,

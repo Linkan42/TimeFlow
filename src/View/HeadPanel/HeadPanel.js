@@ -32,6 +32,7 @@ function Panel() {
 	};
 
 	const handleButtonLogout = () => {
+		localStorage.setItem("token", ""); // wipe token upon logout
 		navigate("/login");
 	};
 
