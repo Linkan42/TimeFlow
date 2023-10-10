@@ -16,11 +16,9 @@ function AddMeeting() {
 	const [token] = useState(localStorage.getItem("token"));
 	useEffect(() => {
 		getUserList();
-	});
+	},[]);
 	const handelButton = async () =>
-	{ 
-		// getUserList();//ska inte ligga här sen 
-		
+	{ 	
 		fetch("/api/meeting/save", {
 			method: "POST",
 			headers: {

@@ -6,6 +6,7 @@ const meetingProposalSchema = new mongoose.Schema({
 	startTime: String,
 	endTime: String,
 	createrUserId: Number,
+	createrName: String,
 	agenda: String,
 	date: Date
 });
