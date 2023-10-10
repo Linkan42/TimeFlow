@@ -1,5 +1,5 @@
 import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox} from "@mui/material";
-import React, {Component, useState} from "react"; //linter magic
+import React, {Component, useEffect, useState} from "react"; //linter magic
 import "./TimeSelect.css";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -14,9 +14,12 @@ function AddMeeting() {
 	const [participants, setParticipants] = useState([]);
 	let [menuItems, setMenuItems] = useState([{Name: "Eric"}]);
 	const [token] = useState(localStorage.getItem("token"));
+	useEffect(() => {
+		getUserList();
+	});
 	const handelButton = async () =>
 	{ 
-		getUserList();//ska inte ligga här sen 
+		// getUserList();//ska inte ligga här sen 
 		
 		fetch("/api/meeting/save", {
 			method: "POST",
