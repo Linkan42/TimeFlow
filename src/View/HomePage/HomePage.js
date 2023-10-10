@@ -3,15 +3,16 @@ import {Grid} from "@mui/material";
 
 import {WeekDisplay} from "../WeekDisplay/WeekDisplay";
 import {NextMeeting} from "../NextMeeting/NextMeeting";
-import HeadPanel from "../HeadPanel/HeadPanel";
 import Profile from "../Profile/profile";
+import ButtonNavBar from "../HeadPanelRework/HeadPanelRework";
 
 export class HomePage extends Component {
 	render(){
 		return( 
 			<Grid container className="container">
+				
 				<Grid item xs={12}>
-					<HeadPanel/>
+					<ButtonNavBar/>
 				</Grid>
 				<Grid item xs={7}>
 					<WeekDisplay/>

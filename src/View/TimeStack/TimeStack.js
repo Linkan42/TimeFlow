@@ -24,7 +24,6 @@ export class TimeStack extends Component {
 	render(){
 		return(
 			<Container className="BackGround">
-				<img src={require("./00035-1031831487.png")} alt="logo" className="centered-image"/>
 				<Stack>
 					<Grid className="block" container item xs={8}> 
 						<TimeSelect className="std"/> 

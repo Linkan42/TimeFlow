@@ -83,7 +83,7 @@ const UserForm = () => {
 
 	return (
 		<>
-			<Grid Container className='container'>
+			<Grid Container className='profileContainer'>
 				<Grid item xs={12}>
 					<TextField
 						margin="normal"
@@ -163,7 +163,7 @@ const UserForm = () => {
 					/>
 				</Grid>
 				<Grid item xs={12}>
-					<Button className="save_button" onClick={handleSaveButton}>
+					<Button className="save_button" variant="text" onClick={handleSaveButton} sx={{backgroundColor: "#FAFAFA", color: "black", boxShadow: 1}}>
 							Save changes
 					</Button>
 				</Grid>

@@ -1,4 +1,4 @@
-import { Grid, Stack, ListItemButton, ListItemText, Container } from "@mui/material";
+import { Grid, Stack, ListItemButton, ListItemText, Container, Paper } from "@mui/material";
 import React,{Component} from "react";
 
 import "./WeekDisplay.css";
@@ -9,26 +9,28 @@ export class WeekDisplay extends Component {
 			<Container className="Panel">
 				<Stack spacing={1}>
 					{Meetings.map(Meeting => (
-						<ListItemButton className="ListItemButton" key={Meeting.id}>
-							<Grid container
-								spacing={2}
-								direction={"row"}
-								justifyContent={"space-around"}
-								alignItems={"center"}>
-								<Grid InfoBox xs={9}>
-									<ListItemText className="TextPlace" primary={Meeting.location} />
+						<Paper elevation={5} className="paperContainer" key={Meeting}>
+							<ListItemButton className="ListItemButton" key={Meeting.id}>
+								<Grid container
+									spacing={2}
+									direction={"row"}
+									justifyContent={"space-around"}
+									alignItems={"center"}>
+									<Grid InfoBox xs={9}>
+										<ListItemText className="TextPlace" primary={Meeting.location} />
+									</Grid>
+									<Grid item xs={3}>
+										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.start} to {Meeting.end} </React.Fragment>}/>
+									</Grid>
+									<Grid item xs={9}>
+										<ListItemText className="Text" primary={Meeting.msg}/>
+									</Grid>
+									<Grid item xs={3}>
+										<ListItemText className="Text" primary={ <React.Fragment> Invited by {Meeting.creator}</React.Fragment>}/>
+									</Grid>
 								</Grid>
-								<Grid item xs={3}>
-									<ListItemText className="Text" primary={ <React.Fragment> {Meeting.start} to {Meeting.end} </React.Fragment>}/>
-								</Grid>
-								<Grid item xs={9}>
-									<ListItemText className="Text" primary={Meeting.msg}/>
-								</Grid>
-								<Grid item xs={3}>
-									<ListItemText className="Text" primary={ <React.Fragment> Invited by {Meeting.creator}</React.Fragment>}/>
-								</Grid>
-							</Grid>
-						</ListItemButton>
+							</ListItemButton>
+						</Paper>
 					))} 
 				</Stack>
 			</Container>
