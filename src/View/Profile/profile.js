@@ -220,7 +220,7 @@ const UserForm = () => {
 					/>
 				</Grid>
 				<Grid item xs={12}>
-					<Button className="save_button" variant="text" onClick={HandleSaveButton} sx={{backgroundColor: "#FAFAFA", color: "black", boxShadow: 1}}>
+					<Button className="save_button" variant="text" onClick={HandleSaveButton} sx={{backgroundColor: "#344966", color: "white", boxShadow: 1}}>
 							Save changes
 					</Button>
 				</Grid>
