@@ -128,7 +128,7 @@ const UserForm = () => {
 						alert("Failed updating password :(");
 					}
 				} else if (!passwordsMatch) {
-					alert("Gotta type in the new password twice correctly you donkey.")
+					alert("Gotta type in the new password twice correctly you donkey.");
 				}
 			} catch (error) {
 				// Handle error, show an error message to the user
