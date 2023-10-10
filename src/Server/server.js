@@ -49,15 +49,17 @@ app.post("/api/meeting/save", async (req, res) => {
 			console.log("jwt.verify() failed: ", error);
 		}
 		const userId = decoded.userId;
+		const userName = decoded.name;
+		console.log(userName);
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
 			endTime:endTime,
 			createrUserId:userId,
+			createrName: userName,
 			agenda:agenda,
 			date:date});
 		await meetingProposal.save();
-        
 		return res.json({meetingId:meetingId});
 	}
 	catch{
@@ -86,13 +88,50 @@ app.post("/api/addParticipantsToMeetings", async (req, res) => {
 });
 
 app.post("/api/meetingList", async (req, res) => {
-	const list = await MeetingParticipan.find({UserId: 2});
+	const token = req.header("Authorization").replace("Bearer ", "");
+	let decoded = null;
+	try {
+		decoded = jwt.verify(token, secretKey);
+	} catch (error) {
+		console.log("jwt.verify() failed: ", error);
+	}
+	const userId = decoded.userId;
+	const list = await MeetingParticipan.find({UserId: userId});
 	const temp = await MeetingProp.find();
+	console.log(list);
+	console.log(temp);
 	let returnMeeting = [];
 	list.forEach(invite => {
 		console.log(invite.meetingId);
 		temp.forEach(meeting => {
 			if(meeting.meetingId === invite.meetingId)
+			{
+				returnMeeting = returnMeeting.concat(meeting);
+			}	
+		});
+	});
+	console.log("server");
+	console.log(returnMeeting);
+	res.json(returnMeeting);
+});
+
+app.post("/api/YoureMeetingList", async (req, res) => {
+	const token = req.header("Authorization").replace("Bearer ", "");
+	let decoded = null;
+	try {
+		decoded = jwt.verify(token, secretKey);
+	} catch (error) {
+		console.log("jwt.verify() failed: ", error);
+	}
+	const userId = decoded.userId;
+	const list = await MeetingParticipan.find({UserId: userId});
+	const temp = await MeetingProp.find();
+	console.log(list);
+	console.log(temp);
+	let returnMeeting = [];
+	list.forEach(invite => {
+		temp.forEach(meeting => {
+			if(meeting.createrUserId === invite.UserId)
 			{
 				returnMeeting = returnMeeting.concat(meeting);
 			}	
@@ -186,9 +225,9 @@ app.post("/api/ValidateLogin", async (req, res) => {
 			// authenticaton was successfull, generate a time-limited token
 			// and return it with the response
 			const tokenPayload = {
-				userId: person.UserId//,
+				userId: person.UserId,//,
 				//email: person.Email,
-				//name: person.Name
+				name: person.Name
 			};
 
 			let token = null;

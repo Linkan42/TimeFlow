@@ -1,29 +1,105 @@
-import { Grid, Stack, ListItemButton, ListItemText, Container, Button, Paper} from "@mui/material";
-import React,{Component, useState} from "react";
+import { Grid, Stack, ListItemButton, ListItemText, Container, Paper, Button, Dialog, DialogTitle} from "@mui/material";
+import React,{Component, useState, useEffect} from "react";
 
 import "./WeekDisplay.css";
 
-function DispMeeting() {
-	const [menuItems, setMenuItems] = useState([]);
-	const [userId, setuserID] = useState(2);
 
-	const getMeetingList = () =>
-	{
-		setuserID(2);
-		fetch("/api/meetingList",{
-			method: "POST",
-			body: JSON.stringify({ UserId: userId
+function DispMeeting() {
+	const [open, setOpen] = useState(false);
+	const [menuItems, setMenuItems] = useState([]);
+	const [delMenuItems, setDelMenuItems] = useState([]);
+	const [token] = useState(localStorage.getItem("token"));
+
+	const handleClickOpen = () => {
+		getYoureMeetingList();
+		setOpen(true);
+	};
+  
+	const handleClose = () => {
+		meetingList();
+		setOpen(false);
+	};
+
+	useEffect(() => {
+		fetch("/api/meetingList",{ //if i put the function call here i get error i the code :(
+			method: "POST",			// meetingList(); dont work...
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({
 			})}).then((response) => response.json())
 			.then((data) => {
 				setMenuItems(data);
 			});
-		console.log(menuItems);
-		console.log("here");
+	},[token]);
+	const meetingList = () => 
+	{
+		fetch("/api/meetingList",{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({
+			})}).then((response) => response.json())
+			.then((data) => {
+				setMenuItems(data);
+			});
 	};
+	const getYoureMeetingList = () =>
+	{
+		fetch("/api/YoureMeetingList",{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`
+			},body: JSON.stringify({
+			})})
+			.then((response) => response.json())
+			.then((data) => {
+				setDelMenuItems(data);
+			});
+	};
+	
 	return (
 		<>
 			<Container className="Panel">
 				<Stack spacing={1}>
+					<Button variant="outlined" onClick={handleClickOpen}>Delete a meeting</Button>
+					<Dialog open={open} onClose={handleClose}>
+						<DialogTitle> Delet a meeting</DialogTitle>
+						{delMenuItems.map(Meeting => (
+							<Paper elevation={5} className="paperContainer" key={Meeting}>
+								<ListItemButton className="ListItemButton" key={Meeting.id}>
+									<Grid container
+										spacing={2}
+										direction={"row"}
+										justifyContent={"space-around"}
+										alignItems={"center"}>
+										<Grid InfoBox xs={6}>
+											<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.date} </React.Fragment> } />
+										</Grid>
+										<Grid item xs={6}>
+											<ListItemText className="Text" primary={ <React.Fragment> {Meeting.startTime} to {Meeting.endTime} </React.Fragment>}/>
+										</Grid>
+										<Grid InfoBox xs={6}>
+											<ListItemText className="TextPlace" primary={Meeting.location} />
+										</Grid>
+										<Grid item xs={6}>
+											<Button>
+										DEl
+											</Button>
+										</Grid>
+										<Grid item xs={12}>
+											<ListItemText className="Text" primary={ <React.Fragment> {Meeting.msg} </React.Fragment> }/>
+										</Grid>
+									</Grid>
+								</ListItemButton>
+							</Paper>
+						))}
+						<Button onClick={handleClose}>Cancel</Button>
+					</Dialog>
 					{menuItems.map(Meeting => (
 						<Paper elevation={5} className="paperContainer" key={Meeting}>
 							<ListItemButton className="ListItemButton" key={Meeting.id}>
@@ -32,23 +108,27 @@ function DispMeeting() {
 									direction={"row"}
 									justifyContent={"space-around"}
 									alignItems={"center"}>
-									<Grid InfoBox xs={9}>
+									<Grid InfoBox xs={6}>
+										<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.date} </React.Fragment> } />
+									</Grid>
+									<Grid item xs={6}>
+										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.startTime} to {Meeting.endTime} </React.Fragment>}/>
+									</Grid>
+									<Grid InfoBox xs={6}>
 										<ListItemText className="TextPlace" primary={Meeting.location} />
 									</Grid>
-									<Grid item xs={3}>
-										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.start} to {Meeting.end} </React.Fragment>}/>
-									</Grid>
-									<Grid item xs={9}>
-										<ListItemText className="Text" primary={Meeting.msg}/>
-									</Grid>
-									<Grid item xs={3}>
-										<ListItemText className="Text" primary={ <React.Fragment> Invited by {Meeting.creator}</React.Fragment>}/>
+									{ 
+										<Grid item xs={6}>
+											<ListItemText className="Text" primary={ <React.Fragment> Invited by {Meeting.createrName}</React.Fragment>}/>
+										</Grid>
+									}
+									<Grid item xs={12}>
+										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.msg} </React.Fragment> }/>
 									</Grid>
 								</Grid>
 							</ListItemButton>
 						</Paper>
-					))} 
-					<Button className="RouteButton" onClick={getMeetingList}/>
+					))}
 				</Stack>
 			</Container>
 		</>
