@@ -7,11 +7,13 @@ import {Grid} from "@mui/material";
 export class MeetingScheduler extends Component {
 	render(){
 		return( 
-			<Grid>
+			<div className="meetingContainer">
 				<Grid>
-					<TimeStack className="TimeStack"/>
+					<Grid>
+						<TimeStack className="TimeStack"/>
+					</Grid>
 				</Grid>
-			</Grid>
+			</div>
 		);
 	}
 }
