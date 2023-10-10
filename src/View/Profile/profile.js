@@ -10,33 +10,29 @@ import "../Profile/profile.css";
 // Retrieve the token from localStorage
 const token = localStorage.getItem("token");
 
-if (token) {
-	// Token exists in localStorage, you can use it for API requests or other purposes
-	console.log("Token found:", token);
-} else {
-	// Token doesn't exist in localStorage, handle this situation according to your application logic
-	console.log("Token not found.");
-}
-
-
 const UserForm = () => {
 	const [newName, setName] = useState("");
 	const handleNameChange = (event) => {
 		setName(event.target.value);
 	};
 
-	const [/*email, */setEmail] = useState("");
+	const [newEmail, setEmail] = useState("");
 	const handleEmailChange = (event) => {
 		setEmail(event.target.value);
 	};
 
-	const [password, setPassword] = useState("");
+	const [currPassword, setCurrPassword] = useState("");
+	const handleSetCurrPassword = (event) => {
+		setCurrPassword(event.target.value);
+	};
+
+	const [newPassword, setPassword] = useState("");
 	const [passwordsMatch, setPasswordsMatch] = useState(true);
 	const handlePasswordChange = (event) => {
 		setPassword(event.target.value);
 	};
 	const handleConfirmPasswordChange = (event) => {
-		setPasswordsMatch(event.target.value === password);
+		setPasswordsMatch(event.target.value === newPassword);
 	};
 
 	const [showCurrPassword, setShowCurrPassword] = useState(false);
@@ -47,38 +43,77 @@ const UserForm = () => {
 	const handleToggleNewPasswordVisibility = () => {
 		setShowNewPassword(!showNewPassword);
 	};
-
+	
 	const handleSaveButton = async () => {
+		let userPassword = null;
 		try {
-			// Handle success, update UI or show a success message
-			// Send the user's unique token to the server, to know which
-			// user to update
-			
-			const responseName = await axios.post("/api/updateName", { newName } , {
+			userPassword = await axios.post("/api/getPassword", {}, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}}
 			);
-			console.log("Name updated:", responseName.data.user);
-
-			/*
-			const responseEmail = await axios.post("/api/updateEmail", { email } , {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}}
-			);
-			console.log("Email updated:", responseEmail.data.user);
-
-			const responsePassword = await axios.post("/api/updatePassword", { password } , {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}}
-			);
-			console.log("Password updated:", responsePassword.data.user);
-			*/
 		} catch (error) {
-			// Handle error, show an error message to the user
-			console.error("Error updating user:", error);
+			console.error("Failed to retreive current password: ", error);
+		}
+		
+		const { Password: oldPassword } = userPassword.data.user;
+		// must type in current password in order to change anything
+		if (oldPassword === currPassword)
+		{
+			try {
+				// Handle success, update UI or show a success message
+				// Send the user's unique token to the server, to know which
+				// user to update
+				
+				if (newName.length > 0) {
+					const responseName = await axios.post("/api/updateName", { newName } , {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}}
+					);
+
+					const { success } = responseName.data;
+					if (success) {
+						alert("Name updated!");
+					} else {
+						alert("Failed updating name :(");
+					}
+				}
+	
+				if (newEmail.length > 0) {
+					const responseEmail = await axios.post("/api/updateEmail", { newEmail } , {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}}
+					);
+					
+					const { success } = responseEmail.data;
+					if (success) {
+						alert("Email updated!");
+					} else {
+						alert("Failed updating email :(");
+					}
+				}
+				
+				if (newPassword.length > 0)
+				{
+					const responsePassword = await axios.post("/api/updatePassword", { newPassword } , {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}}
+					);
+					
+					const { success } = responsePassword.data;
+					if (success) {
+						alert("Password updated!");
+					} else {
+						alert("Failed updating password :(");
+					}
+				}
+			} catch (error) {
+				// Handle error, show an error message to the user
+				console.error("Error updating user:", error);
+			}
 		}
 	};
 
@@ -112,6 +147,7 @@ const UserForm = () => {
 						label="Current password"
 						type={showCurrPassword ? "text" : "password"}
 						fullWidth
+						onChange={e => handleSetCurrPassword(e)}
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position="end">

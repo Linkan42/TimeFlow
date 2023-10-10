@@ -185,8 +185,6 @@ app.post("/api/ValidateLogin", async (req, res) => {
 				token = jwt.sign(tokenPayload, secretKey, {
 					expiresIn: "8h" // token expires in 8 hours
 				});
-				console.log("Generated token: ", token);
-				console.log("With key: ", secretKey);
 			} catch (error) {
 				return res.status(400).send({error: "Failed to generate JWT token."});
 			}
@@ -205,40 +203,27 @@ app.post("/api/ValidateLogin", async (req, res) => {
          
 app.post("/api/updateName", async (req, res) => {
 	const { newName } = req.body;
-	console.log(req.body);
-	console.log(newName);
 
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		console.log("Decoded token: ", token);
-		console.log("With secret key: ", secretKey);
 
 		let decoded = null;
 		try {
-			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 			decoded = jwt.verify(token, secretKey);
-			console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBB");
-			console.log("Decoded data: ", decoded);
 		} catch (error) {
 			console.log("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
 		const userId = decoded.userId;
-		console.log("userId: ", userId);
-
-		//const userIdObject = mongoose.Types.ObjectId(userId.UserId);
 
 		// find the user by userId and update the name
 		const user = await User.findOneAndUpdate({UserId: userId}, { Name: newName }, { new: true });
 
-		console.log(user);
 		if (user) {			
-			console.log("SUCCESS");
 			res.json({ success: true, user });
 		} else {
-			console.log("FAIL");
 			res.status(404).json({ success: false, message: "User not found" });
 		}
 	} catch (error) {
@@ -254,15 +239,21 @@ app.post("/api/updateEmail", async (req, res) => {
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decoded = jwt.verify(token, secretKey);
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
 		
 		// token is valid from this point
-		const userId = decoded.id;
-		
-		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { Email: newEmail }, { new: true });
+		const userId = decoded.userId;
 
-		if (user) {
+		// find the user by userId and update the email
+		const user = await User.findOneAndUpdate({UserId: userId}, { Email: newEmail }, { new: true });
+
+		if (user) {			
 			res.json({ success: true, user });
 		} else {
 			res.status(404).json({ success: false, message: "User not found" });
@@ -280,15 +271,51 @@ app.post("/api/updatePassword", async (req, res) => {
 	try {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
-		const decoded = jwt.verify(token, secretKey);
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
 		
 		// token is valid from this point
-		const userId = decoded.id;
-		
-		// find the user by userId and update the name
-		const user = await User.findByIdAndUpdate(userId, { Password: newPassword }, { new: true });
+		const userId = decoded.userId;
 
-		if (user) {
+		// find the user by userId and update the email
+		const user = await User.findOneAndUpdate({UserId: userId}, { Password: newPassword }, { new: true });
+
+		if (user) {			
+			res.json({ success: true, user });
+		} else {
+			res.status(404).json({ success: false, message: "User not found" });
+		}
+	} catch (error) {
+		// jwt.verify() throws an error if token is invalid
+		console.error(error);
+		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.post("/api/getPassword", async (req, res) => {
+	try {
+		// extract and decode token
+		const token = req.header("Authorization").replace("Bearer ", "");
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
+		
+		// token is valid from this point
+		const userId = decoded.userId;
+
+		// find the user by userId and update the email
+		const user = await User.findOne({UserId: userId}).select("Password");
+
+		if (user) {			
 			res.json({ success: true, user });
 		} else {
 			res.status(404).json({ success: false, message: "User not found" });

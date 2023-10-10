@@ -175,9 +175,6 @@ export default function SignIn() {
 			const data = await response.json();
 			const receivedToken = data.token;
 
-			console.log("Received token:", receivedToken);
-			console.log("good response authentication successful");
-
 			// store token locally
 			localStorage.setItem("token", receivedToken);
 			
@@ -185,7 +182,6 @@ export default function SignIn() {
 		}
 		else {
 			console.log(response);
-			console.log("bad response authentication failed");
 			auth = false;
 		}
 
