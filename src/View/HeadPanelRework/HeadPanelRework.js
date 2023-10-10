@@ -19,7 +19,7 @@ export default function ButtonNavBar() {
 
 	const handleButtonLogout = () => {
 		localStorage.setItem("token", ""); // wipe token upon logout
-		navigate("/login");
+		navigate("/");
 	};
 
 	return (
