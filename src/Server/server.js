@@ -29,11 +29,31 @@ app.post("/api/meeting/save", async (req, res) => {
 	try{
 		const {location, startTime, endTime, agenda, date} = req.body;
 		let meetingId = ~~(Math.random() * 1000000);
+		let check = 0;
+		let meetingReturn;
+		console.log("meeting/save");
+		while(!check)
+		{	
+			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
+			if(meetingReturn === null)
+			{
+				check = 1;
+			}
+		}
+		const token = req.header("Authorization").replace("Bearer ", "");
+
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
+		const userId = decoded.userId;
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
 			endTime:endTime,
-			createrUserId:1,
+			createrUserId:userId,
 			agenda:agenda,
 			date:date});
 		await meetingProposal.save();
@@ -143,15 +163,6 @@ app.post("/api/CreateUser", async (req, res) => {
 
 	try{
 		let id = await User.count() + 1;
-		/*
-        db.createUser(
-        {
-            user: "guest",
-            pwd: "passwordForGuest",
-            roles: [ { role: "read", db: "mydb" } ]
-        }
-        )
-        */
 		const user = new User({Email: Email,
 			Name: Name,
 			Password: Password,
