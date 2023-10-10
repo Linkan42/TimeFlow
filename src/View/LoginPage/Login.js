@@ -66,8 +66,8 @@ function FormDialog() {
 		}
 		if(!EmailExists && !NameExists && passwordsMatch){
 			//create account
-			await CreateUser(email, userName, password2);
 			setOpen(false);
+			await CreateUser(email, userName, password2);
 		}
 	};
   

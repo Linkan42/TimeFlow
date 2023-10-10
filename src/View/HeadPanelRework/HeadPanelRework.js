@@ -5,13 +5,22 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
-
-
-
+import { useNavigate } from "react-router-dom";
 
 export default function ButtonNavBar() {
 
 	let Day = dayjs().format("DD MMMM YYYY");
+
+	const navigate = useNavigate();
+
+	const handleButtonNewMeeting = () => {
+		navigate("/meetingScheduler");
+	};
+
+	const handleButtonLogout = () => {
+		localStorage.setItem("token", ""); // wipe token upon logout
+		navigate("/login");
+	};
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -20,8 +29,8 @@ export default function ButtonNavBar() {
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Today, {Day}
 					</Typography>
-					<Button color="inherit">Book a meeting</Button>
-					<Button color="inherit">Logout</Button>
+					<Button color="inherit" onClick={handleButtonNewMeeting} >Book a meeting</Button>
+					<Button color="inherit" onClick={handleButtonLogout} >Logout</Button>
 				</Toolbar>
 			</AppBar>
 		</Box>
