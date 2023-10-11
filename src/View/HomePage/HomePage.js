@@ -4,7 +4,7 @@ import {Grid} from "@mui/material";
 import {WeekDisplay} from "../WeekDisplay/WeekDisplay";
 import {NextMeeting} from "../NextMeeting/NextMeeting";
 import Profile from "../Profile/profile";
-import ButtonNavBar from "../HeadPanelRework/HeadPanelRework";
+import ButtonNavBar from "../HeadPanel/HeadPanel";
 
 export class HomePage extends Component {
 	render(){

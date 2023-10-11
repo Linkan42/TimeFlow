@@ -9,6 +9,10 @@ const useCreateUser = () => {
 				body: JSON.stringify({ Email: Email,
 					Name: Name,
 					Password: Password})});
+
+			if (!response.ok) {
+				console.error("Failed to create user: ", response.status);
+			}
 		}
 		catch(error){
 			console.error(error);
