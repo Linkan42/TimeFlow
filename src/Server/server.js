@@ -1,9 +1,10 @@
+import { verifyToken } from "./jwtVerify.js";
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 const secretKey = process.env.SECRET_KEY;
@@ -14,8 +15,6 @@ const MeetingParticipan = require("./meetingParticipan.js");
 
 const schedule = require("../rotate_key.js");
 schedule.startCronJob();
-
-
 
 const my_path = "../../build/";
 
@@ -166,7 +165,6 @@ app.get("/api/meeting", async(req, res) => {
 	}
 });
 
-
 // Handle requests to the root URL
 app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 	// Send the index.html file from the build folder as the response
@@ -239,13 +237,13 @@ app.post("/api/ValidateLogin", async (req, res) => {
 			const tokenPayload = {
 				userId: person.UserId,//,
 				//email: person.Email,
-				name: person.Name
+				//name: person.Name
 			};
 
 			let token = null;
 			try {
 				token = jwt.sign(tokenPayload, secretKey, {
-					expiresIn: "8h" // token expires in 8 hours
+					expiresIn: "1h"
 				});
 			} catch (error) {
 				return res.status(400).send({error: "Failed to generate JWT token."});
@@ -270,26 +268,26 @@ app.post("/api/updateName", async (req, res) => {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
 
-		let decoded = null;
-		try {
-			decoded = jwt.verify(token, secretKey);
-		} catch (error) {
-			console.error("jwt.verify() failed: ", error);
-		}
+		const  decoded = verifyToken(token, secretKey);
 		
-		// token is valid from this point
-		const userId = decoded.userId;
-
-		// find the user by userId and update the name
-		const user = await User.findOneAndUpdate({UserId: userId}, { Name: newName }, { new: true });
-
-		if (user) {			
-			res.json({ success: true, user });
+		if (decoded !== null) {
+			// token is valid from this point
+			const userId = decoded.userId;
+	
+			// find the user by userId and update the name
+			const user = await User.findOneAndUpdate({UserId: userId}, { Name: newName }, { new: true });
+	
+			if (user) {			
+				res.json({ success: true, user });
+			} else {
+				res.status(404).json({ success: false, message: "User not found" });
+			}
 		} else {
-			res.status(404).json({ success: false, message: "User not found" });
+			console.error("Failed to decode token.");
+			res.status(500).json({ success: false, message: "Failed to decode token" });
 		}
 	} catch (error) {
-		// jwt.verify() throws an error if token is invalid
+		// jwt_decode() throws an error if token is invalid
 		console.error(error);
 		res.status(500).json({ success: false, error: "Internal Server Error" });
 	}
@@ -302,23 +300,23 @@ app.post("/api/updateEmail", async (req, res) => {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
 
-		let decoded = null;
-		try {
-			decoded = jwt.verify(token, secretKey);
-		} catch (error) {
-			console.error("jwt.verify() failed: ", error);
-		}
+		const  decoded = verifyToken(token, secretKey);
 		
-		// token is valid from this point
-		const userId = decoded.userId;
-
-		// find the user by userId and update the email
-		const user = await User.findOneAndUpdate({UserId: userId}, { Email: newEmail }, { new: true });
-
-		if (user) {			
-			res.json({ success: true, user });
+		if (decoded !== null) {
+			// token is valid from this point
+			const userId = decoded.userId;
+	
+			// find the user by userId and update the email
+			const user = await User.findOneAndUpdate({UserId: userId}, { Email: newEmail }, { new: true });
+	
+			if (user) {			
+				res.json({ success: true, user });
+			} else {
+				res.status(404).json({ success: false, message: "User not found" });
+			}
 		} else {
-			res.status(404).json({ success: false, message: "User not found" });
+			console.error("Failed to decode token.");
+			res.status(500).json({ success: false, message: "Failed to decode token" });
 		}
 	} catch (error) {
 		// jwt.verify() throws an error if token is invalid
@@ -334,24 +332,25 @@ app.post("/api/updatePassword", async (req, res) => {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
 
-		let decoded = null;
-		try {
-			decoded = jwt.verify(token, secretKey);
-		} catch (error) {
-			console.error("jwt.verify() failed: ", error);
+		const decoded = verifyToken(token, secretKey);
+
+		if (decoded !== null) {
+			// token is valid from this point
+			const userId = decoded.userId;
+	
+			// find the user by userId and update the email
+			const user = await User.findOneAndUpdate({UserId: userId}, { Password: newPassword }, { new: true });
+	
+			if (user) {			
+				res.json({ success: true, user });
+			} else {
+				res.status(404).json({ success: false, message: "User not found" });
+			}
+		} else {
+			console.error("Failed to decode token.");
+			res.status(500).json({ success: false, message: "Failed to decode token" });
 		}
 		
-		// token is valid from this point
-		const userId = decoded.userId;
-
-		// find the user by userId and update the email
-		const user = await User.findOneAndUpdate({UserId: userId}, { Password: newPassword }, { new: true });
-
-		if (user) {			
-			res.json({ success: true, user });
-		} else {
-			res.status(404).json({ success: false, message: "User not found" });
-		}
 	} catch (error) {
 		// jwt.verify() throws an error if token is invalid
 		console.error(error);
@@ -364,28 +363,43 @@ app.post("/api/getPassword", async (req, res) => {
 		// extract and decode token
 		const token = req.header("Authorization").replace("Bearer ", "");
 
-		let decoded = null;
-		try {
-			decoded = jwt.verify(token, secretKey);
-		} catch (error) {
-			console.error("jwt.verify() failed: ", error);
-		}
-		
-		// token is valid from this point
-		const userId = decoded.userId;
+		const decoded = verifyToken(token, secretKey);
 
-		// find the user by userId and update the email
-		const user = await User.findOne({UserId: userId}).select("Password");
-
-		if (user) {			
-			res.json({ success: true, user });
+		if (decoded !== null) {
+			// token is valid from this point
+			const userId = decoded.userId;
+	
+			// find the user by userId and update the email
+			const user = await User.findOne({UserId: userId}).select("Password");
+	
+			if (user) {			
+				res.json({ success: true, user });
+			} else {
+				res.status(404).json({ success: false, message: "User not found" });
+			}
 		} else {
-			res.status(404).json({ success: false, message: "User not found" });
+			console.error("Failed to decode token.");
+			res.status(500).json({ success: false, message: "Failed to decode token" });
 		}
 	} catch (error) {
-		// jwt.verify() throws an error if token is invalid
 		console.error(error);
 		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.get("/api/validateUserId", async(req, res) => {  
+	try{
+		// get id from query
+		const { id } = req.body;
+
+		const exists = await User.findOne({UserId: id});
+		if(exists) {
+			res.status(200);
+		} else {
+			res.status(404).json({ message: "User with specified ID not found." });
+		}
+	} catch {
+		res.status(500).json({ message: "Error retrieving the user." });
 	}
 });
 

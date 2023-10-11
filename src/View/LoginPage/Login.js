@@ -149,7 +149,7 @@ export default function SignIn() {
 	const [password, setPassword] = React.useState("");
 
 	// wipe token when viewing the sign in page
-	localStorage.setItem("token", "");
+	localStorage.removeItem("token");
 
 	/*const [EmailExists, setEmailExists]       = React.useState(true);*/
 	let auth = true;
