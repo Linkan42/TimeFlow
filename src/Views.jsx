@@ -15,7 +15,7 @@ const Views = () => {
     useEffect(() => {
         const fetchData = async () => {
             const userToken = localStorage.getItem("token");
-
+            
             try {
                 const decoded = verifyToken(userToken, secretKey);
 
