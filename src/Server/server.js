@@ -183,7 +183,7 @@ app.post("/api/meeting", async(req, res) => {
 		const cDate = new Date();
 		list.forEach(invite => {
 			meetings.forEach(meeting => {
-				if(invite.meetingId == meeting.meetingId)
+				if(invite.meetingId === meeting.meetingId)
 				{
 					if(meeting.month <= nextMeeting.month)
 					{
@@ -199,8 +199,10 @@ app.post("/api/meeting", async(req, res) => {
 			});
 		});
 		if(nextMeeting)
-		{
+		{	
+			
 			res.json(nextMeeting);
+			
 		} else {
 			res.status(404).json({ message: "No upcoming meetings found" });
 		}

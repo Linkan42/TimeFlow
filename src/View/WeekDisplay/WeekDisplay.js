@@ -74,6 +74,8 @@ function DispMeeting() {
 			.then((data) => {
 				setDelMenuItems(data);
 			});
+		getYoureMeetingList();
+		meetingList();
 	};
 	
 	return (
