@@ -22,10 +22,13 @@ export function NextMeeting(props) {
 				<body>
 					<h1> Next Meeting </h1>
 					<h3>
-                Location: {nextMeetingData.length > 0 ? nextMeetingData[0].location : "Loading..."}
+                Location: {nextMeetingData.length > 0 ? nextMeetingData[0].location : "No meetings"}
 					</h3>
 					<h3>
-                Start Time: {nextMeetingData.length > 0 ? nextMeetingData[0].startTime : "Loading..."}
+                Start Time: {nextMeetingData.length > 0 ? nextMeetingData[0].startTime : "No meetings"}
+					</h3>
+					<h3>
+                Date: {nextMeetingData.length > 0 ? nextMeetingData[0].date : "No meetings"}
 					</h3>
 				</body>
 			</Paper>
