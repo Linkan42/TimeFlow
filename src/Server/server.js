@@ -50,7 +50,6 @@ app.post("/api/meeting/save", async (req, res) => {
 		}
 		const userId = decoded.userId;
 		const userName = decoded.name;
-		console.log(userName);
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
@@ -79,13 +78,34 @@ app.post("/api/userList", async (req, res) => {
 
 app.post("/api/addParticipantsToMeetings", async (req, res) => {
 	const {users, meetingId} = req.body;
-	const mId = parseInt(meetingId);
-	users.forEach(async userId =>	{
-		let uId = parseInt(userId);
-		let newMeetingParticipan = new MeetingParticipan({meetingId:mId, UserId:uId});
-		await newMeetingParticipan.save();
-	});
+	let mId = parseInt(meetingId);
+	try{
+		users.forEach(async userId =>	{
+			let uId = parseInt(userId);
+			let newMeetingParticipan = new MeetingParticipan({meetingId:mId, UserId:uId});
+			await newMeetingParticipan.save();
+		});
+	}
+	catch(error){
+		console.log(error);
+	}	
 });
+
+app.post("/api/DeleteMeeting", async (req, res) => {
+	const {meetingId} = req.body;
+
+	try{
+		await MeetingProp.deleteOne({meetingId:meetingId});
+		let responseDel = true;
+		while(responseDel !== null){
+			responseDel = await MeetingParticipan.deleteOne({meetingId:meetingId});	
+		}
+	}
+	catch(error){
+		console.log(error);
+	}
+});
+
 
 app.post("/api/meetingList", async (req, res) => {
 	const token = req.header("Authorization").replace("Bearer ", "");

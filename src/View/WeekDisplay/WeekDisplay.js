@@ -61,17 +61,32 @@ function DispMeeting() {
 				setDelMenuItems(data);
 			});
 	};
+	const deleteMeeting = (id) =>
+	{
+		fetch("/api/DeleteMeeting",{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`
+			},body: JSON.stringify({meetingId: id
+			})})
+			.then((response) => response.json())
+			.then((data) => {
+				setDelMenuItems(data);
+			});
+	};
 	
 	return (
 		<>
 			<Container className="Panel">
 				<Stack spacing={1}>
 					<Button variant="outlined" onClick={handleClickOpen}>Delete a meeting</Button>
+					<ListItemText className="TextPlace" alignItems={"center"} primary={ <React.Fragment> You have {menuItems.length === 0 ? "No meetings :)":"You have meetins to attend"} </React.Fragment> } />
 					<Dialog open={open} onClose={handleClose}>
 						<DialogTitle> Delet a meeting</DialogTitle>
 						{delMenuItems.map(Meeting => (
 							<Paper elevation={5} className="paperContainer" key={Meeting}>
-								<ListItemButton className="ListItemButton" key={Meeting.id}>
+								<ListItemButton className="ListItemButton" key={Meeting.meetingId}>
 									<Grid container
 										spacing={2}
 										direction={"row"}
@@ -87,7 +102,7 @@ function DispMeeting() {
 											<ListItemText className="TextPlace" primary={Meeting.location} />
 										</Grid>
 										<Grid item xs={6}>
-											<Button>
+											<Button value={Meeting.meetingId} onClick={(e) => deleteMeeting(e.target.value)}>
 										DEl
 											</Button>
 										</Grid>
@@ -109,7 +124,7 @@ function DispMeeting() {
 									justifyContent={"space-around"}
 									alignItems={"center"}>
 									<Grid InfoBox xs={6}>
-										<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.date} </React.Fragment> } />
+										<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.datestring} </React.Fragment> } />
 									</Grid>
 									<Grid item xs={6}>
 										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.startTime} to {Meeting.endTime} </React.Fragment>}/>
