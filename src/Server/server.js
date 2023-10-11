@@ -31,7 +31,6 @@ app.post("/api/meeting/save", async (req, res) => {
 		let meetingId = ~~(Math.random() * 1000000);
 		let check = 0;
 		let meetingReturn;
-		console.log("meeting/save");
 		while(!check)
 		{	
 			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
@@ -46,7 +45,7 @@ app.post("/api/meeting/save", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		const userId = decoded.userId;
 		const userName = decoded.name;
@@ -87,7 +86,7 @@ app.post("/api/addParticipantsToMeetings", async (req, res) => {
 		});
 	}
 	catch(error){
-		console.log(error);
+		console.error(error);
 	}	
 });
 
@@ -102,7 +101,7 @@ app.post("/api/DeleteMeeting", async (req, res) => {
 		}
 	}
 	catch(error){
-		console.log(error);
+		console.error(error);
 	}
 });
 
@@ -113,16 +112,13 @@ app.post("/api/meetingList", async (req, res) => {
 	try {
 		decoded = jwt.verify(token, secretKey);
 	} catch (error) {
-		console.log("jwt.verify() failed: ", error);
+		console.error("jwt.verify() failed: ", error);
 	}
 	const userId = decoded.userId;
 	const list = await MeetingParticipan.find({UserId: userId});
 	const temp = await MeetingProp.find();
-	console.log(list);
-	console.log(temp);
 	let returnMeeting = [];
 	list.forEach(invite => {
-		console.log(invite.meetingId);
 		temp.forEach(meeting => {
 			if(meeting.meetingId === invite.meetingId)
 			{
@@ -130,8 +126,6 @@ app.post("/api/meetingList", async (req, res) => {
 			}	
 		});
 	});
-	console.log("server");
-	console.log(returnMeeting);
 	res.json(returnMeeting);
 });
 
@@ -141,13 +135,11 @@ app.post("/api/YoureMeetingList", async (req, res) => {
 	try {
 		decoded = jwt.verify(token, secretKey);
 	} catch (error) {
-		console.log("jwt.verify() failed: ", error);
+		console.error("jwt.verify() failed: ", error);
 	}
 	const userId = decoded.userId;
 	const list = await MeetingParticipan.find({UserId: userId});
 	const temp = await MeetingProp.find();
-	console.log(list);
-	console.log(temp);
 	let returnMeeting = [];
 	list.forEach(invite => {
 		temp.forEach(meeting => {
@@ -282,7 +274,7 @@ app.post("/api/updateName", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -314,7 +306,7 @@ app.post("/api/updateEmail", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -346,7 +338,7 @@ app.post("/api/updatePassword", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -376,7 +368,7 @@ app.post("/api/getPassword", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point

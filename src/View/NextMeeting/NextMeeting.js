@@ -8,7 +8,7 @@ export function NextMeeting(props) {
 	useEffect(() => {
 		fetch("/api/meeting", { method: "GET" })
 			.then(response => response.json())
-			.then(data => {setNextMeetingData(data); console.log(data);})
+			.then(data => {setNextMeetingData(data);})
 			.catch(error => {
 				console.error("Error fetching next meeting:", error);
 			});

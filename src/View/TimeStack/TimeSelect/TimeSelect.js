@@ -38,7 +38,6 @@ function AddMeeting() {
 	};
 	const getUserList = () =>
 	{
-		console.log("use was reached");
 		fetch("/api/userList",{ method: "POST"})
 			.then((response) => response.json())
 			.then((data) => {
@@ -57,7 +56,6 @@ function AddMeeting() {
 	};
 	const addParticipantsToMeetings = async (currentMeetingId) =>
 	{
-		console.log("addParticipantsToMeetings was reached");
 		fetch("/api/addParticipantsToMeetings",{
 			method: "POST",
 			headers: {

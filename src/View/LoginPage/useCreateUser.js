@@ -9,15 +9,9 @@ const useCreateUser = () => {
 				body: JSON.stringify({ Email: Email,
 					Name: Name,
 					Password: Password})});
-			if(response.ok){
-				console.log("user created");
-			}
-			else{
-				console.log("user was not created");
-			}
 		}
 		catch(error){
-			console.log(error);
+			console.error(error);
 		}
 	};
 	return {CreateUser};

@@ -7,17 +7,14 @@ const useValidateName = () => {
 				headers: {"Content-Type":"application/json"},
 				body: JSON.stringify({ Name: Name})});
 			if(response.ok){
-				console.log("couldnt find name");
 				return false;
 			}
 			else{
-				console.log(response);
-				console.log("herename");
 				return true;
 			}
 		}
 		catch(error){
-			console.log(error);
+			console.error(error);
 			return false;
 		}
 	};
