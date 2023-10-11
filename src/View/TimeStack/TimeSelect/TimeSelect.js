@@ -1,4 +1,4 @@
-import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox} from "@mui/material";
+import { TextField, Stack, Button, List, ListItemButton, Grid, Checkbox, Paper} from "@mui/material";
 import React, {Component, useEffect, useState} from "react"; //linter magic
 import "./TimeSelect.css";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -74,24 +74,26 @@ function AddMeeting() {
 				<List className="coWorkerList">
 
 					{menuItems.map((item) => (
-						<ListItemButton className="coWorkerInfo" key={item.Name}>
-							<Grid container xs={12}>
-								<Grid xs={8}>{item.Name}</Grid>
-								<Grid xs={4}>
-									<Checkbox value={item.UserId} sx={{
-										color: "Black",
-										"&.Mui-checked": {
-											color: "darkorange",
-										},
-									}} onChange={(e) => addParticipants(e.target.value)}></Checkbox>
+						<Paper elevation={5} key={item}>
+							<ListItemButton className="coWorkerInfo" key={item.Name}>
+								<Grid container xs={12}>
+									<Grid xs={8}>{item.Name}</Grid>
+									<Grid xs={4}>
+										<Checkbox value={item.UserId} sx={{
+											color: "Black",
+											"&.Mui-checked": {
+												color: "darkorange",
+											},
+										}} onChange={(e) => addParticipants(e.target.value)}></Checkbox>
+									</Grid>
 								</Grid>
-							</Grid>
-						</ListItemButton>
+							</ListItemButton>
+						</Paper>
 					))}
                     
 				</List>
-				<Grid>
-					<Stack>
+				<Grid className="dateGrid">
+					<Stack className="dateStack">
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DatePicker className="date" value={inputDate} onChange={(newValue) => setInputDate(newValue)}/>
 						</LocalizationProvider>
@@ -100,7 +102,7 @@ function AddMeeting() {
 						<TextField className="input" label="Location" value={inputValueLocation} onChange={(e) => setInputValueLocation(e.target.value)}/>
 						<TextField className="input" label="Meeting name" value={inputValueAgenda} onChange={(e) => setInputValueAgenda(e.target.value)}/>
 						<Button id="AddButton" className="inputButton" variant="contained" onClick={handelButton}>
-                        Add to MeetingScheduler
+                        Add meeting
 						</Button>
 					</Stack>
 				</Grid>
