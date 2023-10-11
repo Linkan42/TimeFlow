@@ -8,7 +8,9 @@ const meetingProposalSchema = new mongoose.Schema({
 	createrUserId: Number,
 	createrName: String,
 	agenda: String,
-	date: Date
+	date: Date,
+	day: Number,
+	month: Number
 });
 module.exports = mongoose.model("MeetingProp", meetingProposalSchema);
 
