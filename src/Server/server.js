@@ -32,6 +32,9 @@ app.post("/api/meeting/save", async (req, res) => {
 		let check = 0;
 		let meetingReturn;
 		console.log("meeting/save");
+		const dateNew = new Date(date);
+		const newday = dateNew.getDate();
+		const newmonth = dateNew.getMonth()+1;
 		while(!check)
 		{	
 			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
@@ -50,6 +53,7 @@ app.post("/api/meeting/save", async (req, res) => {
 		}
 		const userId = decoded.userId;
 		const userName = decoded.name;
+	
 		const meetingProposal = new MeetingProp({meetingId: meetingId,
 			location:location, 
 			startTime:startTime, 
@@ -57,7 +61,9 @@ app.post("/api/meeting/save", async (req, res) => {
 			createrUserId:userId,
 			createrName: userName,
 			agenda:agenda,
-			date:date});
+			date:date,
+			day:newday,
+			month:newmonth});
 		await meetingProposal.save();
 		return res.json({meetingId:meetingId});
 	}
@@ -162,7 +168,18 @@ app.post("/api/YoureMeetingList", async (req, res) => {
 
 app.get("/api/meeting", async(req, res) => {    
 	try{
-		const nextMeeting = await MeetingProp.find({}).sort("startTime").limit(1);
+		const token = req.header("Authorization").replace("Bearer ", "");
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.log("jwt.verify() failed: ", error);
+		}
+		const userId = decoded.userId;
+		let list = await MeetingParticipan.find({UserId: userId});
+		list = list.date.sort();
+		console.log(list);
+		const nextMeeting = await MeetingProp.find({}).sort("startTime date").limit(1);
 		if(nextMeeting)
 		{
 			res.json(nextMeeting);

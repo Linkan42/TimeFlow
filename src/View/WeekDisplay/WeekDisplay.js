@@ -81,7 +81,7 @@ function DispMeeting() {
 			<Container className="Panel">
 				<Stack spacing={1}>
 					<Button variant="outlined" onClick={handleClickOpen}>Delete a meeting</Button>
-					<ListItemText className="TextPlace" alignItems={"center"} primary={ <React.Fragment> You have {menuItems.length === 0 ? "No meetings :)":"You have meetins to attend"} </React.Fragment> } />
+					<ListItemText className="TextPlace" alignItems={"center"} primary={ <React.Fragment> You have {menuItems.length === 0 ? "No meetings :)":"meetins to attend"} </React.Fragment> } />
 					<Dialog open={open} onClose={handleClose}>
 						<DialogTitle> Delet a meeting</DialogTitle>
 						{delMenuItems.map(Meeting => (
@@ -93,7 +93,7 @@ function DispMeeting() {
 										justifyContent={"space-around"}
 										alignItems={"center"}>
 										<Grid InfoBox xs={6}>
-											<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.date} </React.Fragment> } />
+											<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.day}/{Meeting.month} </React.Fragment> } />
 										</Grid>
 										<Grid item xs={6}>
 											<ListItemText className="Text" primary={ <React.Fragment> {Meeting.startTime} to {Meeting.endTime} </React.Fragment>}/>
@@ -107,7 +107,7 @@ function DispMeeting() {
 											</Button>
 										</Grid>
 										<Grid item xs={12}>
-											<ListItemText className="Text" primary={ <React.Fragment> {Meeting.msg} </React.Fragment> }/>
+											<ListItemText className="Text" primary={ <React.Fragment> {Meeting.agenda} </React.Fragment> }/>
 										</Grid>
 									</Grid>
 								</ListItemButton>
@@ -124,7 +124,7 @@ function DispMeeting() {
 									justifyContent={"space-around"}
 									alignItems={"center"}>
 									<Grid InfoBox xs={6}>
-										<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.datestring} </React.Fragment> } />
+										<ListItemText className="TextPlace" primary={ <React.Fragment> {Meeting.day}/{Meeting.month} </React.Fragment> } />
 									</Grid>
 									<Grid item xs={6}>
 										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.startTime} to {Meeting.endTime} </React.Fragment>}/>
@@ -138,7 +138,7 @@ function DispMeeting() {
 										</Grid>
 									}
 									<Grid item xs={12}>
-										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.msg} </React.Fragment> }/>
+										<ListItemText className="Text" primary={ <React.Fragment> {Meeting.agenda} </React.Fragment> }/>
 									</Grid>
 								</Grid>
 							</ListItemButton>
