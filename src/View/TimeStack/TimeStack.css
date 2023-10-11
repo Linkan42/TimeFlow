@@ -1,44 +1,19 @@
 
-.BackGround{
-    position: relative;
-    max-width: 100vw;
-    max-height: 100vh;
-    min-width: 100vw;
-    min-height: 100vh;
-}
+
 .block{
     position: absolute;
     top: 50%;
     left: 62%;
-    transform: translate(-50%, -50%);
+    transform: translate(-48%, -50%);
     max-height: '60vh';
 }
-.CoworkerList{
-    width: 20vw;
-    height: 40vh;
-}
+
 .std{
     position: relative;
     width: 20vw;
 }
-.centered-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    max-width: 100vw; 
-    max-height: 100vh;
-}
+
 .date{
     background-color: white;
     width: 20vw;
-}
-.RouteButton{
-    position: absolute;
-    transform: translate(0, 100%); 
-    background-color: darkorange!important;
-    color: white!important;
-    left: 40%;
-    width: 20%;
-    top: 10%;
 }

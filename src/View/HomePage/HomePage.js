@@ -9,7 +9,7 @@ import ButtonNavBar from "../HeadPanel/HeadPanel";
 export class HomePage extends Component {
 	render(){
 		return( 
-			<Grid container className="container">
+			<Grid container className="container" backgroundColor="#FAFAFA" >
 				
 				<Grid item xs={12}>
 					<ButtonNavBar/>

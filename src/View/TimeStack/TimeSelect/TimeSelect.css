@@ -1,28 +1,39 @@
 .input{
-    padding: 2px; 
     width: 20vw!important;
     background-color: white;
 }
 .inputButton{
-    padding: 2px; 
     width: 20vw!important;
-    height: 5vh!important;
+    height: 6vh!important;
+    background-color: #344966!important;
 }
 .InPutField{
     height: auto;
     background-color: white!important;
 }
 
-.coWorkerList{
-    background: paper;
-    box-shadow: 1;
-    border-radius: 2;
-    padding: 2;
-    height: 32vh!important;
-    width: 20vh!;
-    overflow: auto!important;
+.dateGrid{
+    transform: translate(5%, 2%);
+    background-color: transparent;
 }
+
+.dateStack{
+    background-color: transparent;
+}
+
 .coWorkerList{
+    box-shadow: 1;
+    height: 43vh!important;
+    width: 15vw;
+    overflow: auto!important;
     color:white;
-    background-color: steelblue;
+    background-color: transparent;
+
+    
+}
+
+.coWorkerInfo{
+    background-color: #FAFAFA!important;
+    width: 14vw;
+    transform: translate(4%);
 }
