@@ -4,6 +4,7 @@ import React, {useState, useEffect} from "react";
 
 export function NextMeeting(props) {
 	const [nextMeetingData, setNextMeetingData] = useState([]);
+	const [ready, setReady] = useState(false);
 	const [token] = useState(localStorage.getItem("token"));
 	useEffect(() => {
 		fetch("/api/meeting",{
@@ -14,7 +15,7 @@ export function NextMeeting(props) {
 			},body: JSON.stringify({
 			})})
 			.then(response => response.json())
-			.then(data => {setNextMeetingData(data); console.log(data);})
+			.then(data => {setNextMeetingData(data); console.log(data); setReady(true);})
 			.catch(error => {
 				console.error("Error fetching next meeting:", error);
 			});
@@ -28,13 +29,13 @@ export function NextMeeting(props) {
 				<body>
 					<h1> Next Meeting </h1>
 					<h3>
-                Location: {nextMeetingData.length > 0 ? nextMeetingData[0].location : "No meetings"}
+                Location: {ready === true ? nextMeetingData.location : "No meetings"}
 					</h3>
 					<h3>
-                Start Time: {nextMeetingData.length > 0 ? nextMeetingData[0].startTime : ""}
+                Start Time: {ready === true ? nextMeetingData.startTime : ""}
 					</h3>
 					<h3>
-                Date: {nextMeetingData.length > 0 ? nextMeetingData[0].day + "/" : ""}{nextMeetingData.length > 0 ? nextMeetingData[0].month : ""}
+                Date: {ready === true  ? nextMeetingData.day + "/" : ""}{ready === true ? nextMeetingData.month : ""}
 					</h3>
 				</body>
 			</Paper>

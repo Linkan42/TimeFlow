@@ -166,7 +166,7 @@ app.post("/api/YoureMeetingList", async (req, res) => {
 	res.json(returnMeeting);
 });
 
-app.get("/api/meeting", async(req, res) => {    
+app.post("/api/meeting", async(req, res) => {    
 	try{
 		const token = req.header("Authorization").replace("Bearer ", "");
 		let decoded = null;
@@ -176,10 +176,28 @@ app.get("/api/meeting", async(req, res) => {
 			console.log("jwt.verify() failed: ", error);
 		}
 		const userId = decoded.userId;
-		let list = await MeetingParticipan.find({UserId: userId});
-		list = list.date.sort();
-		console.log(list);
-		const nextMeeting = await MeetingProp.find({}).sort("startTime date").limit(1);
+		const list = await MeetingParticipan.find({UserId: userId});
+		const meetings =  await MeetingProp.find({});
+		let nextMeeting = new MeetingProp({day:99,
+			month:99});
+		const cDate = new Date();
+		list.forEach(invite => {
+			meetings.forEach(meeting => {
+				if(invite.meetingId == meeting.meetingId)
+				{
+					if(meeting.month <= nextMeeting.month)
+					{
+						if(meeting.day <= nextMeeting.day)
+						{
+							if(meeting.day >= cDate.getDate() && meeting.day >= cDate.getMonth())
+							{
+								nextMeeting = meeting;
+							}
+						}
+					}
+				}
+			});
+		});
 		if(nextMeeting)
 		{
 			res.json(nextMeeting);
