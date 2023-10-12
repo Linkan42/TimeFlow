@@ -30,12 +30,11 @@ app.post("/api/meeting/save", async (req, res) => {
 		let check = 0;
 		let meetingReturn;
 
-    console.log("meeting/save");
 		const dateNew = new Date(date);
 		const newday = dateNew.getDate();
 		const newmonth = dateNew.getMonth()+1;
 
-    while(!check)
+		while(!check)
 		{	
 			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
 			if(meetingReturn === null)
