@@ -15,8 +15,6 @@ const MeetingParticipan = require("./meetingParticipan.js");
 const schedule = require("../rotate_key.js");
 schedule.startCronJob();
 
-
-
 const my_path = "../../build/";
 
 app.use(bodyParser.json());
@@ -31,11 +29,13 @@ app.post("/api/meeting/save", async (req, res) => {
 		let meetingId = ~~(Math.random() * 1000000);
 		let check = 0;
 		let meetingReturn;
-		console.log("meeting/save");
+
+    console.log("meeting/save");
 		const dateNew = new Date(date);
 		const newday = dateNew.getDate();
 		const newmonth = dateNew.getMonth()+1;
-		while(!check)
+
+    while(!check)
 		{	
 			meetingReturn = await MeetingProp.findOne({meetingId: meetingId});
 			if(meetingReturn === null)
@@ -49,7 +49,7 @@ app.post("/api/meeting/save", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		const userId = decoded.userId;
 		const userName = decoded.name;
@@ -93,7 +93,7 @@ app.post("/api/addParticipantsToMeetings", async (req, res) => {
 		});
 	}
 	catch(error){
-		console.log(error);
+		console.error(error);
 	}	
 });
 
@@ -108,7 +108,7 @@ app.post("/api/DeleteMeeting", async (req, res) => {
 		}
 	}
 	catch(error){
-		console.log(error);
+		console.error(error);
 	}
 });
 
@@ -119,16 +119,13 @@ app.post("/api/meetingList", async (req, res) => {
 	try {
 		decoded = jwt.verify(token, secretKey);
 	} catch (error) {
-		console.log("jwt.verify() failed: ", error);
+		console.error("jwt.verify() failed: ", error);
 	}
 	const userId = decoded.userId;
 	const list = await MeetingParticipan.find({UserId: userId});
 	const temp = await MeetingProp.find();
-	console.log(list);
-	console.log(temp);
 	let returnMeeting = [];
 	list.forEach(invite => {
-		console.log(invite.meetingId);
 		temp.forEach(meeting => {
 			if(meeting.meetingId === invite.meetingId)
 			{
@@ -136,8 +133,6 @@ app.post("/api/meetingList", async (req, res) => {
 			}	
 		});
 	});
-	console.log("server");
-	console.log(returnMeeting);
 	res.json(returnMeeting);
 });
 
@@ -147,13 +142,11 @@ app.post("/api/YoureMeetingList", async (req, res) => {
 	try {
 		decoded = jwt.verify(token, secretKey);
 	} catch (error) {
-		console.log("jwt.verify() failed: ", error);
+		console.error("jwt.verify() failed: ", error);
 	}
 	const userId = decoded.userId;
 	const list = await MeetingParticipan.find({UserId: userId});
 	const temp = await MeetingProp.find();
-	console.log(list);
-	console.log(temp);
 	let returnMeeting = [];
 	list.forEach(invite => {
 		temp.forEach(meeting => {
@@ -210,7 +203,6 @@ app.post("/api/meeting", async(req, res) => {
 		res.status(500).json({ message: "Error retrieving next meeting" });
 	}
 });
-
 
 // Handle requests to the root URL
 app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
@@ -284,13 +276,13 @@ app.post("/api/ValidateLogin", async (req, res) => {
 			const tokenPayload = {
 				userId: person.UserId,//,
 				//email: person.Email,
-				name: person.Name
+				//name: person.Name
 			};
 
 			let token = null;
 			try {
 				token = jwt.sign(tokenPayload, secretKey, {
-					expiresIn: "8h" // token expires in 8 hours
+					expiresIn: "1h"
 				});
 			} catch (error) {
 				return res.status(400).send({error: "Failed to generate JWT token."});
@@ -319,7 +311,7 @@ app.post("/api/updateName", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -351,7 +343,7 @@ app.post("/api/updateEmail", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -383,7 +375,7 @@ app.post("/api/updatePassword", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -413,7 +405,7 @@ app.post("/api/getPassword", async (req, res) => {
 		try {
 			decoded = jwt.verify(token, secretKey);
 		} catch (error) {
-			console.log("jwt.verify() failed: ", error);
+			console.error("jwt.verify() failed: ", error);
 		}
 		
 		// token is valid from this point
@@ -431,6 +423,22 @@ app.post("/api/getPassword", async (req, res) => {
 		// jwt.verify() throws an error if token is invalid
 		console.error(error);
 		res.status(500).json({ success: false, error: "Internal Server Error" });
+	}
+});
+
+app.get("/api/validateUserId", async(req, res) => {  
+	try{
+		// get id from query
+		const { id } = req.body;
+
+		const exists = await User.findOne({UserId: id});
+		if(exists) {
+			res.status(200);
+		} else {
+			res.status(404).json({ message: "User with specified ID not found." });
+		}
+	} catch {
+		res.status(500).json({ message: "Error retrieving the user." });
 	}
 });
 

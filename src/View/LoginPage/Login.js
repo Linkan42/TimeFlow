@@ -48,9 +48,6 @@ function FormDialog() {
 		const EmailExists = await ValidateEmail(email);
 		const NameExists  = await ValidateName(userName);
 
-		console.log(EmailExists);
-		console.log(NameExists);
-
 		const {CreateUser} = useCreateUser();
 		
 		if(EmailExists)
@@ -151,13 +148,13 @@ export default function SignIn() {
 	const [email, setEmail]       = React.useState("");
 	const [password, setPassword] = React.useState("");
 
+	// wipe token when viewing the sign in page
+	localStorage.removeItem("token");
 
 	/*const [EmailExists, setEmailExists]       = React.useState(true);*/
 	let auth = true;
 
 	const HandleSignIn =  async () => {
-		console.log(email);
-		console.log(password);
 		//const {ValidateLogin} = useValidateLogin();
 
 		auth = false;
@@ -181,11 +178,8 @@ export default function SignIn() {
 			auth = true;
 		}
 		else {
-			console.log(response);
 			auth = false;
 		}
-
-		console.log(auth);
     
 		if (auth)
 			return window.location.href = "/home";

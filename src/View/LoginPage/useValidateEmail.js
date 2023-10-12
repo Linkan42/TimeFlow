@@ -7,17 +7,14 @@ const useValidateEmail = () => {
 				headers: {"Content-Type":"application/json"},
 				body: JSON.stringify({ Email: Email })});
 			if(response.ok){
-				console.log("coulnt find email");
 				return false;
 			}
 			else{
-				console.log(response);
-				console.log("hereemail");
 				return true;
 			}
 		}
 		catch(error){
-			console.log(error);
+			console.error(error);
 			return false;
 		}
 	};

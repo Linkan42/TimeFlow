@@ -14,7 +14,7 @@ export function NextMeeting(props) {
 			},body: JSON.stringify({
 			})})
 			.then(response => response.json())
-			.then(data => {setNextMeetingData(data); console.log(data);})
+			.then(data => {setNextMeetingData(data);})
 			.catch(error => {
 				console.error("Error fetching next meeting:", error);
 			});
