@@ -97,19 +97,27 @@ app.post("/api/addParticipantsToMeetings", async (req, res) => {
 });
 
 app.post("/api/DeleteMeeting", async (req, res) => {
-	const {meetingId} = req.body;
+	const { meetingId } = req.body;
 
-	try{
-		await MeetingProp.deleteOne({meetingId:meetingId});
-		let responseDel = true;
-		while(responseDel !== null){
-			responseDel = await MeetingParticipan.deleteOne({meetingId:meetingId});	
+	try {
+		const meetingDeleteResult = await MeetingProp.deleteOne({ meetingId: meetingId });
+
+		if (meetingDeleteResult.deletedCount === 0) {
+			return res.status(404).json({ error: "Meeting not found" });
 		}
-	}
-	catch(error){
+
+		let responseDel;
+		do {
+			responseDel = await MeetingParticipan.deleteOne({ meetingId: meetingId });
+		} while (responseDel.deletedCount > 0);
+
+		return res.status(200).json({ message: "Meeting and participants deleted successfully" });
+	} catch (error) {
 		console.error(error);
+		return res.status(500).json({ error: "Internal Server Error" });
 	}
 });
+  
 
 
 app.post("/api/meetingList", async (req, res) => {
@@ -144,16 +152,13 @@ app.post("/api/YoureMeetingList", async (req, res) => {
 		console.error("jwt.verify() failed: ", error);
 	}
 	const userId = decoded.userId;
-	const list = await MeetingParticipan.find({UserId: userId});
 	const temp = await MeetingProp.find();
 	let returnMeeting = [];
-	list.forEach(invite => {
-		temp.forEach(meeting => {
-			if(meeting.createrUserId === invite.UserId)
-			{
-				returnMeeting = returnMeeting.concat(meeting);
-			}	
-		});
+	temp.forEach(meeting => {
+		if(meeting.createrUserId === userId)
+		{
+			returnMeeting = returnMeeting.concat(meeting);
+		}	
 	});
 	res.json(returnMeeting);
 });

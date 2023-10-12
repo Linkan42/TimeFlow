@@ -63,17 +63,25 @@ function DispMeeting() {
 	};
 	const deleteMeeting = (id) =>
 	{
-		fetch("/api/DeleteMeeting",{
+		fetch("/api/DeleteMeeting", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`
-			},body: JSON.stringify({meetingId: id
-			})})
-			.then((response) => response.json())
-			.then((data) => {
-				setDelMenuItems(data);
+			},
+			body: JSON.stringify({ meetingId: id })
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.catch((error) => {
+				console.error("Error deleting meeting:", error);
+				// Handle the error here
 			});
+
 		getYoureMeetingList();
 		meetingList();
 	};
@@ -86,7 +94,8 @@ function DispMeeting() {
 					<ListItemText className="TextPlace" alignItems={"center"} primary={ <React.Fragment> You have {menuItems.length === 0 ? "No meetings :)":"meetins to attend"} </React.Fragment> } />
 					<Dialog open={open} onClose={handleClose}>
 						<DialogTitle> Delet a meeting</DialogTitle>
-						{delMenuItems.map(Meeting => (
+						{Array.isArray(delMenuItems) && delMenuItems.map(Meeting => (
+							// your mapping logic here
 							<Paper elevation={5} className="paperContainer" key={Meeting}>
 								<ListItemButton className="ListItemButton" key={Meeting.meetingId}>
 									<Grid container
