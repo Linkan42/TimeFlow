@@ -121,46 +121,54 @@ app.post("/api/DeleteMeeting", async (req, res) => {
 
 
 app.post("/api/meetingList", async (req, res) => {
-	const token = req.header("Authorization").replace("Bearer ", "");
-	let decoded = null;
 	try {
-		decoded = jwt.verify(token, secretKey);
+		const token = req.header("Authorization").replace("Bearer ", "");
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.error("jwt.verify() failed: ", error);
+		}
+		const userId = decoded.userId;
+		const list = await MeetingParticipan.find({UserId: userId});
+		const temp = await MeetingProp.find();
+		let returnMeeting = [];
+		list.forEach(invite => {
+			temp.forEach(meeting => {
+				if(meeting.meetingId === invite.meetingId)
+				{
+					returnMeeting = returnMeeting.concat(meeting);
+				}	
+			});
+		});
+		res.json(returnMeeting);
 	} catch (error) {
-		console.error("jwt.verify() failed: ", error);
+		console.error(error);
 	}
-	const userId = decoded.userId;
-	const list = await MeetingParticipan.find({UserId: userId});
-	const temp = await MeetingProp.find();
-	let returnMeeting = [];
-	list.forEach(invite => {
+});
+
+app.post("/api/YoureMeetingList", async (req, res) => {
+	try {
+		const token = req.header("Authorization").replace("Bearer ", "");
+		let decoded = null;
+		try {
+			decoded = jwt.verify(token, secretKey);
+		} catch (error) {
+			console.error("jwt.verify() failed: ", error);
+		}
+		const userId = decoded.userId;
+		const temp = await MeetingProp.find();
+		let returnMeeting = [];
 		temp.forEach(meeting => {
-			if(meeting.meetingId === invite.meetingId)
+			if(meeting.createrUserId === userId)
 			{
 				returnMeeting = returnMeeting.concat(meeting);
 			}	
 		});
-	});
-	res.json(returnMeeting);
-});
-
-app.post("/api/YoureMeetingList", async (req, res) => {
-	const token = req.header("Authorization").replace("Bearer ", "");
-	let decoded = null;
-	try {
-		decoded = jwt.verify(token, secretKey);
+		res.json(returnMeeting);
 	} catch (error) {
-		console.error("jwt.verify() failed: ", error);
+		console.error(error);
 	}
-	const userId = decoded.userId;
-	const temp = await MeetingProp.find();
-	let returnMeeting = [];
-	temp.forEach(meeting => {
-		if(meeting.createrUserId === userId)
-		{
-			returnMeeting = returnMeeting.concat(meeting);
-		}	
-	});
-	res.json(returnMeeting);
 });
 
 app.post("/api/meeting", async(req, res) => {    
