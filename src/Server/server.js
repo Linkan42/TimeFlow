@@ -275,7 +275,7 @@ app.post("/api/ValidateLogin", async (req, res) => {
 			const tokenPayload = {
 				userId: person.UserId,//,
 				//email: person.Email,
-				//name: person.Name
+				name: person.Name
 			};
 
 			let token = null;
