@@ -223,7 +223,8 @@ app.get(["/", "/home", "/login", "/meetingScheduler", "/*"], (req, res) => {
 });
 
 // Start the server
-app.listen(3001, () => console.log("Server is listening on port 3001."));
+const port = process.env.PORT || 3001;
+app.listen(port, () => console.log(`server listening on http://localhost:${port}`));
 
 
 app.post("/api/ValidateEmail", async (req, res) => {
